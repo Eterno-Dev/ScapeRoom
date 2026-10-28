@@ -1,6 +1,7 @@
 /**
  * ScapeRoom - Main Application Logic (EternoDev Standard)
  * Cero Degradados - Cero Emojis - Vanilla ES Modules
+ * Regla Estricta: Personaje Bloqueado (No se puede cambiar una vez elegido)
  */
 
 import { CHARACTERS } from "./data/characters.js";
@@ -39,6 +40,7 @@ class ScapeRoomApp {
       this.applyGender(this.gender);
     }
 
+    // Si ya tiene un personaje elegido previamente, entra directo y queda bloqueado
     if (this.selectedCharId) {
       this.enterGameView(this.selectedCharId);
     } else {
@@ -77,7 +79,10 @@ class ScapeRoomApp {
 
     const info = this.gender === "female" ? char.female : char.male;
 
-    document.getElementById("info-avatar").src = info.avatar;
+    const avatarEl = document.getElementById("info-avatar");
+    if (avatarEl) {
+      avatarEl.src = info.cardImage;
+    }
     document.getElementById("info-name").textContent = info.name;
     document.getElementById("info-role").textContent = info.role;
     document.getElementById("info-bio").textContent = info.bio;
@@ -115,44 +120,40 @@ class ScapeRoomApp {
     CHARACTERS.forEach(char => {
       const data = activeGender === "female" ? char.female : char.male;
       const isSelected = this.selectedCharId === char.id;
-      const isDisabled = this.selectedCharId !== null && !isSelected;
+      const isLocked = this.selectedCharId !== null;
+      const isDisabled = isLocked && !isSelected;
 
       const card = document.createElement("div");
       card.className = `char-card ${isSelected ? "selected" : ""} ${isDisabled ? "disabled" : ""}`;
       card.setAttribute("data-char-id", char.id);
 
       card.innerHTML = `
-        <img src="${data.avatar}" alt="${data.name}" class="char-avatar-img" />
-        <span class="char-tag">${char.tag}</span>
-        <div class="char-name">${data.name}</div>
-        <div class="char-role">${data.role}</div>
+        <div class="char-card-frame">
+          <img src="${data.cardImage}" alt="${data.name}" class="char-card-img" />
+        </div>
       `;
 
-      card.addEventListener("click", () => {
-        this.selectCharacter(char.id);
-      });
+      if (!isLocked) {
+        card.addEventListener("click", () => {
+          this.selectCharacter(char.id);
+        });
+      }
 
       container.appendChild(card);
     });
   }
 
   selectCharacter(charId) {
+    if (this.selectedCharId !== null) return; // Bloqueo estricto
+
     this.selectedCharId = charId;
     localStorage.setItem("scaperoom_char_id", charId);
     this.renderCharactersGrid();
 
-    // Pequeño retardo visual para feedback táctil
+    // Transición visual
     setTimeout(() => {
       this.enterGameView(charId);
-    }, 180);
-  }
-
-  resetCharacter() {
-    this.selectedCharId = null;
-    localStorage.removeItem("scaperoom_char_id");
-    this.stopScanner();
-    this.renderCharactersGrid();
-    this.showView("view-selection");
+    }, 220);
   }
 
   enterGameView(charId) {
@@ -295,13 +296,13 @@ class ScapeRoomApp {
     }
 
     if (!this.unlockedClues.includes(clueId)) {
-      this.unlockedClues.unshift(clueId); // Nueva pista al inicio del scroll
+      this.unlockedClues.unshift(clueId); // Nueva tarjeta al frente del scroll lateral
       localStorage.setItem("scaperoom_clues", JSON.stringify(this.unlockedClues));
     }
 
     this.renderCluesDeck();
 
-    // Scroll suave hacia la primera tarjeta recién desbloqueada
+    // Desplazamiento horizontal fluido hacia la nueva tarjeta
     setTimeout(() => {
       const deck = document.getElementById("clues-deck-scroll");
       if (deck) {
@@ -357,7 +358,7 @@ class ScapeRoomApp {
      EVENT LISTENERS
      ========================================================================== */
   setupEventListeners() {
-    // Selección de género en modal
+    // Modal de Género
     const btnMale = document.getElementById("btn-choose-male");
     const btnFemale = document.getElementById("btn-choose-female");
 
@@ -368,7 +369,7 @@ class ScapeRoomApp {
       btnFemale.addEventListener("click", () => this.applyGender("female"));
     }
 
-    // Modal de Información del personaje
+    // Modal de Información del Personaje (?)
     const btnInfo = document.getElementById("btn-char-info");
     const btnCloseInfo = document.getElementById("btn-close-info");
     const infoModal = document.getElementById("info-modal");
@@ -383,12 +384,6 @@ class ScapeRoomApp {
       infoModal.addEventListener("click", (e) => {
         if (e.target === infoModal) this.closeInfoModal();
       });
-    }
-
-    // Cambiar personaje
-    const btnSwitch = document.getElementById("btn-switch-char");
-    if (btnSwitch) {
-      btnSwitch.addEventListener("click", () => this.resetCharacter());
     }
 
     // Botón de activación del escáner

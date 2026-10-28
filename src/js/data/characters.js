@@ -1,5 +1,5 @@
 /**
- * Catálogo de 8 Personajes con Variante Masculina y Femenina
+ * Catálogo Oficial de Personajes — El Asesinato Embrujado
  * EternoDev Web Standards - Estricto minimalismo
  */
 
@@ -8,128 +8,144 @@ export const CHARACTERS = [
     id: 1,
     tag: "Persona 1",
     male: {
-      name: "Sr. Blackwood",
-      role: "El Anfitrión",
-      bio: "Aristócrata y dueño de la mansión. Convocó la cena para anunciar su testamento.",
-      avatar: "src/assets/images/svg/avatar-m1.svg"
+      name: "El Cazador",
+      role: "Cazador de la Finca",
+      bio: "Cazador de la finca del difunto. Se encargaba de acompañarlo en las jornadas de caza y conocía todos los senderos y recovecos del bosque.",
+      cardImage: "src/assets/images/png/card-m-cazador.png"
     },
     female: {
-      name: "Sra. Blackwood",
-      role: "La Anfitriona",
-      bio: "Aristócrata y dueña de la mansión. Convocó la cena para anunciar su testamento.",
-      avatar: "src/assets/images/svg/avatar-f1.svg"
+      name: "La Cazadora",
+      role: "Cazadora de la Finca",
+      bio: "Cazadora de la finca del difunto. Se encargaba de acompañarlo en las jornadas de caza y conocía todos los senderos y recovecos del bosque.",
+      cardImage: "src/assets/images/png/card-m-cazador.png"
     }
   },
   {
     id: 2,
     tag: "Persona 2",
     male: {
-      name: "Conde Valparaíso",
-      role: "El Aristócrata",
-      bio: "Noble con deudas millonarias de juego y viejas rencillas con el difunto.",
-      avatar: "src/assets/images/svg/avatar-m2.svg"
+      name: "Leonardo Vargas",
+      role: "Músico Famoso",
+      bio: "Músico famoso y reconocido que se encontraba en la mansión a punto de realizar una interpretación musical exclusiva durante la cena.",
+      cardImage: "src/assets/images/png/card-m-leonardo.png"
     },
     female: {
-      name: "Condesa Valparaíso",
-      role: "La Aristócrata",
-      bio: "Noble con deudas millonarias de juego y viejas rencillas con el difunto.",
-      avatar: "src/assets/images/svg/avatar-f2.svg"
+      name: "Leonor Vargas",
+      role: "Música Famosa",
+      bio: "Música famosa y reconocida que se encontraba en la mansión a punto de realizar una interpretación musical exclusiva durante la cena.",
+      cardImage: "src/assets/images/png/card-m-leonardo.png"
     }
   },
   {
     id: 3,
     tag: "Persona 3",
     male: {
-      name: "Dr. Capur",
-      role: "El Médico",
-      bio: "Científico y forense prestigioso que acudió a la cena para un análisis confidencial.",
-      avatar: "src/assets/images/svg/avatar-m3.svg"
+      name: "Dr. Alfonso Rivas",
+      role: "Médico de Cabecera",
+      bio: "Médico personal que se encargaba del tratamiento y de administrar la estricta medicación diaria al fallecido.",
+      cardImage: "src/assets/images/png/card-m-alfonso.png"
     },
     female: {
-      name: "Dra. Elisabeth",
-      role: "La Médica",
-      bio: "Científica y forense prestigiosa que acudió a la cena para un análisis confidencial.",
-      avatar: "src/assets/images/svg/avatar-f3.svg"
+      name: "Dra. Alfonsina Rivas",
+      role: "Médica de Cabecera",
+      bio: "Médica personal que se encargaba del tratamiento y de administrar la estricta medicación diaria al fallecido.",
+      cardImage: "src/assets/images/png/card-m-alfonso.png"
     }
   },
   {
     id: 4,
     tag: "Persona 4",
     male: {
-      name: "Inspector Mendoza",
-      role: "El Detective",
-      bio: "Investigador privado invitado de incógnito para vigilar a los invitados.",
-      avatar: "src/assets/images/svg/avatar-m4.svg"
+      name: "General Santamaría",
+      role: "Militar Veterano",
+      bio: "General del ejército y amigo de toda la vida del difunto desde su juventud, cuando ambos compartieron carrera y confidencias.",
+      cardImage: "src/assets/images/png/card-m-santamaria.png"
     },
     female: {
-      name: "Inspectora Mendoza",
-      role: "La Detective",
-      bio: "Investigadora privada invitada de incógnito para vigilar a los invitados.",
-      avatar: "src/assets/images/svg/avatar-f4.svg"
+      name: "General Santamaría",
+      role: "Militar Veterana",
+      bio: "General del ejército y amiga de toda la vida del difunto desde su juventud, cuando ambos compartieron carrera y confidencias.",
+      cardImage: "src/assets/images/png/card-m-santamaria.png"
     }
   },
   {
     id: 5,
     tag: "Persona 5",
     male: {
-      name: "Coronel Roldán",
-      role: "El Militar",
-      bio: "Oficial veterano de carácter frío, experto tirador y portador de arma corta.",
-      avatar: "src/assets/images/svg/avatar-m5.svg"
+      name: "Elías Moreno",
+      role: "Nieto & Heredero",
+      bio: "Nieto joven del difunto y uno de los principales herederos de la fortuna familiar junto a su hermano Raúl.",
+      cardImage: "src/assets/images/png/card-m-elias.png"
     },
     female: {
-      name: "Coronela Roldán",
-      role: "La Militar",
-      bio: "Oficial veterana de carácter frío, experta tiradora y portadora de arma corta.",
-      avatar: "src/assets/images/svg/avatar-f5.svg"
+      name: "Elia Moreno",
+      role: "Nieta & Heredera",
+      bio: "Nieta joven del difunto y una de las principales herederas de la fortuna familiar junto a su hermana.",
+      cardImage: "src/assets/images/png/card-m-elias.png"
     }
   },
   {
     id: 6,
     tag: "Persona 6",
     male: {
-      name: "Profesor Fonseca",
-      role: "El Erudito",
-      bio: "Historiador y perito en venenos botánicos y armas antiguas del siglo XIX.",
-      avatar: "src/assets/images/svg/avatar-m6.svg"
+      name: "Victor Dávila",
+      role: "Historiador",
+      bio: "Historiador y anticuario erudito, invitado a la mansión para autenticar archivos y reliquias de gran valor patrimonial.",
+      cardImage: "src/assets/images/png/card-m-victor.png"
     },
     female: {
-      name: "Profesora Fonseca",
-      role: "La Erudita",
-      bio: "Historiadora y perita en venenos botánicos y armas antiguas del siglo XIX.",
-      avatar: "src/assets/images/svg/avatar-f6.svg"
+      name: "Victoria Dávila",
+      role: "Historiadora",
+      bio: "Historiadora y anticuaria erudita, invitada a la mansión para autenticar archivos y reliquias de gran valor patrimonial.",
+      cardImage: "src/assets/images/png/card-m-victor.png"
     }
   },
   {
     id: 7,
     tag: "Persona 7",
     male: {
-      name: "Barón Cortés",
-      role: "El Heredero",
-      bio: "Joven pariente con intereses económicos directos en las propiedades.",
-      avatar: "src/assets/images/svg/avatar-m7.svg"
+      name: "Hugo Bermejo",
+      role: "Jardinero Mayor",
+      bio: "Jardinero de la casa. Cuida los terrenos, el invernadero y las herramientas, y sabe qué accesos exteriores se abrieron esa noche.",
+      cardImage: "src/assets/images/png/card-m-hugo.png"
     },
     female: {
-      name: "Baronesa Cortés",
-      role: "La Heredera",
-      bio: "Joven pariente con intereses económicos directos en las propiedades.",
-      avatar: "src/assets/images/svg/avatar-f7.svg"
+      name: "Huga Bermejo",
+      role: "Jardinera Mayor",
+      bio: "Jardinera de la casa. Cuida los terrenos, el invernadero y las herramientas, y sabe qué accesos exteriores se abrieron esa noche.",
+      cardImage: "src/assets/images/png/card-m-hugo.png"
     }
   },
   {
     id: 8,
     tag: "Persona 8",
     male: {
-      name: "Padre Serna",
-      role: "El Clérigo",
-      bio: "Sacerdote y confesor de la familia que oculta secretos inconfesables.",
-      avatar: "src/assets/images/svg/avatar-m8.svg"
+      name: "Raúl Fernández",
+      role: "Hermano & Heredero",
+      bio: "Hermano de Elías y co-heredero legítimo de la finca familiar. Sus aspiraciones económicas chocaban con el testamento.",
+      cardImage: "src/assets/images/png/card-m-raul.png"
     },
     female: {
-      name: "Hermana Serna",
-      role: "La Religiosa",
-      bio: "Religiosa y confidente de la familia que oculta secretos inconfesables.",
-      avatar: "src/assets/images/svg/avatar-f8.svg"
+      name: "Raquel Fernández",
+      role: "Hermana & Heredera",
+      bio: "Hermana de Elías y co-heredera legítima de la finca familiar. Sus aspiraciones económicas chocaban con el testamento.",
+      cardImage: "src/assets/images/png/card-m-raul.png"
+    }
+  },
+  {
+    id: 9,
+    tag: "Persona 9",
+    male: {
+      name: "Javier Escudero",
+      role: "Abogado Notarial",
+      bio: "Abogado y albacea encargado de la redacción, custodia y lectura del polémico testamento.",
+      cardImage: "src/assets/images/png/card-m-javier.png"
+    },
+    female: {
+      name: "Javiera Escudero",
+      role: "Abogada Notarial",
+      bio: "Abogada y albacea encargada de la redacción, custodia y lectura del polémico testamento.",
+      cardImage: "src/assets/images/png/card-m-javier.png"
     }
   }
 ];
