@@ -12,13 +12,13 @@ export const CHARACTERS = [
       name: "El Cazador",
       role: "Cazador de la Finca",
       bio: "Cazador de la finca del difunto. Se encargaba de acompañarlo en las jornadas de caza y conocía todos los senderos y recovecos del bosque.",
-      cardImage: "src/assets/images/png/card-m-cazador.png"
+      cardImage: "src/assets/images/personajes_masculinos/card-m-cazador.png"
     },
     female: {
       name: "La Cazadora",
       role: "Cazadora de la Finca",
       bio: "Cazadora de la finca del difunto. Se encargaba de acompañarlo en las jornadas de caza y conocía todos los senderos y recovecos del bosque.",
-      cardImage: "src/assets/images/png/card-f-cazadora.png"
+      cardImage: "src/assets/images/personajes_femeninos/card-f-cazadora.png"
     }
   },
   {
@@ -29,13 +29,13 @@ export const CHARACTERS = [
       name: "Leonardo Vargas",
       role: "Músico Famoso",
       bio: "Músico famoso y reconocido que se encontraba en la mansión a punto de realizar una interpretación musical exclusiva durante la cena.",
-      cardImage: "src/assets/images/png/card-m-leonardo.png"
+      cardImage: "src/assets/images/personajes_masculinos/card-m-leonardo.png"
     },
     female: {
       name: "Valentina Santos",
       role: "Música Famosa",
       bio: "Cantante y música de renombre que amenizaba la velada antes de que se apagaran las luces.",
-      cardImage: "src/assets/images/png/card-f-valentina.png"
+      cardImage: "src/assets/images/personajes_femeninos/card-f-valentina.png"
     }
   },
   {
@@ -46,13 +46,13 @@ export const CHARACTERS = [
       name: "Dr. Alfonso Rivas",
       role: "Médico de Cabecera",
       bio: "Médico personal que se encargaba del tratamiento y de administrar la estricta medicación diaria al fallecido.",
-      cardImage: "src/assets/images/png/card-m-alfonso.png"
+      cardImage: "src/assets/images/personajes_masculinos/card-m-alfonso.png"
     },
     female: {
       name: "Dra. Isabel Ortega",
       role: "Médica Forense",
       bio: "Médica particular encargada de la salud y recetas confidenciales del difunto señor de la mansión.",
-      cardImage: "src/assets/images/png/card-f-isabel.png"
+      cardImage: "src/assets/images/personajes_femeninos/card-f-isabel.png"
     }
   },
   {
@@ -63,13 +63,13 @@ export const CHARACTERS = [
       name: "General Santamaría",
       role: "Militar Veterano",
       bio: "General del ejército y amigo de toda la vida del difunto desde su juventud, cuando ambos compartieron carrera y confidencias.",
-      cardImage: "src/assets/images/png/card-m-santamaria.png"
+      cardImage: "src/assets/images/personajes_masculinos/card-m-santamaria.png"
     },
     female: {
       name: "General Araujo",
       role: "Militar Veterana",
       bio: "Alta oficial del ejército y vieja camarada de armas del difunto desde sus tiempos de juventud.",
-      cardImage: "src/assets/images/png/card-f-araujo.png"
+      cardImage: "src/assets/images/personajes_femeninos/card-f-araujo.png"
     }
   },
   {
@@ -80,13 +80,13 @@ export const CHARACTERS = [
       name: "Elías Moreno",
       role: "Nieto & Heredero",
       bio: "Nieto joven del difunto y uno de los principales herederos de la fortuna familiar junto a su hermano Raúl.",
-      cardImage: "src/assets/images/png/card-m-elias.png"
+      cardImage: "src/assets/images/personajes_masculinos/card-m-elias.png"
     },
     female: {
       name: "Isadora Pérez",
       role: "Nieta & Heredera",
       bio: "Nieta y principal aspirante a la herencia legítima de las fincas y propiedades familiares.",
-      cardImage: "src/assets/images/png/card-f-isadora.png"
+      cardImage: "src/assets/images/personajes_femeninos/card-f-isadora.png"
     }
   },
   {
@@ -97,13 +97,13 @@ export const CHARACTERS = [
       name: "Victor Dávila",
       role: "Historiador",
       bio: "Historiador y anticuario erudito, invitado a la mansión para autenticar archivos y reliquias de gran valor patrimonial.",
-      cardImage: "src/assets/images/png/card-m-victor.png"
+      cardImage: "src/assets/images/personajes_masculinos/card-m-victor.png"
     },
     female: {
       name: "Elena Torres",
       role: "Historiadora",
       bio: "Investigadora y experta en antigüedades góticas que revisaba los documentos históricos de la familia.",
-      cardImage: "src/assets/images/png/card-f-elena.png"
+      cardImage: "src/assets/images/personajes_femeninos/card-f-elena.png"
     }
   },
   {
@@ -114,13 +114,13 @@ export const CHARACTERS = [
       name: "Hugo Bermejo",
       role: "Jardinero Mayor",
       bio: "Jardinero de la casa. Cuida los terrenos, el invernadero y las herramientas, y sabe qué accesos exteriores se abrieron esa noche.",
-      cardImage: "src/assets/images/png/card-m-hugo.png"
+      cardImage: "src/assets/images/personajes_masculinos/card-m-hugo.png"
     },
     female: {
       name: "Lucía Herrera",
       role: "Jardinera Mayor",
       bio: "Jardinera de la finca. Conoce cada rincón exterior, el cobertizo y las huellas dejadas en el barro.",
-      cardImage: "src/assets/images/png/card-f-lucia.png"
+      cardImage: "src/assets/images/personajes_femeninos/card-f-lucia.png"
     }
   },
   {
@@ -131,13 +131,13 @@ export const CHARACTERS = [
       name: "Raúl Fernández",
       role: "Hermano & Heredero",
       bio: "Hermano de Elías y co-heredero legítimo de la finca familiar. Sus aspiraciones económicas chocaban con el testamento.",
-      cardImage: "src/assets/images/png/card-m-raul.png"
+      cardImage: "src/assets/images/personajes_masculinos/card-m-raul.png"
     },
     female: {
       name: "Sofía Villalba",
       role: "Hermana & Heredera",
       bio: "Hermana de Isadora y co-heredera directa. En conflicto latente por la repartición del patrimonio.",
-      cardImage: "src/assets/images/png/card-f-sofia.png"
+      cardImage: "src/assets/images/personajes_femeninos/card-f-sofia.png"
     }
   },
   {
@@ -148,13 +148,13 @@ export const CHARACTERS = [
       name: "Javier Escudero",
       role: "Abogado Notarial",
       bio: "Abogado y albacea encargado de la redacción, custodia y lectura del polémico testamento.",
-      cardImage: "src/assets/images/png/card-m-javier.png"
+      cardImage: "src/assets/images/personajes_masculinos/card-m-javier.png"
     },
     female: {
       name: "Carmen Ruiz",
       role: "Abogada Notarial",
       bio: "Albacea y letrada encargada del testamento notarial que iba a ser proclamado esa medianoche.",
-      cardImage: "src/assets/images/png/card-f-carmen.png"
+      cardImage: "src/assets/images/personajes_femeninos/card-f-carmen.png"
     }
   }
 ];

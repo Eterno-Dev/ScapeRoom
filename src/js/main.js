@@ -61,7 +61,7 @@ class ScapeRoomApp {
       this.savedBackBases[charId] = randomBase;
       localStorage.setItem("scaperoom_back_bases", JSON.stringify(this.savedBackBases));
     }
-    return `src/assets/images/png/${this.savedBackBases[charId]}`;
+    return `src/assets/images/tarjetas/${this.savedBackBases[charId]}`;
   }
 
   /* ==========================================================================
@@ -235,11 +235,11 @@ class ScapeRoomApp {
         <div class="flip-card-inner">
           <!-- Cara Frontal del Escáner (Imagen de Cámara) -->
           <div class="flip-card-front">
-            <img src="src/assets/images/png/card-scanner-camera.png" alt="Cámara de Investigación" class="char-card-img" />
+            <img src="src/assets/images/objetos/card-scanner-camera.png" alt="Cámara de Investigación" class="char-card-img" />
           </div>
 
           <!-- Cara Trasera del Escáner (Cámara + Botón Activar Escáner) -->
-          <div class="flip-card-back scanner-card-back" style="background-image: url('src/assets/images/png/card-back-base-2.png');">
+          <div class="flip-card-back scanner-card-back" style="background-image: url('src/assets/images/tarjetas/card-back-base-2.png');">
             <div class="scanner-back-content">
               <div class="scanner-video-wrapper" id="scanner-video-wrapper">
                 <video id="scanner-video" playsinline muted></video>
@@ -278,7 +278,7 @@ class ScapeRoomApp {
     track.appendChild(scannerSlide);
 
     // ------------------------------------------------------------------------
-    // CARTAS 2+: PISTAS ESCANEADAS (AÑADIDAS AL LADO EN EL MAZO)
+    // CARTAS 2+: OBJETOS ESCANEADOS (AÑADIDOS AL LADO EN EL MAZO)
     // ------------------------------------------------------------------------
     this.unlockedClues.forEach((clueId, idx) => {
       const clue = CLUES[clueId];
@@ -290,28 +290,20 @@ class ScapeRoomApp {
       clueSlide.innerHTML = `
         <div class="flip-card game-card-flip">
           <div class="flip-card-inner">
-            <!-- Cara Frontal de la Pista -->
-            <div class="flip-card-front clue-front-face">
-              <div class="clue-front-top">
-                <span class="clue-card-tag" style="background-color: ${clue.tagColor};">${clue.category}</span>
-                <span class="clue-card-id">PISTA ${clue.num}</span>
-              </div>
-              <div class="clue-card-title">${clue.title}</div>
-              <p class="clue-card-desc">${clue.desc}</p>
+            <!-- Cara Frontal del Objeto (Tarjeta de Imagen Real) -->
+            <div class="flip-card-front">
+              <img src="${clue.cardImage}" alt="${clue.title}" class="char-card-img" />
             </div>
 
-            <!-- Cara Trasera de la Pista con textura de cartas especiales -->
-            <div class="flip-card-back clue-back-face" style="background-image: url('src/assets/images/png/card-back-base-3.png');">
+            <!-- Cara Trasera del Objeto (Detalles e Información) -->
+            <div class="flip-card-back clue-back-face" style="background-image: url('src/assets/images/tarjetas/${clue.backBase}');">
               <div class="card-back-content">
-                <div class="clue-back-header">
-                  <span class="clue-seal-badge">EVIDENCIA REGISTRADA</span>
-                  <span class="clue-card-id">PISTA ${clue.num}</span>
+                <div class="card-back-header">
+                  <span class="card-back-role">OBJETO ${clue.num} — ${clue.category}</span>
+                  <h4 class="card-back-name">${clue.title}</h4>
                 </div>
-                <h4 class="clue-back-title">Análisis Forense</h4>
-                <p class="clue-back-detail">${clue.detail}</p>
-                <div class="clue-back-notes">
-                  <strong>Estado:</strong> Prueba física autenticada en el expediente.
-                </div>
+                <p class="card-back-bio">${clue.desc}</p>
+                <div class="clue-back-detail">${clue.detail}</div>
               </div>
             </div>
           </div>

@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-  <!-- Cabeza -->
-  <circle cx="12" cy="4.5" r="2.5"/>
-  <!-- Torso y ambos brazos simétricos -->
-  <path d="M8 8a2 2 0 0 0-2 2v5a1 1 0 0 0 2 0v-4.5h.5V17a1.5 1.5 0 0 0 1.5 1.5h.5V22a1 1 0 0 0 2 0v-3.5h1V22a1 1 0 0 0 2 0v-3.5h.5A1.5 1.5 0 0 0 19 17v-6.5h.5V15a1 1 0 0 0 2 0v-5a2 2 0 0 0-2-2H8z"/>
-</svg>

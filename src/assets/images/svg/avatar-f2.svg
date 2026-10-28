@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
-      <rect width="100" height="100" fill="#1c1c20"/>
-      <rect x="3" y="3" width="94" height="94" stroke="#d97706" stroke-width="3"/>
-      <circle cx="50" cy="36" r="17" fill="#d97706"/>
-      <path d="M26 84c0-15 10-26 24-26s24 11 24 26z" fill="#d97706"/>
-      <polygon points="50,45 38,70 62,70" fill="#ffffff" opacity="0.3"/>
-      <text x="50" y="94" fill="#ffffff" font-size="10" font-family="sans-serif" font-weight="bold" text-anchor="middle">Aristócrata</text>
-    </svg>

@@ -71,20 +71,20 @@ def get_intervals(sheet_path):
     y_ints = extract_intervals(y_proj)
     return im, x_ints, y_ints
 
-def save_card(img, base_name, out_dirs):
+def save_card(img, category, base_name, base_dirs):
     processed = process_card(img)
-    for d in out_dirs:
-        dest = os.path.join(d, base_name)
+    for b in base_dirs:
+        dest_dir = os.path.join(b, 'src', 'assets', 'images', category)
+        os.makedirs(dest_dir, exist_ok=True)
+        dest = os.path.join(dest_dir, base_name)
         processed.save(dest)
-    print(f'Saved: {base_name}')
+    print(f'Saved [{category}]: {base_name}')
 
 def main():
-    out_dirs = [
-        'c:/Users/paucr/Documents/ScapeRoom/src/assets/images/png',
-        'c:/Users/paucr/Documents/CluedoWeb/src/assets/images/png'
+    base_dirs = [
+        'c:/Users/paucr/Documents/ScapeRoom',
+        'c:/Users/paucr/Documents/CluedoWeb'
     ]
-    for d in out_dirs:
-        os.makedirs(d, exist_ok=True)
 
     # 1. CARTAS HOMBRE
     sheet_m = 'C:/Users/paucr/Downloads/cartas_hombre.png'
@@ -97,7 +97,7 @@ def main():
     for r in range(3):
         for c in range(3):
             crop = im_m.crop((x_m[c][0], y_m[r][0], x_m[c][1], y_m[r][1]))
-            save_card(crop, m_names[r][c], out_dirs)
+            save_card(crop, 'personajes_masculinos', m_names[r][c], base_dirs)
 
     # 2. CARTAS MUJER
     sheet_f = 'C:/Users/paucr/Downloads/cartas_mujer.png'
@@ -110,7 +110,7 @@ def main():
     for r in range(3):
         for c in range(3):
             crop = im_f.crop((x_f[c][0], y_f[r][0], x_f[c][1], y_f[r][1]))
-            save_card(crop, f_names[r][c], out_dirs)
+            save_card(crop, 'personajes_femeninos', f_names[r][c], base_dirs)
 
     # 3. CARTAS ESPECIALES
     sheet_esp = 'C:/Users/paucr/Downloads/cartas_especiales.png'
@@ -123,7 +123,7 @@ def main():
     for r in range(3):
         for c in range(3):
             crop = im_esp.crop((x_esp[c][0], y_esp[r][0], x_esp[c][1], y_esp[r][1]))
-            save_card(crop, esp_names[r][c], out_dirs)
+            save_card(crop, 'tarjetas', esp_names[r][c], base_dirs)
 
     # 4. CARTAS OBJETOS 1 (Camera + objects 2-9)
     sheet_obj1 = 'C:/Users/paucr/Downloads/cartas_objetos_1.png'
@@ -136,22 +136,23 @@ def main():
     for r in range(3):
         for c in range(3):
             crop = im_obj1.crop((x_o1[c][0], y_o1[r][0], x_o1[c][1], y_o1[r][1]))
-            save_card(crop, obj1_names[r][c], out_dirs)
+            save_card(crop, 'objetos', obj1_names[r][c], base_dirs)
 
     # 5. CARTAS OBJETOS 2 (Male/Female gender selection + objects 10-16)
     sheet_obj2 = 'C:/Users/paucr/Downloads/cartas_objetos_2.png'
     im_obj2, x_o2, y_o2 = get_intervals(sheet_obj2)
-    obj2_names = [
-        ['card-gender-male.png', 'card-gender-female.png', 'card-obj-10.png'],
-        ['card-obj-11.png', 'card-obj-12.png', 'card-obj-13.png'],
-        ['card-obj-14.png', 'card-obj-15.png', 'card-obj-16.png']
+    obj2_configs = [
+        [('tarjetas', 'card-gender-male.png'), ('tarjetas', 'card-gender-female.png'), ('objetos', 'card-obj-10.png')],
+        [('objetos', 'card-obj-11.png'), ('objetos', 'card-obj-12.png'), ('objetos', 'card-obj-13.png')],
+        [('objetos', 'card-obj-14.png'), ('objetos', 'card-obj-15.png'), ('objetos', 'card-obj-16.png')]
     ]
     for r in range(3):
         for c in range(3):
             crop = im_obj2.crop((x_o2[c][0], y_o2[r][0], x_o2[c][1], y_o2[r][1]))
-            save_card(crop, obj2_names[r][c], out_dirs)
+            cat, name = obj2_configs[r][c]
+            save_card(crop, cat, name, base_dirs)
 
-    print('All cards rebuilt successfully with #000000 borders and zero fringe!')
+    print('All cards rebuilt successfully in organized folders!')
 
 if __name__ == '__main__':
     main()
