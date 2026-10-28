@@ -50,44 +50,25 @@
     <section id="view-game" class="view">
       <!-- Barra superior de partida -->
       <div class="game-top-bar">
-        <div class="char-title-group">
-          <button class="btn-debug-nav" id="btn-back-to-selection" title="Volver a elegir personaje">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
-            Personajes
-          </button>
-          <h2 class="char-active-name" id="game-char-name">Cargando...</h2>
-        </div>
-        <div class="game-top-actions">
-          <button class="btn-top-camera" id="btn-goto-scanner" title="Ir al Escáner QR">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-              <circle cx="12" cy="13" r="4"></circle>
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Mazo Deslizable: 1 carta en el centro en todo momento -->
-      <div class="game-deck-viewport" id="game-deck-viewport">
-        <!-- Flecha Izquierda Flotante con animación -->
-        <button class="deck-arrow deck-arrow-left hidden" id="btn-deck-prev" aria-label="Carta anterior">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
+        <button class="btn-top-icon" id="btn-back-to-selection" title="Volver a elegir personaje" aria-label="Volver">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <h2 class="char-active-name" id="game-char-name">Cargando...</h2>
+        <button class="btn-top-icon btn-top-camera" id="btn-goto-scanner" title="Ir al Escáner QR" aria-label="Escáner">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+            <circle cx="12" cy="13" r="4"></circle>
           </svg>
         </button>
+      </div>
 
+      <!-- Mazo Deslizable: 1 carta en el centro en todo momento (swipe táctil y arrastre de ratón en PC) -->
+      <div class="game-deck-viewport" id="game-deck-viewport">
         <div class="game-deck-track" id="game-deck-track">
           <!-- Slide 0: Carta del Personaje (Giro 3D con fondo aleatorio de pergamino) -->
           <!-- Slide 1: Carta del Escáner QR (Giro 3D) -->
-          <!-- Slide 2+: Cartas de Pistas Escaneadas (Giro 3D) -->
+          <!-- Slide 2+: Cartas de Pistas Escaneadas (Giro 3D con escudo confidencial en privadas) -->
         </div>
-
-        <!-- Flecha Derecha Flotante con animación -->
-        <button class="deck-arrow deck-arrow-right" id="btn-deck-next" aria-label="Siguiente carta">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="9 18 15 12 9 6"></polyline>
-          </svg>
-        </button>
       </div>
 
       <!-- Contador de cartas debajo del mazo (ej: 1/2, 2/2) -->
@@ -96,6 +77,21 @@
       </div>
     </section>
 
+  </div>
+
+  <!-- Modal Manual para Introducir Código de Pista / Objeto -->
+  <div class="modal-overlay" id="manual-code-modal">
+    <div class="modal-box modal-code-box">
+      <div class="modal-code-header">
+        <h3 class="modal-title">Desbloquear Pista</h3>
+        <button class="btn-modal-close" id="btn-close-code-modal" aria-label="Cerrar">&times;</button>
+      </div>
+      <p class="modal-subtitle">Introduce el número del objeto (ej: 4, 11) o el código secreto:</p>
+      <form id="form-manual-code" class="form-manual-code">
+        <input type="text" id="input-manual-code" class="input-code" placeholder="Ej: 11, OBJETO-11 o q7r3t8" autocomplete="off" />
+        <button type="submit" class="btn-submit-code">Desbloquear</button>
+      </form>
+    </div>
   </div>
 
   <!-- ==================================================================

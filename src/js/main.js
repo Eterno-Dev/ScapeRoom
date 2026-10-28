@@ -1,7 +1,7 @@
 /**
  * ScapeRoom - Main Application Logic (EternoDev Standard)
  * Cero Degradados - Cero Emojis - Vanilla ES Modules
- * En Partida: Solo 1 carta visible en el centro, con swipe y flechas laterales animadas
+ * En Partida: Solo 1 carta visible en el centro, navegación fluida por swipe táctil y arrastre con ratón
  */
 
 import { CHARACTERS } from "./data/characters.js";
@@ -21,6 +21,12 @@ class ScapeRoomApp {
     this.videoEl = null;
     this.canvasEl = document.createElement("canvas");
     this.canvasCtx = this.canvasEl.getContext("2d", { willReadFrequently: true });
+
+    // Estado de arrastre con ratón para PC
+    this.isDragging = false;
+    this.hasDragged = false;
+    this.dragStartX = 0;
+    this.dragScrollStart = 0;
 
     this.init();
   }
@@ -83,6 +89,23 @@ class ScapeRoomApp {
 
   closeGenderModal() {
     const modal = document.getElementById("gender-modal");
+    if (modal) modal.classList.remove("active");
+  }
+
+  showCodeModal() {
+    const modal = document.getElementById("manual-code-modal");
+    if (modal) {
+      modal.classList.add("active");
+      const input = document.getElementById("input-manual-code");
+      if (input) {
+        input.value = "";
+        setTimeout(() => input.focus(), 150);
+      }
+    }
+  }
+
+  closeCodeModal() {
+    const modal = document.getElementById("manual-code-modal");
     if (modal) modal.classList.remove("active");
   }
 
@@ -185,7 +208,7 @@ class ScapeRoomApp {
     const charData = this.gender === "female" ? char.female : char.male;
     const backBaseUrl = this.getBackBase(char.id);
 
-    // Actualizar nombre en la barra superior
+    // Actualizar nombre en la barra superior centrada
     const nameEl = document.getElementById("game-char-name");
     if (nameEl) nameEl.textContent = charData.name;
 
@@ -218,8 +241,9 @@ class ScapeRoomApp {
       </div>
     `;
 
-    charSlide.querySelector(".game-card-flip").addEventListener("click", function() {
-      this.classList.toggle("is-flipped");
+    charSlide.querySelector(".game-card-flip").addEventListener("click", (e) => {
+      if (this.hasDragged) return;
+      e.currentTarget.classList.toggle("is-flipped");
     });
 
     track.appendChild(charSlide);
@@ -238,7 +262,7 @@ class ScapeRoomApp {
             <img src="src/assets/images/objetos/card-scanner-camera.png" alt="Cámara de Investigación" class="char-card-img" />
           </div>
 
-          <!-- Cara Trasera del Escáner (Cámara + Botón Activar Escáner) -->
+          <!-- Cara Trasera del Escáner (Cámara + Botón Activar Escáner + Acciones de Respaldo) -->
           <div class="flip-card-back scanner-card-back" style="background-image: url('src/assets/images/tarjetas/card-back-base-2.png');">
             <div class="scanner-back-content">
               <div class="scanner-video-wrapper" id="scanner-video-wrapper">
@@ -249,6 +273,10 @@ class ScapeRoomApp {
                     <circle cx="12" cy="13" r="4"></circle>
                   </svg>
                   <span>Cámara Inactiva</span>
+                </div>
+                <div class="scanner-perm-alert" id="scanner-perm-alert" style="display: none;">
+                  <p>Cámara no disponible</p>
+                  <span>Permite la cámara en el navegador o usa las opciones de abajo.</span>
                 </div>
                 <div class="scanner-target-box"></div>
               </div>
@@ -261,6 +289,18 @@ class ScapeRoomApp {
                 Activar escáner
               </button>
 
+              <div class="scanner-secondary-actions">
+                <button class="btn-scanner-alt" id="btn-scanner-photo" type="button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                  Hacer foto
+                </button>
+                <button class="btn-scanner-alt" id="btn-open-code-modal" type="button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                  Escribir código
+                </button>
+                <input type="file" id="scanner-file-input" accept="image/*" capture="environment" style="display: none;" />
+              </div>
+
               <p class="scanner-instruction-text">Hazle fotos a las pruebas</p>
             </div>
           </div>
@@ -268,11 +308,12 @@ class ScapeRoomApp {
       </div>
     `;
 
-    scannerSlide.querySelector("#scanner-flip-card").addEventListener("click", function(e) {
-      if (e.target.closest("#btn-scanner-toggle")) {
+    scannerSlide.querySelector("#scanner-flip-card").addEventListener("click", (e) => {
+      if (this.hasDragged) return;
+      if (e.target.closest("#btn-scanner-toggle") || e.target.closest(".scanner-secondary-actions")) {
         return;
       }
-      this.classList.toggle("is-flipped");
+      e.currentTarget.classList.toggle("is-flipped");
     });
 
     track.appendChild(scannerSlide);
@@ -280,7 +321,7 @@ class ScapeRoomApp {
     // ------------------------------------------------------------------------
     // CARTAS 2+: OBJETOS ESCANEADOS (AÑADIDOS AL LADO EN EL MAZO)
     // ------------------------------------------------------------------------
-    this.unlockedClues.forEach((clueId, idx) => {
+    this.unlockedClues.forEach((clueId) => {
       const clue = CLUES[clueId];
       if (!clue) return;
 
@@ -297,22 +338,94 @@ class ScapeRoomApp {
 
             <!-- Cara Trasera del Objeto (Detalles e Información) -->
             <div class="flip-card-back clue-back-face" style="background-image: url('src/assets/images/tarjetas/${clue.backBase}');">
+              
+              <!-- Escudo de Confidencialidad para Pistas Privadas (Ojito) -->
+              ${clue.isPrivate ? `
+                <div class="private-shield-overlay" id="shield-${clue.id}">
+                  <div class="shield-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span>PISTA PRIVADA</span>
+                  </div>
+
+                  <div class="shield-eye-icon-box">
+                    <svg class="shield-eye-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                      <line x1="1" y1="1" x2="23" y2="23"></line>
+                    </svg>
+                  </div>
+
+                  <h3 class="shield-title">¿ESTÁS SEGURO?</h3>
+                  <p class="shield-warning">
+                    Esta pista contiene información reservada.<br />
+                    <strong>NO SE PUEDE COMPARTIR</strong> con los demás.
+                  </p>
+
+                  <button class="btn-reveal-sensitive" data-target-shield="shield-${clue.id}" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                      <circle cx="12" cy="13" r="3"></circle>
+                    </svg>
+                    <span>CLICA PARA VER</span>
+                  </button>
+                </div>
+              ` : ""}
+
               <div class="card-back-content">
+                ${clue.isPrivate ? `
+                  <div class="confidential-pill">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span>CONFIDENCIAL — PROHIBIDO COMPARTIR</span>
+                  </div>
+                ` : ""}
+
                 <div class="card-back-header">
                   <span class="card-back-role">OBJETO ${clue.num} — ${clue.category}</span>
                   <h4 class="card-back-name">${clue.title}</h4>
                 </div>
                 <p class="card-back-bio">${clue.desc}</p>
                 <div class="clue-back-detail">${clue.detail}</div>
+
+                ${clue.isPrivate ? `
+                  <button class="btn-reshield-sensitive" data-shield-id="shield-${clue.id}" type="button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                    Ocultar pista confidencial
+                  </button>
+                ` : ""}
               </div>
+
             </div>
           </div>
         </div>
       `;
 
-      clueSlide.querySelector(".game-card-flip").addEventListener("click", function() {
-        this.classList.toggle("is-flipped");
+      clueSlide.querySelector(".game-card-flip").addEventListener("click", (e) => {
+        if (this.hasDragged) return;
+        if (e.target.closest(".btn-reveal-sensitive") || e.target.closest(".btn-reshield-sensitive")) {
+          return;
+        }
+        e.currentTarget.classList.toggle("is-flipped");
       });
+
+      // Eventos para revelar u ocultar la pista confidencial
+      if (clue.isPrivate) {
+        const btnReveal = clueSlide.querySelector(".btn-reveal-sensitive");
+        const btnReshield = clueSlide.querySelector(".btn-reshield-sensitive");
+        const shieldEl = clueSlide.querySelector(`#shield-${clue.id}`);
+
+        if (btnReveal && shieldEl) {
+          btnReveal.addEventListener("click", (e) => {
+            e.stopPropagation();
+            shieldEl.classList.add("revealed");
+          });
+        }
+
+        if (btnReshield && shieldEl) {
+          btnReshield.addEventListener("click", (e) => {
+            e.stopPropagation();
+            shieldEl.classList.remove("revealed");
+          });
+        }
+      }
 
       track.appendChild(clueSlide);
     });
@@ -328,14 +441,27 @@ class ScapeRoomApp {
     if (btnScanner) {
       btnScanner.onclick = () => this.toggleScanner();
     }
+
+    const btnPhoto = document.getElementById("btn-scanner-photo");
+    const fileInput = document.getElementById("scanner-file-input");
+    if (btnPhoto && fileInput) {
+      btnPhoto.onclick = () => fileInput.click();
+      fileInput.onchange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+          this.handlePhotoFile(e.target.files[0]);
+        }
+      };
+    }
+
+    const btnOpenModal = document.getElementById("btn-open-code-modal");
+    if (btnOpenModal) {
+      btnOpenModal.onclick = () => this.showCodeModal();
+    }
   }
 
   updateCardSliderState() {
     const track = document.getElementById("game-deck-track");
-    const counterEl = document.getElementById("deck-card-counter");
     const counterBottomEl = document.getElementById("deck-card-counter-bottom");
-    const btnPrev = document.getElementById("btn-deck-prev");
-    const btnNext = document.getElementById("btn-deck-next");
 
     if (!track) return;
 
@@ -348,29 +474,21 @@ class ScapeRoomApp {
     const currentIndex = Math.min(Math.max(0, Math.round(scrollLeft / trackWidth)), total - 1);
 
     const counterText = `${currentIndex + 1} / ${total}`;
-    if (counterEl) {
-      counterEl.textContent = counterText;
-    }
     if (counterBottomEl) {
       counterBottomEl.textContent = counterText;
     }
+  }
 
-    // Lógica dinámica de visibilidad de flechitas
-    if (btnPrev) {
-      if (currentIndex === 0) {
-        btnPrev.classList.add("hidden");
-      } else {
-        btnPrev.classList.remove("hidden");
-      }
-    }
-
-    if (btnNext) {
-      if (currentIndex >= total - 1) {
-        btnNext.classList.add("hidden");
-      } else {
-        btnNext.classList.remove("hidden");
-      }
-    }
+  snapToClosestCard() {
+    const track = document.getElementById("game-deck-track");
+    if (!track) return;
+    const trackWidth = track.clientWidth || 1;
+    const targetIndex = Math.round(track.scrollLeft / trackWidth);
+    track.scrollTo({
+      left: targetIndex * trackWidth,
+      behavior: "smooth"
+    });
+    setTimeout(() => this.updateCardSliderState(), 200);
   }
 
   /* ==========================================================================
@@ -387,11 +505,21 @@ class ScapeRoomApp {
   async startScanner() {
     const videoWrapper = document.getElementById("scanner-video-wrapper");
     const toggleBtn = document.getElementById("btn-scanner-toggle");
+    const alertEl = document.getElementById("scanner-perm-alert");
+
+    if (alertEl) alertEl.style.display = "none";
 
     try {
-      this.stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: "environment" }
-      });
+      // 1. Intentar con cámara trasera ideal
+      try {
+        this.stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 } }
+        });
+      } catch (errConstraint) {
+        // 2. Fallback a cualquier cámara de vídeo disponible
+        this.stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      }
+
       if (this.videoEl) {
         this.videoEl.srcObject = this.stream;
         await this.videoEl.play();
@@ -410,7 +538,9 @@ class ScapeRoomApp {
       requestAnimationFrame(() => this.scanFrame());
     } catch (err) {
       console.warn("Acceso a cámara no disponible:", err);
-      alert("No se pudo iniciar la cámara. Comprueba los permisos o introduce el código manualmente.");
+      if (alertEl) {
+        alertEl.style.display = "block";
+      }
       this.stopScanner();
     }
   }
@@ -464,6 +594,38 @@ class ScapeRoomApp {
     }
   }
 
+  handlePhotoFile(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        if (window.jsQR) {
+          const code = window.jsQR(imgData.data, imgData.width, imgData.height, {
+            inversionAttempts: "attemptBoth"
+          });
+          if (code && code.data) {
+            const detected = this.extractClueId(code.data);
+            if (detected) {
+              this.handleDetectedCode(detected);
+              return;
+            }
+          }
+        }
+        alert("No se detectó un código QR nítido en la imagen. Intenta enfocar más de cerca o escribe el código.");
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
   extractClueId(rawData) {
     if (!rawData) return null;
     const str = rawData.trim();
@@ -492,7 +654,7 @@ class ScapeRoomApp {
 
   unlockClue(clueId) {
     if (!CLUES[clueId]) {
-      alert(`Código desconocido: ${clueId}`);
+      alert(`Código desconocido o pista inexistente: ${clueId}`);
       return;
     }
 
@@ -516,7 +678,7 @@ class ScapeRoomApp {
   }
 
   /* ==========================================================================
-     GLOBAL EVENT LISTENERS
+     GLOBAL EVENT LISTENERS & PC MOUSE DRAG
      ========================================================================== */
   setupGlobalEvents() {
     // Selección de género con tarjetas de imagen reales
@@ -534,7 +696,7 @@ class ScapeRoomApp {
       });
     }
 
-    // Botón debug para volver a selección de personajes
+    // Botón para volver a selección de personajes
     const btnBackToSelection = document.getElementById("btn-back-to-selection");
     if (btnBackToSelection) {
       btnBackToSelection.addEventListener("click", () => {
@@ -560,31 +722,71 @@ class ScapeRoomApp {
       });
     }
 
-    // Flechitas flotantes de navegación con deslizamiento suave
-    const btnPrev = document.getElementById("btn-deck-prev");
-    const btnNext = document.getElementById("btn-deck-next");
+    // Modal de entrada manual de códigos
+    const btnCloseCodeModal = document.getElementById("btn-close-code-modal");
+    if (btnCloseCodeModal) {
+      btnCloseCodeModal.addEventListener("click", () => this.closeCodeModal());
+    }
+
+    const formManual = document.getElementById("form-manual-code");
+    if (formManual) {
+      formManual.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const input = document.getElementById("input-manual-code");
+        if (!input) return;
+        const val = input.value.trim();
+        const resolved = resolveClueId(val);
+        if (resolved) {
+          this.closeCodeModal();
+          this.unlockClue(resolved);
+        } else {
+          alert(`Código no reconocido ("${val}"). Introduce el número del objeto (ej: 11) o su token.`);
+        }
+      });
+    }
+
+    // Listener de scroll en el mazo para actualizar contador
     const track = document.getElementById("game-deck-track");
-
-    if (btnPrev && track) {
-      btnPrev.addEventListener("click", () => {
-        track.scrollBy({ left: -track.clientWidth, behavior: "smooth" });
-        setTimeout(() => this.updateCardSliderState(), 250);
-      });
-    }
-
-    if (btnNext && track) {
-      btnNext.addEventListener("click", () => {
-        track.scrollBy({ left: track.clientWidth, behavior: "smooth" });
-        setTimeout(() => this.updateCardSliderState(), 250);
-      });
-    }
-
-    // Listener de scroll en el mazo para actualizar contador y visibilidad de flechas
     if (track) {
       track.addEventListener("scroll", () => {
         this.updateCardSliderState();
       }, { passive: true });
+
+      // Configurar soporte de arrastre con ratón (Drag-to-Scroll) en PC
+      this.setupMouseDrag(track);
     }
+  }
+
+  setupMouseDrag(track) {
+    track.addEventListener("mousedown", (e) => {
+      // Ignorar si se hace clic con botón secundario o en botones/inputs interactivos
+      if (e.button !== 0 || e.target.closest("button") || e.target.closest("input")) return;
+      this.isDragging = true;
+      this.hasDragged = false;
+      this.dragStartX = e.pageX - track.offsetLeft;
+      this.dragScrollStart = track.scrollLeft;
+      track.classList.add("is-dragging");
+    });
+
+    window.addEventListener("mouseup", () => {
+      if (!this.isDragging) return;
+      this.isDragging = false;
+      track.classList.remove("is-dragging");
+      if (this.hasDragged) {
+        this.snapToClosestCard();
+      }
+    });
+
+    track.addEventListener("mousemove", (e) => {
+      if (!this.isDragging) return;
+      e.preventDefault();
+      const x = e.pageX - track.offsetLeft;
+      const walk = x - this.dragStartX;
+      if (Math.abs(walk) > 8) {
+        this.hasDragged = true;
+      }
+      track.scrollLeft = this.dragScrollStart - walk;
+    });
   }
 }
 

@@ -360,27 +360,35 @@
   width: 100%;
   flex: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   position: relative;
   overflow: hidden;
-  padding: 22px 0;
-  min-height: 520px;
+  padding: 4px 0 0 0;
+  min-height: 0;
 }
 
 .game-deck-track {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   overflow-x: auto;
   overflow-y: visible;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding: 8px 0;
+  padding: 4px 0;
   gap: 0;
+  cursor: grab;
+}
+
+.game-deck-track.is-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+  user-select: none;
 }
 
 .game-deck-track::-webkit-scrollbar {
@@ -396,106 +404,48 @@
   scroll-snap-stop: always;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   box-sizing: border-box;
-  padding: 14px 8px;
+  padding: 2px 4px 6px 4px;
 }
 
 .game-card-flip {
-  width: 290px;
-  max-width: 84vw;
+  height: min(67dvh, 520px);
+  max-width: 92vw;
   aspect-ratio: 340 / 480;
+  width: auto;
   margin: 0 auto;
 }
 
-/* ==========================================================================
-   FLECHITAS FLOTANTES LATERALES CON ANIMACIÓN DE PULSACIÓN (SIN RECORTE)
-   ========================================================================== */
+/* Flechas eliminadas para navegación táctil y ratón pura */
 .deck-arrow {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 50;
-  width: 44px;
-  height: 44px;
-  background-color: rgba(18, 18, 22, 0.9);
-  border: 2px solid var(--color-crimson);
-  border-radius: 50%;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6), 0 0 12px rgba(255, 255, 255, 0.2);
-  transition: opacity 0.25s ease, background-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.deck-arrow:hover {
-  background-color: var(--color-crimson);
-  color: #ffffff;
-  box-shadow: 0 6px 18px rgba(255, 255, 255, 0.35);
-}
-
-.deck-arrow.hidden {
   display: none !important;
 }
 
-.deck-arrow-left {
-  left: 14px;
-  animation: pulseLeft 1.8s infinite ease-in-out;
-}
-
-.deck-arrow-right {
-  right: 14px;
-  animation: pulseRight 1.8s infinite ease-in-out;
-}
-
-@keyframes pulseRight {
-  0%, 100% {
-    transform: translateY(-50%) translateX(0) scale(1);
-  }
-  50% {
-    transform: translateY(-50%) translateX(3px) scale(1.05);
-  }
-}
-
-@keyframes pulseLeft {
-  0%, 100% {
-    transform: translateY(-50%) translateX(0) scale(1);
-  }
-  50% {
-    transform: translateY(-50%) translateX(-3px) scale(1.05);
-  }
-}
-
-.deck-arrow svg {
-  width: 22px;
-  height: 22px;
-}
-
 /* ==========================================================================
-   CONTADOR DE CARTAS INFERIOR (EJ: 1 / 2)
+   CONTADOR DE CARTAS INFERIOR (EJ: 1 / 2) — SUBIDO JUSTO DEBAJO DE LA CARTA
    ========================================================================== */
 .deck-bottom-bar {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 0 22px 0;
+  padding: 4px 0 10px 0;
   width: 100%;
+  flex-shrink: 0;
 }
 
 .deck-card-counter {
   font-family: var(--font-title);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 800;
   letter-spacing: 2px;
   color: #ffffff;
   background-color: #1a1a20;
-  padding: 6px 18px;
+  padding: 4px 16px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-strong);
-  box-shadow: 0 4px 14px rgba(255, 255, 255, 0.2), 0 1px 4px rgba(255, 255, 255, 0.3);
-  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.4);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.35);
   user-select: none;
 }
 
@@ -633,6 +583,294 @@
   margin: 2px 0 0 0;
 }
 
+.scanner-secondary-actions {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.btn-scanner-alt {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 6px;
+  background-color: #1a1a22;
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  font-family: var(--font-title);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-scanner-alt:hover {
+  background-color: #262632;
+  border-color: var(--color-gold);
+}
+
+.scanner-perm-alert {
+  background-color: #1a1a20;
+  border: 1px solid var(--color-crimson);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.scanner-perm-alert p {
+  color: var(--color-crimson);
+  font-weight: 800;
+  font-size: 11px;
+  text-transform: uppercase;
+  margin: 0 0 4px 0;
+}
+
+.scanner-perm-alert span {
+  color: var(--text-secondary);
+  font-size: 10.5px;
+  line-height: 1.3;
+  display: block;
+}
+
+/* ==========================================================================
+   PISTAS CONFIDENCIALES / PRIVADAS — ESCUDO CON CONTENIDO SENSIBLE (OJITO)
+   ========================================================================== */
+.private-shield-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 15;
+  background-color: #121217;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
+  text-align: center;
+  box-sizing: border-box;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.private-shield-overlay.revealed {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.shield-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background-color: var(--color-crimson);
+  color: #ffffff;
+  font-family: var(--font-title);
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+}
+
+.shield-eye-icon-box {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #1c1c24;
+  border: 2px solid var(--color-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+}
+
+.shield-eye-icon {
+  width: 28px;
+  height: 28px;
+  color: var(--color-gold);
+}
+
+.shield-title {
+  font-family: var(--font-title);
+  font-size: 21px;
+  font-weight: 900;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 6px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.shield-warning {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: #c4c4cc;
+  line-height: 1.4;
+  margin-bottom: 16px;
+  max-width: 260px;
+}
+
+.shield-warning strong {
+  color: var(--color-crimson);
+  font-weight: 800;
+}
+
+.btn-reveal-sensitive {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 220px;
+  padding: 10px 14px;
+  background-color: #20202a;
+  border: 2px solid var(--color-gold);
+  color: var(--color-gold);
+  font-family: var(--font-title);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-reveal-sensitive:hover, .btn-reveal-sensitive:active {
+  background-color: var(--color-gold);
+  color: #121216;
+  transform: scale(0.98);
+}
+
+.confidential-pill {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background-color: var(--color-crimson);
+  color: #ffffff;
+  font-family: var(--font-title);
+  font-size: 10.5px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+.btn-reshield-sensitive {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 10px;
+  margin-top: 10px;
+  background-color: #16161e;
+  border: 1px solid var(--border-strong);
+  color: var(--text-secondary);
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn-reshield-sensitive:hover {
+  background-color: #242430;
+  color: #ffffff;
+}
+
+/* ==========================================================================
+   MODAL DE ENTRADA MANUAL DE CÓDIGOS
+   ========================================================================== */
+.modal-code-box {
+  max-width: 380px;
+}
+
+.modal-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.btn-modal-close {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 24px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.btn-modal-close:hover {
+  color: #ffffff;
+}
+
+.form-manual-code {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.input-code {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: var(--bg-input);
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-title);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-sizing: border-box;
+}
+
+.input-code:focus {
+  border-color: var(--color-crimson);
+  outline: none;
+}
+
+.btn-submit-code {
+  width: 100%;
+  padding: 11px;
+  background-color: var(--color-crimson);
+  color: var(--text-on-accent);
+  font-family: var(--font-title);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.btn-submit-code:hover {
+  background-color: var(--color-crimson-hover);
+}
+
 /* ==========================================================================
    CARTAS 3+: PISTAS ESCANEADAS (COMO CARTAS DEL MAZO)
    ========================================================================== */
@@ -734,13 +972,14 @@
 
 .clue-back-detail {
   font-size: 13px;
-  color: var(--text-secondary);
+  color: #f4f4f5;
   line-height: 1.45;
-  background-color: var(--bg-input);
-  padding: 12px;
+  background-color: #1a1a24;
+  padding: 10px 12px;
   border-radius: var(--radius-sm);
   border-left: 3px solid var(--color-crimson);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .clue-back-notes {
