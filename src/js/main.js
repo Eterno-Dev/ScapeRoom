@@ -5,7 +5,7 @@
  */
 
 import { CHARACTERS } from "./data/characters.js";
-import { CLUES } from "./data/clues.js";
+import { CLUES, resolveClueId } from "./data/clues.js";
 
 class ScapeRoomApp {
   constructor() {
@@ -29,11 +29,14 @@ class ScapeRoomApp {
     this.setupGlobalEvents();
     this.renderCharactersGrid();
 
-    // Comprobar parámetros en la URL (escaneo directo desde cámara nativa)
+    // Comprobar parámetros en la URL (escaneo directo desde cámara nativa con token único o pista)
     const params = new URLSearchParams(window.location.search);
-    const pistaParam = params.get("pista");
-    if (pistaParam) {
-      this.unlockClue(pistaParam.toUpperCase());
+    const rawClueParam = params.get("p") || params.get("token") || params.get("pista");
+    if (rawClueParam) {
+      const resolved = resolveClueId(rawClueParam);
+      if (resolved) {
+        this.unlockClue(resolved);
+      }
     }
 
     // Comprobar estado inicial de género
@@ -120,10 +123,6 @@ class ScapeRoomApp {
           <!-- Cara Frontal -->
           <div class="flip-card-front">
             <img src="${data.cardImage}" alt="${data.name}" class="char-card-img" />
-            <div class="flip-hint-badge">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-              <span>Girar</span>
-            </div>
           </div>
 
           <!-- Cara Trasera con textura de pergamino de cartas especiales -->
@@ -136,10 +135,6 @@ class ScapeRoomApp {
               <p class="card-back-bio">${data.bio}</p>
               <div class="card-back-actions">
                 ${!isLocked ? `<button class="btn-confirm-char" data-select-char="${char.id}">Elegir Personaje</button>` : `<span class="char-locked-badge">Elegido</span>`}
-              </div>
-              <div class="flip-hint-badge">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-                <span>Girar</span>
               </div>
             </div>
           </div>
@@ -208,10 +203,6 @@ class ScapeRoomApp {
           <!-- Cara Frontal -->
           <div class="flip-card-front">
             <img src="${charData.cardImage}" alt="${charData.name}" class="char-card-img" />
-            <div class="flip-hint-badge">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-              <span>Girar</span>
-            </div>
           </div>
           <!-- Cara Trasera -->
           <div class="flip-card-back" style="background-image: url('${backBaseUrl}');">
@@ -221,10 +212,6 @@ class ScapeRoomApp {
                 <h4 class="card-back-name">${charData.name}</h4>
               </div>
               <p class="card-back-bio">${charData.bio}</p>
-              <div class="flip-hint-badge">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-                <span>Girar</span>
-              </div>
             </div>
           </div>
         </div>
@@ -249,10 +236,6 @@ class ScapeRoomApp {
           <!-- Cara Frontal del Escáner (Imagen de Cámara) -->
           <div class="flip-card-front">
             <img src="src/assets/images/png/card-scanner-camera.png" alt="Cámara de Investigación" class="char-card-img" />
-            <div class="flip-hint-badge">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-              <span>Girar</span>
-            </div>
           </div>
 
           <!-- Cara Trasera del Escáner (Cámara + Botón Activar Escáner) -->
@@ -279,10 +262,6 @@ class ScapeRoomApp {
               </button>
 
               <p class="scanner-instruction-text">Hazle fotos a las pruebas</p>
-            </div>
-            <div class="flip-hint-badge">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-              <span>Girar</span>
             </div>
           </div>
         </div>
@@ -315,14 +294,10 @@ class ScapeRoomApp {
             <div class="flip-card-front clue-front-face">
               <div class="clue-front-top">
                 <span class="clue-card-tag" style="background-color: ${clue.tagColor};">${clue.category}</span>
-                <span class="clue-card-id">${clue.id}</span>
+                <span class="clue-card-id">PISTA ${clue.num}</span>
               </div>
               <div class="clue-card-title">${clue.title}</div>
               <p class="clue-card-desc">${clue.desc}</p>
-              <div class="flip-hint-badge">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-                <span>Girar</span>
-              </div>
             </div>
 
             <!-- Cara Trasera de la Pista con textura de cartas especiales -->
@@ -330,16 +305,12 @@ class ScapeRoomApp {
               <div class="card-back-content">
                 <div class="clue-back-header">
                   <span class="clue-seal-badge">EVIDENCIA REGISTRADA</span>
-                  <span class="clue-card-id">${clue.id}</span>
+                  <span class="clue-card-id">PISTA ${clue.num}</span>
                 </div>
                 <h4 class="clue-back-title">Análisis Forense</h4>
                 <p class="clue-back-detail">${clue.detail}</p>
                 <div class="clue-back-notes">
                   <strong>Estado:</strong> Prueba física autenticada en el expediente.
-                </div>
-                <div class="flip-hint-badge">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-                  <span>Girar</span>
                 </div>
               </div>
             </div>
@@ -504,18 +475,19 @@ class ScapeRoomApp {
   extractClueId(rawData) {
     if (!rawData) return null;
     const str = rawData.trim();
-    if (str.startsWith("PISTA-")) {
-      return str.toUpperCase();
-    }
+
     try {
       const url = new URL(str);
-      const param = url.searchParams.get("pista");
-      if (param) return param.toUpperCase();
+      const param = url.searchParams.get("p") || url.searchParams.get("token") || url.searchParams.get("pista");
+      if (param) {
+        const resolved = resolveClueId(param);
+        if (resolved) return resolved;
+      }
     } catch (e) {
       // No es URL
     }
-    const match = str.match(/PISTA-\d+/i);
-    return match ? match[0].toUpperCase() : null;
+
+    return resolveClueId(str);
   }
 
   handleDetectedCode(clueId) {

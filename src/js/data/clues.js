@@ -6,6 +6,8 @@
 export const CLUES = {
   "PISTA-01": {
     id: "PISTA-01",
+    num: 1,
+    token: "k9x7m2",
     title: "Cuchillo ensangrentado",
     category: "Arma",
     tagColor: "#dc2626",
@@ -14,6 +16,8 @@ export const CLUES = {
   },
   "PISTA-02": {
     id: "PISTA-02",
+    num: 2,
+    token: "w3b8r5",
     title: "Arañazo en la cerradura",
     category: "Escena",
     tagColor: "#d97706",
@@ -22,6 +26,8 @@ export const CLUES = {
   },
   "PISTA-03": {
     id: "PISTA-03",
+    num: 3,
+    token: "p7q2t4",
     title: "Frasco de belladona",
     category: "Veneno",
     tagColor: "#7c3aed",
@@ -30,6 +36,8 @@ export const CLUES = {
   },
   "PISTA-04": {
     id: "PISTA-04",
+    num: 4,
+    token: "m5v8y1",
     title: "Carta rasgada",
     category: "Documento",
     tagColor: "#2563eb",
@@ -38,6 +46,8 @@ export const CLUES = {
   },
   "PISTA-05": {
     id: "PISTA-05",
+    num: 5,
+    token: "j4h6s9",
     title: "Reloj de bolsillo roto",
     category: "Objeto",
     tagColor: "#059669",
@@ -46,6 +56,8 @@ export const CLUES = {
   },
   "PISTA-06": {
     id: "PISTA-06",
+    num: 6,
+    token: "d2n8k3",
     title: "Huellas de barro",
     category: "Rastro",
     tagColor: "#ea580c",
@@ -54,6 +66,8 @@ export const CLUES = {
   },
   "PISTA-07": {
     id: "PISTA-07",
+    num: 7,
+    token: "z6f3w8",
     title: "Testamento tachado",
     category: "Documento",
     tagColor: "#0891b2",
@@ -62,6 +76,8 @@ export const CLUES = {
   },
   "PISTA-08": {
     id: "PISTA-08",
+    num: 8,
+    token: "x8c5g1",
     title: "Copa de vino rota",
     category: "Veneno",
     tagColor: "#b91c1c",
@@ -69,3 +85,31 @@ export const CLUES = {
     detail: "El análisis químico preliminar confirma presencia de sedante concentrado."
   }
 };
+
+/**
+ * Resuelve una entrada (token único, ID completo o número) al ID de pista canónico
+ */
+export function resolveClueId(rawInput) {
+  if (!rawInput) return null;
+  const input = String(rawInput).trim().toLowerCase();
+
+  // 1. Buscar coincidencia exacta por token secreto
+  for (const [id, clue] of Object.entries(CLUES)) {
+    if (clue.token && clue.token.toLowerCase() === input) {
+      return id;
+    }
+  }
+
+  // 2. Buscar por ID estándar (ej: PISTA-01)
+  const upper = input.toUpperCase();
+  if (CLUES[upper]) return upper;
+
+  // 3. Buscar por coincidencia con número de pista
+  for (const [id, clue] of Object.entries(CLUES)) {
+    if (String(clue.num) === input || `pista-${clue.num}` === input) {
+      return id;
+    }
+  }
+
+  return null;
+}

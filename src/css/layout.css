@@ -92,12 +92,14 @@
   border-radius: var(--radius-sm);
   background-color: var(--color-crimson);
   color: var(--text-on-accent);
-  transition: background-color 0.15s ease, transform 0.1s ease;
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.22);
+  transition: background-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
   cursor: pointer;
 }
 
 .btn-top-camera:hover {
   background-color: var(--color-crimson-hover);
+  box-shadow: 0 3px 14px rgba(255, 255, 255, 0.35);
 }
 
 .btn-top-camera:active {
