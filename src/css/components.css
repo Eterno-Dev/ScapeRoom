@@ -161,14 +161,7 @@
 }
 
 .card-back-tint {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(18, 18, 22, 0.78);
-  pointer-events: none;
-  border-radius: 12px;
+  display: none;
 }
 
 .card-back-content {
@@ -177,6 +170,49 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+}
+
+/* ==========================================================================
+   BOTONES DE NAVEGACIÓN TEMPORAL / DEBUG
+   ========================================================================== */
+.btn-debug-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background-color: #202028;
+  border: 1px solid var(--border-strong);
+  color: #f4f4f5;
+  font-family: var(--font-title);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-debug-nav:hover {
+  background-color: var(--color-crimson);
+  border-color: var(--color-crimson);
+  color: #ffffff;
+}
+
+.btn-debug-nav:active {
+  transform: scale(0.96);
+}
+
+.btn-debug-nav svg {
+  color: currentColor;
+}
+
+.header-action-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
 }
 
 /* ==========================================================================
@@ -239,51 +275,63 @@
   background-color: #ffffff;
   border: 1px solid #121214;
   border-radius: var(--radius-sm);
-  padding: 4px 10px;
+  padding: 4px 8px;
   font-size: 11px;
   font-weight: 800;
   color: #121214;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 5px;
   pointer-events: none;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
 }
 
+.flip-hint-badge svg {
+  width: 12px;
+  height: 12px;
+  color: #121214;
+  flex-shrink: 0;
+}
+
 .card-back-header {
-  border-bottom: 2px solid var(--border-subtle);
+  border-bottom: 2px solid rgba(18, 18, 20, 0.35);
   padding-bottom: 6px;
   margin-bottom: 8px;
 }
 
 .card-back-role {
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--color-gold);
+  letter-spacing: 1.2px;
+  color: #8b1e1e;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.9), 0 0 6px rgba(255, 255, 255, 0.8);
   display: block;
 }
 
 .card-back-name {
   font-family: var(--font-title);
-  font-size: 21px;
+  font-size: 22px;
   font-weight: 900;
-  color: var(--text-primary);
+  color: #121214;
   text-transform: uppercase;
-  line-height: 1.1;
+  line-height: 1.15;
   margin-top: 2px;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.95), 0 0 8px rgba(255, 255, 255, 0.85);
 }
 
 .card-back-bio {
-  font-size: 13px;
-  color: #e4e4e7;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #18181e;
   line-height: 1.45;
   flex: 1;
   overflow-y: auto;
   margin-bottom: 10px;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.85), 0 0 5px rgba(255, 255, 255, 0.7);
 }
 
 .card-back-actions {
@@ -339,8 +387,8 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
-  padding: 6px 0;
-  min-height: 480px;
+  padding: 22px 0;
+  min-height: 520px;
 }
 
 .game-deck-track {
@@ -349,11 +397,12 @@
   display: flex;
   align-items: center;
   overflow-x: auto;
+  overflow-y: visible;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding: 0;
+  padding: 8px 0;
   gap: 0;
 }
 
@@ -372,7 +421,7 @@
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-  padding: 0 8px;
+  padding: 14px 8px;
 }
 
 .game-card-flip {
@@ -383,7 +432,7 @@
 }
 
 /* ==========================================================================
-   FLECHITAS FLOTANTES LATERALES CON ANIMACIÓN DE PULSACIÓN
+   FLECHITAS FLOTANTES LATERALES CON ANIMACIÓN DE PULSACIÓN (SIN RECORTE)
    ========================================================================== */
 .deck-arrow {
   position: absolute;
@@ -414,12 +463,12 @@
 }
 
 .deck-arrow-left {
-  left: 6px;
+  left: 14px;
   animation: pulseLeft 1.8s infinite ease-in-out;
 }
 
 .deck-arrow-right {
-  right: 6px;
+  right: 14px;
   animation: pulseRight 1.8s infinite ease-in-out;
 }
 
@@ -428,7 +477,7 @@
     transform: translateY(-50%) translateX(0) scale(1);
   }
   50% {
-    transform: translateY(-50%) translateX(5px) scale(1.1);
+    transform: translateY(-50%) translateX(3px) scale(1.05);
   }
 }
 
@@ -437,13 +486,38 @@
     transform: translateY(-50%) translateX(0) scale(1);
   }
   50% {
-    transform: translateY(-50%) translateX(-5px) scale(1.1);
+    transform: translateY(-50%) translateX(-3px) scale(1.05);
   }
 }
 
 .deck-arrow svg {
   width: 22px;
   height: 22px;
+}
+
+/* ==========================================================================
+   CONTADOR DE CARTAS INFERIOR (EJ: 1 / 2)
+   ========================================================================== */
+.deck-bottom-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0 22px 0;
+  width: 100%;
+}
+
+.deck-card-counter {
+  font-family: var(--font-title);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #ffffff;
+  background-color: #1a1a20;
+  padding: 6px 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  user-select: none;
 }
 
 /* ==========================================================================
@@ -563,6 +637,18 @@
   background-color: #22222a;
   border: 2px solid var(--border-strong);
   color: #f4f4f5;
+}
+
+.scanner-instruction-text {
+  font-family: var(--font-title);
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #121214;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.95), 0 0 8px rgba(255, 255, 255, 0.85);
+  text-align: center;
+  margin: 2px 0 0 0;
 }
 
 /* ==========================================================================

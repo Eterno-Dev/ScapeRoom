@@ -25,6 +25,12 @@
       <header class="header-hero">
         <h1 class="title-spooky">El Asesinato Embrujado</h1>
         <p class="subtitle-hero">Elige personaje</p>
+        <div class="header-action-row">
+          <button class="btn-debug-nav" id="btn-back-to-gender" title="Volver a seleccionar género">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+            Cambiar Género
+          </button>
+        </div>
       </header>
 
       <div class="selection-hint-banner">
@@ -45,6 +51,10 @@
       <!-- Barra superior de partida -->
       <div class="game-top-bar">
         <div class="char-title-group">
+          <button class="btn-debug-nav" id="btn-back-to-selection" title="Volver a elegir personaje">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+            Personajes
+          </button>
           <h2 class="char-active-name" id="game-char-name">Cargando...</h2>
         </div>
         <div class="game-top-actions">
@@ -54,7 +64,6 @@
               <circle cx="12" cy="13" r="4"></circle>
             </svg>
           </button>
-          <span class="char-locked-badge" id="deck-card-counter">1 / 2</span>
         </div>
       </div>
 
@@ -79,6 +88,11 @@
             <polyline points="9 18 15 12 9 6"></polyline>
           </svg>
         </button>
+      </div>
+
+      <!-- Contador de cartas debajo del mazo (ej: 1/2, 2/2) -->
+      <div class="deck-bottom-bar">
+        <span class="deck-card-counter" id="deck-card-counter-bottom">1 / 2</span>
       </div>
     </section>
 

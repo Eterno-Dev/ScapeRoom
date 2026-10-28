@@ -108,3 +108,9 @@
   width: 20px;
   height: 20px;
 }
+
+@media (max-width: 420px) {
+  .char-active-name {
+    font-size: 18px;
+  }
+}
