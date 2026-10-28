@@ -1,5 +1,5 @@
 /**
- * ScapeRoom - Components & Modals (EternoDev Standard)
+ * ScapeRoom - Components, 3D Flip Cards & Modals (EternoDev Standard)
  * Cero Degradados - Cero Emojis - Flat Design Sólido
  */
 
@@ -92,8 +92,81 @@
 }
 
 /* ==========================================================================
-   GRID DE PERSONAJES (PANTALLA 1) — TARJETAS RECORTADAS
+   SISTEMA DE TARJETAS 3D FLIP (GIRO AL PULSAR)
    ========================================================================== */
+.flip-card {
+  background-color: transparent;
+  perspective: 1200px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flip-card.is-flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.flip-card-front {
+  transform: rotateY(0deg);
+  border: 2px solid transparent;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.65);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.flip-card:hover .flip-card-front {
+  border-color: var(--color-crimson);
+  box-shadow: 0 8px 22px rgba(185, 28, 28, 0.45);
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+  background-color: #16161b;
+  border: 2px solid var(--color-gold);
+  padding: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   GRID DE PERSONAJES (PANTALLA 1)
+   ========================================================================== */
+.selection-hint-banner {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
 .characters-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -107,47 +180,20 @@
   }
 }
 
-.char-card {
-  background: transparent;
-  border: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  cursor: pointer;
-  transition: transform 0.15s ease, opacity 0.25s ease, filter 0.25s ease;
-  position: relative;
-}
-
-.char-card:active {
-  transform: scale(0.97);
-}
-
-.char-card-frame {
-  width: 100%;
+.char-card-flip {
   aspect-ratio: 244 / 335;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.65);
-  border: 2px solid transparent;
-  transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  width: 100%;
 }
 
-.char-card:hover .char-card-frame {
-  border-color: var(--color-crimson);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(185, 28, 28, 0.45);
-}
-
-.char-card.selected .char-card-frame {
-  border-color: var(--color-crimson);
-  box-shadow: 0 0 0 3px var(--color-crimson);
-}
-
-.char-card.disabled {
+.char-card-flip.disabled {
   opacity: 0.22;
   filter: grayscale(100%);
   pointer-events: none;
+}
+
+.char-card-flip.selected .flip-card-front {
+  border-color: var(--color-crimson);
+  box-shadow: 0 0 0 3px var(--color-crimson);
 }
 
 .char-card-img {
@@ -157,9 +203,104 @@
   display: block;
 }
 
+.flip-hint-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background-color: rgba(18, 18, 20, 0.88);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 3px 6px;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--color-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  pointer-events: none;
+}
+
+/* Cara Trasera del Personaje */
+.card-back-header {
+  border-bottom: 2px solid var(--border-subtle);
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.card-back-role {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-gold);
+  display: block;
+}
+
+.card-back-name {
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-top: 2px;
+}
+
+.card-back-bio {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  flex: 1;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.card-back-actions {
+  margin-top: auto;
+}
+
+.btn-confirm-char {
+  width: 100%;
+  padding: 10px 8px;
+  background-color: var(--color-crimson);
+  color: var(--text-on-accent);
+  font-family: var(--font-title);
+  font-size: 15px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s ease;
+}
+
+.btn-confirm-char:hover, .btn-confirm-char:active {
+  background-color: var(--color-crimson-hover);
+}
+
+.card-back-hint {
+  font-size: 9.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 6px;
+}
+
 /* ==========================================================================
-   PANTALLA 2: BARRA SUPERIOR & ESCÁNER QR
+   PANTALLA 2: TARJETA DEL PERSONAJE ACTIVO (GIRO 3D)
    ========================================================================== */
+.active-char-section {
+  margin-bottom: 16px;
+}
+
+.active-char-card-container {
+  width: 100%;
+  max-width: 260px;
+  margin: 0 auto;
+  aspect-ratio: 244 / 335;
+}
+
 .char-locked-badge {
   font-size: 10px;
   font-weight: 800;
@@ -172,6 +313,9 @@
   border: 1px solid var(--border-subtle);
 }
 
+/* ==========================================================================
+   ESCÁNER QR
+   ========================================================================== */
 .scanner-card {
   background-color: var(--bg-card);
   border: 2px solid var(--border-subtle);
@@ -316,13 +460,13 @@
 }
 
 /* ==========================================================================
-   SCROLL LATERAL DE TARJETAS DE PISTAS (SWIPE DEDO)
+   SLIDER HORIZONTAL DE TARJETAS DE PISTAS (SWIPE + GIRO 3D)
    ========================================================================== */
 .clues-section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .clues-section-title {
@@ -334,19 +478,43 @@
   letter-spacing: 1px;
 }
 
+.clues-nav-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-slider-arrow {
+  width: 28px;
+  height: 28px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.15s ease;
+}
+
+.btn-slider-arrow:active {
+  background-color: var(--bg-card-hover);
+}
+
 .clues-count-pill {
   font-size: 11px;
   font-weight: 800;
   background-color: var(--bg-card);
   color: var(--color-gold);
-  padding: 3px 8px;
+  padding: 4px 8px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
 }
 
 .clues-deck-scroll {
   display: flex;
-  gap: 12px;
+  gap: 14px;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
@@ -364,43 +532,79 @@
   border-radius: 3px;
 }
 
-.clue-card-item {
+/* Tarjeta 3D de Pista */
+.clue-flip-card {
   flex: 0 0 85%;
-  max-width: 320px;
+  max-width: 310px;
+  aspect-ratio: 244 / 340;
   scroll-snap-align: start;
-  background-color: var(--bg-card);
-  border: 2px solid var(--border-strong);
-  border-radius: var(--radius-sm);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
+  perspective: 1200px;
+  cursor: pointer;
+  user-select: none;
 }
 
-.clue-card-header {
+.clue-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.clue-flip-card.is-flipped .clue-flip-inner {
+  transform: rotateY(180deg);
+}
+
+.clue-flip-front,
+.clue-flip-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+/* Cara Frontal de la Pista */
+.clue-flip-front {
+  transform: rotateY(0deg);
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-strong);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+}
+
+.clue-front-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .clue-card-tag {
   font-size: 10px;
   font-weight: 800;
   text-transform: uppercase;
-  padding: 2px 6px;
+  padding: 2px 7px;
   border-radius: var(--radius-sm);
   color: #ffffff;
 }
 
 .clue-card-id {
   font-size: 11px;
-  font-weight: 700;
-  color: var(--text-muted);
+  font-weight: 800;
+  color: var(--color-gold);
 }
 
 .clue-card-title {
   font-family: var(--font-title);
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 900;
   color: var(--text-primary);
   text-transform: uppercase;
@@ -409,31 +613,91 @@
 }
 
 .clue-card-desc {
-  font-size: 13px;
+  font-size: 13.5px;
   color: var(--text-secondary);
-  line-height: 1.4;
-  margin-bottom: 12px;
+  line-height: 1.45;
+  flex: 1;
 }
 
-.clue-card-footer {
+.clue-flip-prompt {
   margin-top: auto;
-  background-color: var(--bg-input);
-  border-left: 3px solid var(--color-gold);
-  padding: 8px 10px;
-  font-size: 11.5px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--color-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Cara Trasera de la Pista */
+.clue-flip-back {
+  transform: rotateY(180deg);
+  background-color: #17171d;
+  border: 2px solid var(--color-crimson);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
+}
+
+.clue-seal-badge {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-crimson);
+  border: 1px solid var(--color-crimson);
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  display: inline-block;
+}
+
+.clue-back-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.clue-back-title {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 900;
   color: var(--text-primary);
-  line-height: 1.3;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.clue-back-detail {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  background-color: var(--bg-input);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--color-crimson);
+  margin-bottom: 10px;
+}
+
+.clue-back-notes {
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.35;
+  flex: 1;
 }
 
 .empty-clues-placeholder {
   width: 100%;
-  padding: 24px 16px;
+  padding: 28px 16px;
   background-color: var(--bg-card);
   border: 2px dashed var(--border-subtle);
   border-radius: var(--radius-sm);
   text-align: center;
   color: var(--text-muted);
   font-size: 13px;
+  line-height: 1.5;
 }
 
 /* ==========================================================================

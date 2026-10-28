@@ -27,7 +27,12 @@
         <p class="subtitle-hero">Elige personaje</p>
       </header>
 
-      <!-- Cuadrícula de 8 Personajes -->
+      <div class="selection-hint-banner">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+        <span>Toca cualquier tarjeta para voltearla y leer su historia</span>
+      </div>
+
+      <!-- Cuadrícula / Slider de Personajes con Giro 3D -->
       <div class="characters-grid" id="characters-grid">
         <!-- Renderizado dinámicamente con JS -->
       </div>
@@ -50,6 +55,33 @@
           </button>
         </div>
         <span class="char-locked-badge">En Partida</span>
+      </div>
+
+      <!-- Tarjeta 3D del Personaje Activo (Gira al pulsar) -->
+      <div class="active-char-section">
+        <div class="active-char-card-container">
+          <div class="flip-card char-card-flip" id="active-char-flip-card">
+            <div class="flip-card-inner">
+              <!-- Cara Frontal -->
+              <div class="flip-card-front">
+                <img id="game-char-img" src="" alt="Personaje" class="char-card-img" />
+                <div class="flip-hint-badge">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                  Toca para girar
+                </div>
+              </div>
+              <!-- Cara Trasera -->
+              <div class="flip-card-back">
+                <div class="card-back-header">
+                  <span class="card-back-role" id="game-char-role">Rol</span>
+                  <h4 class="card-back-name" id="game-char-fullname">Nombre</h4>
+                </div>
+                <p class="card-back-bio" id="game-char-bio">Biografía...</p>
+                <div class="card-back-hint">Toca para volver al frente</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Tarjeta del Escáner QR -->
@@ -85,14 +117,18 @@
         </div>
       </div>
 
-      <!-- Sección de Pistas con Scroll Lateral (Swipe) -->
+      <!-- Sección de Pistas con Slider Lateral y Giro 3D -->
       <div class="clues-section-header">
         <h3 class="clues-section-title">Pistas Descubiertas</h3>
-        <span class="clues-count-pill" id="clues-count-pill">0 / 8</span>
+        <div class="clues-nav-group">
+          <button class="btn-slider-arrow" id="btn-clues-prev" title="Anterior">&larr;</button>
+          <span class="clues-count-pill" id="clues-count-pill">0 / 8</span>
+          <button class="btn-slider-arrow" id="btn-clues-next" title="Siguiente">&rarr;</button>
+        </div>
       </div>
 
       <div class="clues-deck-scroll" id="clues-deck-scroll">
-        <!-- Tarjetas inyectadas dinámicamente -->
+        <!-- Tarjetas inyectadas dinámicamente con giro 3D -->
       </div>
     </section>
 

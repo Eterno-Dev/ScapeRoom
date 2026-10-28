@@ -1,7 +1,7 @@
 /**
  * ScapeRoom - Main Application Logic (EternoDev Standard)
  * Cero Degradados - Cero Emojis - Vanilla ES Modules
- * Regla Estricta: Personaje Bloqueado (No se puede cambiar una vez elegido)
+ * Mecánica Central: Tarjetas 3D Flip (Giro al pulsar) y Slider Lateral
  */
 
 import { CHARACTERS } from "./data/characters.js";
@@ -33,7 +33,7 @@ class ScapeRoomApp {
       this.unlockClue(pistaParam.toUpperCase());
     }
 
-    // Comprobar estado inicial
+    // Comprobar estado inicial de género
     if (!this.gender) {
       this.showGenderModal();
     } else {
@@ -97,7 +97,7 @@ class ScapeRoomApp {
   }
 
   /* ==========================================================================
-     LÓGICA DE GÉNERO Y PERSONAJES
+     LÓGICA DE GÉNERO Y PERSONAJES (CON GIRO 3D)
      ========================================================================== */
   applyGender(gender) {
     this.gender = gender;
@@ -106,7 +106,7 @@ class ScapeRoomApp {
     this.renderCharactersGrid();
 
     if (this.selectedCharId) {
-      this.updateActiveCharacterHeader();
+      this.updateActiveCharacterCard();
     }
   }
 
@@ -124,55 +124,95 @@ class ScapeRoomApp {
       const isDisabled = isLocked && !isSelected;
 
       const card = document.createElement("div");
-      card.className = `char-card ${isSelected ? "selected" : ""} ${isDisabled ? "disabled" : ""}`;
+      card.className = `flip-card char-card-flip ${isSelected ? "selected" : ""} ${isDisabled ? "disabled" : ""}`;
       card.setAttribute("data-char-id", char.id);
 
       card.innerHTML = `
-        <div class="char-card-frame">
-          <img src="${data.cardImage}" alt="${data.name}" class="char-card-img" />
+        <div class="flip-card-inner">
+          <!-- Cara Frontal -->
+          <div class="flip-card-front">
+            <img src="${data.cardImage}" alt="${data.name}" class="char-card-img" />
+            <div class="flip-hint-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+              Girar
+            </div>
+          </div>
+
+          <!-- Cara Trasera -->
+          <div class="flip-card-back">
+            <div class="card-back-header">
+              <span class="card-back-role">${data.role}</span>
+              <h4 class="card-back-name">${data.name}</h4>
+            </div>
+            <p class="card-back-bio">${data.bio}</p>
+            <div class="card-back-actions">
+              ${!isLocked ? `<button class="btn-confirm-char" data-select-char="${char.id}">Elegir Personaje</button>` : `<span class="char-locked-badge">Elegido</span>`}
+            </div>
+            <div class="card-back-hint">Toca para volver al frente</div>
+          </div>
         </div>
       `;
 
-      if (!isLocked) {
-        card.addEventListener("click", () => {
+      // Evento de giro al tocar la tarjeta
+      card.addEventListener("click", (e) => {
+        // Si pulsó directamente el botón de elegir personaje, no solo gira sino que selecciona
+        if (e.target.closest("[data-select-char]")) {
+          e.stopPropagation();
           this.selectCharacter(char.id);
-        });
-      }
+          return;
+        }
+
+        // De lo contrario, gira la tarjeta (toggle .is-flipped)
+        card.classList.toggle("is-flipped");
+      });
 
       container.appendChild(card);
     });
   }
 
   selectCharacter(charId) {
-    if (this.selectedCharId !== null) return; // Bloqueo estricto
+    if (this.selectedCharId !== null) return; // Bloqueo estricto e irreversible
 
     this.selectedCharId = charId;
     localStorage.setItem("scaperoom_char_id", charId);
     this.renderCharactersGrid();
 
-    // Transición visual
+    // Transición fluida a la pantalla de juego
     setTimeout(() => {
       this.enterGameView(charId);
-    }, 220);
+    }, 250);
   }
 
   enterGameView(charId) {
     this.selectedCharId = charId;
-    this.updateActiveCharacterHeader();
+    this.updateActiveCharacterCard();
     this.showView("view-game");
     this.renderCluesDeck();
   }
 
-  updateActiveCharacterHeader() {
+  updateActiveCharacterCard() {
     if (!this.selectedCharId) return;
     const char = CHARACTERS.find(c => c.id === this.selectedCharId);
     if (!char) return;
 
     const data = this.gender === "female" ? char.female : char.male;
+
+    // Actualizar nombre en la barra superior
     const nameEl = document.getElementById("game-char-name");
     if (nameEl) {
       nameEl.textContent = data.name;
     }
+
+    // Actualizar tarjeta 3D en partida
+    const imgEl = document.getElementById("game-char-img");
+    const roleEl = document.getElementById("game-char-role");
+    const fullnameEl = document.getElementById("game-char-fullname");
+    const bioEl = document.getElementById("game-char-bio");
+
+    if (imgEl) imgEl.src = data.cardImage;
+    if (roleEl) roleEl.textContent = data.role;
+    if (fullnameEl) fullnameEl.textContent = data.name;
+    if (bioEl) bioEl.textContent = data.bio;
   }
 
   /* ==========================================================================
@@ -296,7 +336,7 @@ class ScapeRoomApp {
     }
 
     if (!this.unlockedClues.includes(clueId)) {
-      this.unlockedClues.unshift(clueId); // Nueva tarjeta al frente del scroll lateral
+      this.unlockedClues.unshift(clueId); // Nueva tarjeta al frente del slider
       localStorage.setItem("scaperoom_clues", JSON.stringify(this.unlockedClues));
     }
 
@@ -308,9 +348,12 @@ class ScapeRoomApp {
       if (deck) {
         deck.scrollTo({ left: 0, behavior: "smooth" });
       }
-    }, 100);
+    }, 120);
   }
 
+  /* ==========================================================================
+     SLIDER DE PISTAS CON GIRO 3D
+     ========================================================================== */
   renderCluesDeck() {
     const deck = document.getElementById("clues-deck-scroll");
     const countEl = document.getElementById("clues-count-pill");
@@ -323,7 +366,7 @@ class ScapeRoomApp {
     if (this.unlockedClues.length === 0) {
       deck.innerHTML = `
         <div class="empty-clues-placeholder">
-          Aún no has registrado pistas.<br>Escanea un código QR físico para desbloquear pruebas.
+          Aún no has registrado pistas.<br>Escanea un código QR físico para desbloquear pruebas en el slider.
         </div>
       `;
       return;
@@ -336,19 +379,48 @@ class ScapeRoomApp {
       if (!clue) return;
 
       const card = document.createElement("div");
-      card.className = "clue-card-item";
+      card.className = "clue-flip-card";
+      card.setAttribute("data-clue-id", clue.id);
 
       card.innerHTML = `
-        <div class="clue-card-header">
-          <span class="clue-card-tag" style="background-color: ${clue.tagColor};">${clue.category}</span>
-          <span class="clue-card-id">${clue.id}</span>
-        </div>
-        <div class="clue-card-title">${clue.title}</div>
-        <p class="clue-card-desc">${clue.desc}</p>
-        <div class="clue-card-footer">
-          <strong>Detalle forense:</strong> ${clue.detail}
+        <div class="clue-flip-inner">
+          <!-- Cara Frontal -->
+          <div class="clue-flip-front">
+            <div class="clue-front-top">
+              <span class="clue-card-tag" style="background-color: ${clue.tagColor};">${clue.category}</span>
+              <span class="clue-card-id">${clue.id}</span>
+            </div>
+            <div class="clue-card-title">${clue.title}</div>
+            <p class="clue-card-desc">${clue.desc}</p>
+            <div class="clue-flip-prompt">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+              <span>Toca para voltear</span>
+            </div>
+          </div>
+
+          <!-- Cara Trasera -->
+          <div class="clue-flip-back">
+            <div class="clue-back-header">
+              <span class="clue-seal-badge">EVIDENCIA REGISTRADA</span>
+              <span class="clue-card-id">${clue.id}</span>
+            </div>
+            <h4 class="clue-back-title">Análisis Forense</h4>
+            <p class="clue-back-detail">${clue.detail}</p>
+            <div class="clue-back-notes">
+              <strong>Estado:</strong> Prueba física autenticada en el expediente.
+            </div>
+            <div class="clue-flip-prompt">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+              <span>Toca para volver</span>
+            </div>
+          </div>
         </div>
       `;
+
+      // Evento de giro de la tarjeta de pista
+      card.addEventListener("click", () => {
+        card.classList.toggle("is-flipped");
+      });
 
       deck.appendChild(card);
     });
@@ -383,6 +455,31 @@ class ScapeRoomApp {
     if (infoModal) {
       infoModal.addEventListener("click", (e) => {
         if (e.target === infoModal) this.closeInfoModal();
+      });
+    }
+
+    // Giro de la tarjeta del personaje activo en partida
+    const activeCharFlip = document.getElementById("active-char-flip-card");
+    if (activeCharFlip) {
+      activeCharFlip.addEventListener("click", () => {
+        activeCharFlip.classList.toggle("is-flipped");
+      });
+    }
+
+    // Flechas del Slider de Pistas (Desplazamiento horizontal)
+    const btnCluesPrev = document.getElementById("btn-clues-prev");
+    const btnCluesNext = document.getElementById("btn-clues-next");
+    const deck = document.getElementById("clues-deck-scroll");
+
+    if (btnCluesPrev && deck) {
+      btnCluesPrev.addEventListener("click", () => {
+        deck.scrollBy({ left: -260, behavior: "smooth" });
+      });
+    }
+
+    if (btnCluesNext && deck) {
+      btnCluesNext.addEventListener("click", () => {
+        deck.scrollBy({ left: 260, behavior: "smooth" });
       });
     }
 
