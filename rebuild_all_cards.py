@@ -91,8 +91,8 @@ def main():
     im_m, x_m, y_m = get_intervals(sheet_m)
     m_names = [
         ['card-m-cazador.png', 'card-m-leonardo.png', 'card-m-alfonso.png'],
-        ['card-m-santamaria.png', 'card-m-elias.png', 'card-m-raul.png'],
-        ['card-m-hugo.png', 'card-m-victor.png', 'card-m-javier.png']
+        ['card-m-santamaria.png', 'card-m-elias.png', 'card-m-victor.png'],
+        ['card-m-hugo.png', 'card-m-raul.png', 'card-m-javier.png']
     ]
     for r in range(3):
         for c in range(3):
@@ -103,9 +103,9 @@ def main():
     sheet_f = 'C:/Users/paucr/Downloads/cartas_mujer.png'
     im_f, x_f, y_f = get_intervals(sheet_f)
     f_names = [
-        ['card-f-cazadora.png', 'card-f-carmen.png', 'card-f-araujo.png'],
-        ['card-f-isadora.png', 'card-f-isabel.png', 'card-f-lucia.png'],
-        ['card-f-valentina.png', 'card-f-elena.png', 'card-f-sofia.png']
+        ['card-f-cazadora.png', 'card-f-valentina.png', 'card-f-isabel.png'],
+        ['card-f-araujo.png', 'card-f-isadora.png', 'card-f-elena.png'],
+        ['card-f-lucia.png', 'card-f-sofia.png', 'card-f-carmen.png']
     ]
     for r in range(3):
         for c in range(3):
