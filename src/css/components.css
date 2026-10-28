@@ -1,0 +1,503 @@
+/**
+ * ScapeRoom - Components & Modals (EternoDev Standard)
+ * Cero Degradados - Cero Emojis - Flat Design Sólido
+ */
+
+/* ==========================================================================
+   MODAL DE SELECCIÓN DE GÉNERO
+   ========================================================================== */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(14, 14, 17, 0.92);
+  z-index: 999;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-box {
+  width: 100%;
+  max-width: 380px;
+  background-color: var(--bg-surface);
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+}
+
+.modal-title {
+  font-family: var(--font-title);
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--color-crimson);
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.modal-subtitle {
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.gender-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.btn-gender-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 20px 12px;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.btn-gender-card:hover, .btn-gender-card:focus {
+  border-color: var(--color-crimson);
+  background-color: var(--bg-card-hover);
+}
+
+.btn-gender-card svg {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 10px;
+  color: var(--text-primary);
+}
+
+.gender-card-label {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-primary);
+}
+
+/* ==========================================================================
+   GRID DE PERSONAJES (PANTALLA 1)
+   ========================================================================== */
+.characters-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 400px) {
+  .characters-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.char-card {
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.1s ease, border-color 0.15s ease, opacity 0.2s ease;
+}
+
+.char-card:active {
+  transform: scale(0.98);
+}
+
+.char-card:hover {
+  border-color: var(--color-crimson);
+}
+
+.char-card.selected {
+  border-color: var(--color-crimson);
+  background-color: var(--bg-card-hover);
+}
+
+.char-card.disabled {
+  opacity: 0.35;
+  filter: grayscale(100%);
+  pointer-events: none;
+}
+
+.char-avatar-img {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 8px;
+  border: 1px solid var(--border-strong);
+  background-color: var(--bg-input);
+}
+
+.char-tag {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-gold);
+  margin-bottom: 2px;
+}
+
+.char-name {
+  font-family: var(--font-title);
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+.char-role {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   PANTALLA 2: ESCÁNER QR
+   ========================================================================== */
+.scanner-card {
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 14px;
+  margin-bottom: 20px;
+}
+
+.scanner-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.scanner-title {
+  font-family: var(--font-title);
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--color-gold);
+}
+
+.scanner-video-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.scanner-video-wrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+.scanner-video-wrapper.streaming video {
+  display: block;
+}
+
+.scanner-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text-muted);
+  gap: 8px;
+}
+
+.scanner-placeholder svg {
+  width: 36px;
+  height: 36px;
+  color: var(--text-secondary);
+}
+
+.scanner-placeholder span {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.scanner-target-box {
+  position: absolute;
+  width: 60%;
+  height: 60%;
+  border: 2px solid var(--color-crimson);
+  box-sizing: border-box;
+  pointer-events: none;
+  display: none;
+}
+
+.scanner-video-wrapper.streaming .scanner-target-box {
+  display: block;
+}
+
+.btn-scanner-toggle {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--color-crimson);
+  color: var(--text-on-accent);
+  font-family: var(--font-title);
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.15s ease;
+}
+
+.btn-scanner-toggle:hover {
+  background-color: var(--color-crimson-hover);
+}
+
+.btn-scanner-toggle.active {
+  background-color: var(--bg-input);
+  border: 2px solid var(--border-strong);
+  color: var(--text-secondary);
+}
+
+/* Entrada rápida de código alternativo */
+.code-manual-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.input-code {
+  flex: 1;
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  color: var(--text-primary);
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.input-code:focus {
+  border-color: var(--color-gold);
+}
+
+.btn-submit-code {
+  padding: 8px 14px;
+  background-color: var(--color-gold);
+  color: #121214;
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+}
+
+/* ==========================================================================
+   SCROLL LATERAL DE TARJETAS DE PISTAS (SWIPE DEDO)
+   ========================================================================== */
+.clues-section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.clues-section-title {
+  font-family: var(--font-title);
+  font-size: 18px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  letter-spacing: 1px;
+}
+
+.clues-count-pill {
+  font-size: 11px;
+  font-weight: 800;
+  background-color: var(--bg-card);
+  color: var(--color-gold);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}
+
+.clues-deck-scroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 14px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) var(--bg-surface);
+}
+
+.clues-deck-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.clues-deck-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--border-strong);
+  border-radius: 3px;
+}
+
+.clue-card-item {
+  flex: 0 0 85%;
+  max-width: 320px;
+  scroll-snap-align: start;
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.clue-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.clue-card-tag {
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  color: #ffffff;
+}
+
+.clue-card-id {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.clue-card-title {
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.clue-card-desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+.clue-card-footer {
+  margin-top: auto;
+  background-color: var(--bg-input);
+  border-left: 3px solid var(--color-gold);
+  padding: 8px 10px;
+  font-size: 11.5px;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+
+.empty-clues-placeholder {
+  width: 100%;
+  padding: 24px 16px;
+  background-color: var(--bg-card);
+  border: 2px dashed var(--border-subtle);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* ==========================================================================
+   MODAL DE INFORMACIÓN DEL PERSONAJE
+   ========================================================================== */
+.modal-close-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.btn-close-modal {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+}
+
+.btn-close-modal svg {
+  width: 20px;
+  height: 20px;
+}
+
+.info-char-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.info-char-avatar {
+  width: 64px;
+  height: 64px;
+  border: 2px solid var(--color-gold);
+  border-radius: var(--radius-sm);
+}
+
+.info-char-name {
+  font-family: var(--font-title);
+  font-size: 22px;
+  font-weight: 900;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.info-char-role {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-top: 2px;
+}
+
+.info-char-bio {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  background-color: var(--bg-input);
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-subtle);
+}

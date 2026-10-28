@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>El Asesinato Embrujado — Escape Room</title>
+  <meta name="description" content="Juego interactivo de escape room y deducción con escáner de pistas físicas." />
+
+  <!-- Google Fonts: Barlow Condensed & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Estilos Modulares (EternoDev Standard) -->
+  <link rel="stylesheet" href="src/css/main.css" />
+</head>
+<body>
+
+  <div class="app-container">
+
+    <!-- ==================================================================
+         PANTALLA 1: SELECCIÓN DE PERSONAJE
+         ================================================================== -->
+    <section id="view-selection" class="view active">
+      <header class="header-hero">
+        <h1 class="title-spooky">El Asesinato Embrujado</h1>
+        <p class="subtitle-hero">Elige personaje</p>
+      </header>
+
+      <!-- Cuadrícula de 8 Personajes -->
+      <div class="characters-grid" id="characters-grid">
+        <!-- Renderizado dinámicamente con JS -->
+      </div>
+    </section>
+
+    <!-- ==================================================================
+         PANTALLA 2: INTERFAZ EN PARTIDA
+         ================================================================== -->
+    <section id="view-game" class="view">
+      <!-- Barra superior del personaje -->
+      <div class="game-top-bar">
+        <div class="char-title-group">
+          <h2 class="char-active-name" id="game-char-name">Cargando...</h2>
+          <button class="btn-info-circle" id="btn-char-info" title="Más información del personaje">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+          </button>
+        </div>
+        <button class="btn-switch-char" id="btn-switch-char">Cambiar</button>
+      </div>
+
+      <!-- Tarjeta del Escáner QR -->
+      <div class="scanner-card">
+        <div class="scanner-header">
+          <span class="scanner-title">Escáner de Pistas QR</span>
+        </div>
+
+        <div class="scanner-video-wrapper" id="scanner-video-wrapper">
+          <video id="scanner-video" playsinline muted></video>
+          <div class="scanner-placeholder">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+              <circle cx="12" cy="13" r="4"></circle>
+            </svg>
+            <span>Cámara Inactiva</span>
+          </div>
+          <div class="scanner-target-box"></div>
+        </div>
+
+        <button class="btn-scanner-toggle" id="btn-scanner-toggle">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+            <circle cx="12" cy="13" r="4"></circle>
+          </svg>
+          Activar escáner
+        </button>
+
+        <!-- Entrada manual / de prueba -->
+        <div class="code-manual-row">
+          <input type="text" id="input-manual-code" class="input-code" placeholder="Código (ej: PISTA-01)" />
+          <button class="btn-submit-code" id="btn-submit-code">Añadir</button>
+        </div>
+      </div>
+
+      <!-- Sección de Pistas con Scroll Lateral (Swipe) -->
+      <div class="clues-section-header">
+        <h3 class="clues-section-title">Pistas Descubiertas</h3>
+        <span class="clues-count-pill" id="clues-count-pill">0 / 8</span>
+      </div>
+
+      <div class="clues-deck-scroll" id="clues-deck-scroll">
+        <!-- Tarjetas inyectadas dinámicamente -->
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ==================================================================
+       POP-UP 1: SELECCIÓN DE GÉNERO
+       ================================================================== -->
+  <div class="modal-overlay" id="gender-modal">
+    <div class="modal-box">
+      <h2 class="modal-title">Elige tu género</h2>
+      <p class="modal-subtitle">Selecciona para adaptar los personajes:</p>
+
+      <div class="gender-options-grid">
+        <button class="btn-gender-card" id="btn-choose-male">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="12" cy="4" r="2.5"></circle>
+            <path d="M7 9a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-1.5v6a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-6h-1v6a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-6H8a1 1 0 0 1-1-1V9z"></path>
+          </svg>
+          <span class="gender-card-label">Hombre</span>
+        </button>
+
+        <button class="btn-gender-card" id="btn-choose-female">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <circle cx="12" cy="4" r="2.5"></circle>
+            <path d="M10 8h4a1 1 0 0 1 1 1l2 7a1 1 0 0 1-1 1h-2v4a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-4H8a1 1 0 0 1-1-1l2-7a1 1 0 0 1 1-1z"></path>
+          </svg>
+          <span class="gender-card-label">Mujer</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================================================================
+       POP-UP 2: INFORMACIÓN DEL PERSONAJE (?)
+       ================================================================== -->
+  <div class="modal-overlay" id="info-modal">
+    <div class="modal-box">
+      <div class="modal-close-bar">
+        <button class="btn-close-modal" id="btn-close-info" title="Cerrar">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="info-char-header">
+        <img id="info-avatar" src="" alt="Avatar" class="info-char-avatar" />
+        <div>
+          <h3 class="info-char-name" id="info-name">Nombre</h3>
+          <div class="info-char-role" id="info-role">Rol</div>
+        </div>
+      </div>
+
+      <p class="info-char-bio" id="info-bio">Biografía...</p>
+    </div>
+  </div>
+
+  <!-- Biblioteca Local Offline jsQR -->
+  <script src="src/js/lib/jsqr.js"></script>
+
+  <!-- Lógica Principal Modular (ES Modules) -->
+  <script type="module" src="src/js/main.js"></script>
+</body>
+</html>

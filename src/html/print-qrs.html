@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Lámina de Códigos QR para Imprimir — El asesinato embrujado</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    body {
+      background: #ffffff;
+      color: #121214;
+      padding: 24px;
+    }
+    .print-header {
+      text-align: center;
+      margin-bottom: 24px;
+      border-bottom: 2px solid #121214;
+      padding-bottom: 12px;
+    }
+    .print-header h1 {
+      font-size: 22px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .print-header p {
+      font-size: 13px;
+      color: #555555;
+      margin-top: 4px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .card {
+      border: 2px dashed #121214;
+      padding: 16px;
+      text-align: center;
+      page-break-inside: avoid;
+      background: #fafafa;
+    }
+    .card img {
+      width: 140px;
+      height: 140px;
+      display: block;
+      margin: 0 auto 10px;
+    }
+    .code {
+      font-size: 12px;
+      font-weight: 800;
+      background: #121214;
+      color: #ffffff;
+      padding: 2px 8px;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+    .title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .desc {
+      font-size: 11px;
+      color: #555555;
+      line-height: 1.3;
+    }
+    @media print {
+      body { padding: 0; }
+      .no-print { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="print-header">
+    <h1>Lámina de Pistas Físicas QR — El asesinato embrujado</h1>
+    <p>Recorta cada tarjeta y colócala en el escenario físico del escape room.</p>
+    <div style="margin-top: 12px;" class="no-print">
+      <button onclick="window.print()" style="padding: 8px 16px; background: #121214; color: #fff; border: none; font-weight: bold; cursor: pointer;">Imprimir Lámina</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <img src="../assets/images/png/qr-pista-01.png" alt="PISTA-01" />
+      <span class="code">PISTA-01</span>
+      <div class="title">Cuchillo ensangrentado</div>
+      <p class="desc">Bajo las tablas de la cocina.</p>
+    </div>
+    <div class="card">
+      <img src="../assets/images/png/qr-pista-02.png" alt="PISTA-02" />
+      <span class="code">PISTA-02</span>
+      <div class="title">Arañazo en la cerradura</div>
+      <p class="desc">Cerrojo del despacho principal.</p>
+    </div>
+    <div class="card">
+      <img src="../assets/images/png/qr-pista-03.png" alt="PISTA-03" />
+      <span class="code">PISTA-03</span>
+      <div class="title">Frasco de belladona</div>
+      <p class="desc">Estantería de la biblioteca.</p>
+    </div>
+    <div class="card">
+      <img src="../assets/images/png/qr-pista-04.png" alt="PISTA-04" />
+      <span class="code">PISTA-04</span>
+      <div class="title">Carta rasgada</div>
+      <p class="desc">Papelera del salón noble.</p>
+    </div>
+    <div class="card">
+      <img src="../assets/images/png/qr-pista-05.png" alt="PISTA-05" />
+      <span class="code">PISTA-05</span>
+      <div class="title">Reloj de bolsillo roto</div>
+      <p class="desc">Suelo junto a la chimenea.</p>
+    </div>
+    <div class="card">
+      <img src="../assets/images/png/qr-pista-06.png" alt="PISTA-06" />
+      <span class="code">PISTA-06</span>
+      <div class="title">Huellas de barro</div>
+      <p class="desc">Acceso desde el jardín.</p>
+    </div>
+    <div class="card">
+      <img src="../assets/images/png/qr-pista-07.png" alt="PISTA-07" />
+      <span class="code">PISTA-07</span>
+      <div class="title">Testamento tachado</div>
+      <p class="desc">Cajón oculto del escritorio.</p>
+    </div>
+    <div class="card">
+      <img src="../assets/images/png/qr-pista-08.png" alt="PISTA-08" />
+      <span class="code">PISTA-08</span>
+      <div class="title">Copa de vino rota</div>
+      <p class="desc">Mesa del comedor imperial.</p>
+    </div>
+  </div>
+</body>
+</html>
