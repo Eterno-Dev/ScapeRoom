@@ -120,10 +120,7 @@ class ScapeRoomApp {
           <!-- Cara Frontal -->
           <div class="flip-card-front">
             <img src="${data.cardImage}" alt="${data.name}" class="char-card-img" />
-            <div class="flip-hint-badge">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-              Girar
-            </div>
+            <div class="flip-hint-badge">Girar</div>
           </div>
 
           <!-- Cara Trasera con textura de pergamino de cartas especiales -->
@@ -138,7 +135,7 @@ class ScapeRoomApp {
               <div class="card-back-actions">
                 ${!isLocked ? `<button class="btn-confirm-char" data-select-char="${char.id}">Elegir Personaje</button>` : `<span class="char-locked-badge">Elegido</span>`}
               </div>
-              <div class="card-back-hint">Toca para volver al frente</div>
+              <div class="flip-hint-badge">Girar</div>
             </div>
           </div>
         </div>
@@ -206,10 +203,7 @@ class ScapeRoomApp {
           <!-- Cara Frontal -->
           <div class="flip-card-front">
             <img src="${charData.cardImage}" alt="${charData.name}" class="char-card-img" />
-            <div class="flip-hint-badge">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-              Toca para girar
-            </div>
+            <div class="flip-hint-badge">Girar</div>
           </div>
           <!-- Cara Trasera -->
           <div class="flip-card-back" style="background-image: url('${backBaseUrl}');">
@@ -220,7 +214,7 @@ class ScapeRoomApp {
                 <h4 class="card-back-name">${charData.name}</h4>
               </div>
               <p class="card-back-bio">${charData.bio}</p>
-              <div class="card-back-hint" style="margin-top:auto;">Toca para volver al frente</div>
+              <div class="flip-hint-badge">Girar</div>
             </div>
           </div>
         </div>
@@ -242,59 +236,44 @@ class ScapeRoomApp {
     scannerSlide.innerHTML = `
       <div class="flip-card game-card-flip" id="scanner-flip-card">
         <div class="flip-card-inner">
-          <!-- Cara Frontal del Escáner -->
-          <div class="flip-card-front scanner-card-face">
-            <div class="scanner-card-header">
-              <span class="scanner-card-tag">Herramienta</span>
-              <span class="scanner-card-title">Escáner QR</span>
-            </div>
+          <!-- Cara Frontal del Escáner (Imagen de Cámara) -->
+          <div class="flip-card-front">
+            <img src="src/assets/images/png/card-scanner-camera.png" alt="Cámara de Investigación" class="char-card-img" />
+            <div class="flip-hint-badge">Girar</div>
+          </div>
 
-            <div class="scanner-video-wrapper" id="scanner-video-wrapper">
-              <video id="scanner-video" playsinline muted></video>
-              <div class="scanner-placeholder">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- Cara Trasera del Escáner (Cámara + Botón Activar Escáner) -->
+          <div class="flip-card-back scanner-card-back" style="background-image: url('src/assets/images/png/card-back-base-2.png');">
+            <div class="card-back-tint"></div>
+            <div class="scanner-back-content">
+              <div class="scanner-video-wrapper" id="scanner-video-wrapper">
+                <video id="scanner-video" playsinline muted></video>
+                <div class="scanner-placeholder">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                  </svg>
+                  <span>Cámara Inactiva</span>
+                </div>
+                <div class="scanner-target-box"></div>
+              </div>
+
+              <button class="btn-scanner-toggle" id="btn-scanner-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
                   <circle cx="12" cy="13" r="4"></circle>
                 </svg>
-                <span>Cámara Inactiva</span>
-              </div>
-              <div class="scanner-target-box"></div>
+                Activar escáner
+              </button>
             </div>
-
-            <button class="btn-scanner-toggle" id="btn-scanner-toggle">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                <circle cx="12" cy="13" r="4"></circle>
-              </svg>
-              Activar escáner
-            </button>
-
-            <div class="code-manual-row">
-              <input type="text" id="input-manual-code" class="input-code" placeholder="Código (ej: PISTA-01)" />
-              <button class="btn-submit-code" id="btn-submit-code">Añadir</button>
-            </div>
-
-            <div class="card-back-hint" style="margin-top:auto;">Toca fuera para girar</div>
-          </div>
-
-          <!-- Cara Trasera del Escáner (Preparada para imagen de reverso) -->
-          <div class="flip-card-back scanner-card-back" style="background-image: url('src/assets/images/png/card-back-base-2.png');">
-            <div class="card-back-tint"></div>
-            <div class="card-back-content">
-              <div class="card-back-header">
-                <span class="card-back-role">Detector Forense</span>
-                <h4 class="card-back-name">Lector de Evidencias</h4>
-              </div>
-              <p class="card-back-bio">Escanea códigos QR físicos colocados en la escena. Cada pista descubierta se añadirá automáticamente a la derecha de este mazo deslizable.</p>
-              <div class="card-back-hint" style="margin-top:auto;">Toca para volver al escáner</div>
-            </div>
+            <div class="flip-hint-badge">Girar</div>
           </div>
         </div>
       </div>
     `;
 
     scannerSlide.querySelector("#scanner-flip-card").addEventListener("click", function(e) {
-      if (e.target.closest("#btn-scanner-toggle") || e.target.closest("#input-manual-code") || e.target.closest("#btn-submit-code")) {
+      if (e.target.closest("#btn-scanner-toggle")) {
         return;
       }
       this.classList.toggle("is-flipped");
@@ -323,10 +302,7 @@ class ScapeRoomApp {
               </div>
               <div class="clue-card-title">${clue.title}</div>
               <p class="clue-card-desc">${clue.desc}</p>
-              <div class="clue-flip-prompt">
-                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-                <span>Toca para voltear</span>
-              </div>
+              <div class="flip-hint-badge">Girar</div>
             </div>
 
             <!-- Cara Trasera de la Pista con textura de cartas especiales -->
@@ -342,10 +318,7 @@ class ScapeRoomApp {
                 <div class="clue-back-notes">
                   <strong>Estado:</strong> Prueba física autenticada en el expediente.
                 </div>
-                <div class="clue-flip-prompt">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-                  <span>Toca para volver</span>
-                </div>
+                <div class="flip-hint-badge">Girar</div>
               </div>
             </div>
           </div>
@@ -369,29 +342,6 @@ class ScapeRoomApp {
     const btnScanner = document.getElementById("btn-scanner-toggle");
     if (btnScanner) {
       btnScanner.onclick = () => this.toggleScanner();
-    }
-
-    const btnSubmit = document.getElementById("btn-submit-code");
-    const inputCode = document.getElementById("input-manual-code");
-
-    if (btnSubmit && inputCode) {
-      btnSubmit.onclick = () => {
-        const val = inputCode.value.trim().toUpperCase();
-        if (val) {
-          this.unlockClue(val);
-          inputCode.value = "";
-        }
-      };
-
-      inputCode.onkeydown = (e) => {
-        if (e.key === "Enter") {
-          const val = inputCode.value.trim().toUpperCase();
-          if (val) {
-            this.unlockClue(val);
-            inputCode.value = "";
-          }
-        }
-      };
     }
   }
 
@@ -585,13 +535,15 @@ class ScapeRoomApp {
     if (btnMale) btnMale.addEventListener("click", () => this.applyGender("male"));
     if (btnFemale) btnFemale.addEventListener("click", () => this.applyGender("female"));
 
-    // Botón de camarita en la cabecera: Salta directamente a la carta de escáner
+    // Botón de camarita en la cabecera: Salta directamente a la carta de escáner y la gira
     const btnGotoScanner = document.getElementById("btn-goto-scanner");
     if (btnGotoScanner) {
       btnGotoScanner.addEventListener("click", () => {
         const scannerSlide = document.getElementById("slide-scanner-card");
         if (scannerSlide) {
           scannerSlide.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+          const flipCard = scannerSlide.querySelector(".game-card-flip");
+          if (flipCard) flipCard.classList.add("is-flipped");
           setTimeout(() => this.updateCardSliderState(), 300);
         }
       });
