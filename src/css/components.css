@@ -1,11 +1,11 @@
 /**
  * ScapeRoom - Components, 3D Flip Cards & Single Card Slider (EternoDev Standard)
  * Cero Degradados - Cero Emojis - Flat Design Sólido
- * En Partida: Solo 1 carta visible en pantalla, pasando con deslizar (swipe)
+ * En Partida: Solo 1 carta visible en pantalla, pasando con swipe y flechitas flotantes animadas
  */
 
 /* ==========================================================================
-   MODAL DE SELECCIÓN DE GÉNERO
+   MODAL DE SELECCIÓN DE GÉNERO CON TARJETAS REALES
    ========================================================================== */
 .modal-overlay {
   display: none;
@@ -14,7 +14,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(14, 14, 17, 0.94);
+  background-color: rgba(14, 14, 17, 0.95);
   z-index: 999;
   align-items: center;
   justify-content: center;
@@ -27,69 +27,74 @@
 
 .modal-box {
   width: 100%;
-  max-width: 380px;
+  max-width: 420px;
   background-color: var(--bg-surface);
   border: 2px solid var(--border-strong);
   border-radius: var(--radius-md);
-  padding: 24px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+  padding: 20px 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.85);
 }
 
 .modal-title {
   font-family: var(--font-title);
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 900;
   color: var(--color-crimson);
   text-transform: uppercase;
   text-align: center;
   letter-spacing: 1px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .modal-subtitle {
   font-size: 13px;
   color: var(--text-secondary);
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
-.gender-options-grid {
+.gender-cards-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 14px;
 }
 
-.btn-gender-card {
+.gender-card-btn {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  background-color: var(--bg-card);
-  border: 2px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 20px 12px;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  user-select: none;
 }
 
-.btn-gender-card:hover, .btn-gender-card:focus {
+.gender-card-btn:active {
+  transform: scale(0.96);
+}
+
+.gender-card-frame {
+  width: 100%;
+  aspect-ratio: 244 / 355;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.65);
+  border: 2px solid transparent;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.gender-card-btn:hover .gender-card-frame {
   border-color: var(--color-crimson);
-  background-color: var(--bg-card-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(185, 28, 28, 0.45);
 }
 
-.btn-gender-card svg {
-  width: 44px;
-  height: 44px;
-  margin-bottom: 10px;
-  color: var(--text-primary);
-}
-
-.gender-card-label {
-  font-family: var(--font-title);
-  font-size: 18px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--text-primary);
+.gender-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* ==========================================================================
@@ -142,13 +147,36 @@
   box-shadow: 0 8px 22px rgba(185, 28, 28, 0.45);
 }
 
+/* Cara trasera con textura de pergamino sangriento de fondo */
 .flip-card-back {
   transform: rotateY(180deg);
   background-color: #16161b;
+  background-size: cover;
+  background-position: center;
   border: 2px solid var(--color-gold);
-  padding: 16px;
+  padding: 18px 16px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
   box-sizing: border-box;
+  position: relative;
+}
+
+.card-back-tint {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(18, 18, 22, 0.78);
+  pointer-events: none;
+  border-radius: 12px;
+}
+
+.card-back-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 /* ==========================================================================
@@ -225,8 +253,8 @@
 
 .card-back-header {
   border-bottom: 2px solid var(--border-subtle);
-  padding-bottom: 8px;
-  margin-bottom: 10px;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .card-back-role {
@@ -240,7 +268,7 @@
 
 .card-back-name {
   font-family: var(--font-title);
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 900;
   color: var(--text-primary);
   text-transform: uppercase;
@@ -249,8 +277,8 @@
 }
 
 .card-back-bio {
-  font-size: 12.5px;
-  color: var(--text-secondary);
+  font-size: 13px;
+  color: #e4e4e7;
   line-height: 1.45;
   flex: 1;
   overflow-y: auto;
@@ -288,7 +316,7 @@
 }
 
 /* ==========================================================================
-   PANTALLA 2: MAZO DESLIZABLE (SOLO 1 CARTA EN PANTALLA)
+   PANTALLA 2: MAZO DESLIZABLE (SOLO 1 CARTA EN PANTALLA EN EL CENTRO)
    ========================================================================== */
 .char-locked-badge {
   font-size: 11px;
@@ -306,23 +334,26 @@
   width: 100%;
   flex: 1;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   position: relative;
   overflow: hidden;
-  padding: 6px 0 12px 0;
+  padding: 6px 0;
+  min-height: 480px;
 }
 
 .game-deck-track {
   width: 100%;
+  height: 100%;
   display: flex;
+  align-items: center;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   padding: 0;
-  gap: 16px;
+  gap: 0;
 }
 
 .game-deck-track::-webkit-scrollbar {
@@ -332,19 +363,86 @@
 .game-card-slide {
   flex: 0 0 100%;
   width: 100%;
-  max-width: 320px;
-  aspect-ratio: 244 / 355;
+  min-width: 100%;
+  max-width: 100%;
   scroll-snap-align: center;
   scroll-snap-stop: always;
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  margin: 0 auto;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0 8px;
 }
 
 .game-card-flip {
-  width: 100%;
-  height: 100%;
+  width: 290px;
+  max-width: 84vw;
+  aspect-ratio: 244 / 355;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   FLECHITAS FLOTANTES LATERALES CON ANIMACIÓN DE PULSACIÓN
+   ========================================================================== */
+.deck-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  width: 44px;
+  height: 44px;
+  background-color: rgba(18, 18, 22, 0.9);
+  border: 2px solid var(--color-crimson);
+  border-radius: 50%;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  transition: opacity 0.25s ease, background-color 0.15s ease;
+}
+
+.deck-arrow:hover {
+  background-color: var(--color-crimson);
+  color: #ffffff;
+}
+
+.deck-arrow.hidden {
+  display: none !important;
+}
+
+.deck-arrow-left {
+  left: 6px;
+  animation: pulseLeft 1.8s infinite ease-in-out;
+}
+
+.deck-arrow-right {
+  right: 6px;
+  animation: pulseRight 1.8s infinite ease-in-out;
+}
+
+@keyframes pulseRight {
+  0%, 100% {
+    transform: translateY(-50%) translateX(0) scale(1);
+  }
+  50% {
+    transform: translateY(-50%) translateX(5px) scale(1.1);
+  }
+}
+
+@keyframes pulseLeft {
+  0%, 100% {
+    transform: translateY(-50%) translateX(0) scale(1);
+  }
+  50% {
+    transform: translateY(-50%) translateX(-5px) scale(1.1);
+  }
+}
+
+.deck-arrow svg {
+  width: 22px;
+  height: 22px;
 }
 
 /* ==========================================================================

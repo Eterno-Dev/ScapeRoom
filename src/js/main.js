@@ -1,7 +1,7 @@
 /**
  * ScapeRoom - Main Application Logic (EternoDev Standard)
  * Cero Degradados - Cero Emojis - Vanilla ES Modules
- * En Partida: Solo 1 carta visible en pantalla, pasando con swipe (deslizamiento lateral)
+ * En Partida: Solo 1 carta visible en el centro, con swipe y flechas laterales animadas
  */
 
 import { CHARACTERS } from "./data/characters.js";
@@ -12,6 +12,9 @@ class ScapeRoomApp {
     this.gender = localStorage.getItem("scaperoom_gender") || null;
     this.selectedCharId = parseInt(localStorage.getItem("scaperoom_char_id"), 10) || null;
     this.unlockedClues = JSON.parse(localStorage.getItem("scaperoom_clues") || "[]");
+
+    // Asignar base trasera de pergamino fija por sesión si no existe
+    this.savedBackBases = JSON.parse(localStorage.getItem("scaperoom_back_bases") || "{}");
 
     this.stream = null;
     this.scanning = false;
@@ -46,6 +49,16 @@ class ScapeRoomApp {
     } else {
       this.showView("view-selection");
     }
+  }
+
+  getBackBase(charId) {
+    if (!this.savedBackBases[charId]) {
+      const bases = ["card-back-base-1.png", "card-back-base-2.png", "card-back-base-3.png"];
+      const randomBase = bases[Math.floor(Math.random() * bases.length)];
+      this.savedBackBases[charId] = randomBase;
+      localStorage.setItem("scaperoom_back_bases", JSON.stringify(this.savedBackBases));
+    }
+    return `src/assets/images/png/${this.savedBackBases[charId]}`;
   }
 
   /* ==========================================================================
@@ -96,6 +109,7 @@ class ScapeRoomApp {
       const isSelected = this.selectedCharId === char.id;
       const isLocked = this.selectedCharId !== null;
       const isDisabled = isLocked && !isSelected;
+      const backBaseUrl = this.getBackBase(char.id);
 
       const card = document.createElement("div");
       card.className = `flip-card char-card-flip ${isSelected ? "selected" : ""} ${isDisabled ? "disabled" : ""}`;
@@ -112,17 +126,20 @@ class ScapeRoomApp {
             </div>
           </div>
 
-          <!-- Cara Trasera -->
-          <div class="flip-card-back">
-            <div class="card-back-header">
-              <span class="card-back-role">${data.role}</span>
-              <h4 class="card-back-name">${data.name}</h4>
+          <!-- Cara Trasera con textura de pergamino de cartas especiales -->
+          <div class="flip-card-back" style="background-image: url('${backBaseUrl}');">
+            <div class="card-back-tint"></div>
+            <div class="card-back-content">
+              <div class="card-back-header">
+                <span class="card-back-role">${data.role}</span>
+                <h4 class="card-back-name">${data.name}</h4>
+              </div>
+              <p class="card-back-bio">${data.bio}</p>
+              <div class="card-back-actions">
+                ${!isLocked ? `<button class="btn-confirm-char" data-select-char="${char.id}">Elegir Personaje</button>` : `<span class="char-locked-badge">Elegido</span>`}
+              </div>
+              <div class="card-back-hint">Toca para volver al frente</div>
             </div>
-            <p class="card-back-bio">${data.bio}</p>
-            <div class="card-back-actions">
-              ${!isLocked ? `<button class="btn-confirm-char" data-select-char="${char.id}">Elegir Personaje</button>` : `<span class="char-locked-badge">Elegido</span>`}
-            </div>
-            <div class="card-back-hint">Toca para volver al frente</div>
           </div>
         </div>
       `;
@@ -159,7 +176,7 @@ class ScapeRoomApp {
   }
 
   /* ==========================================================================
-     PANTALLA 2: MAZO DESLIZABLE (1 CARTA EN PANTALLA A LA VEZ)
+     PANTALLA 2: MAZO DESLIZABLE (SOLO 1 CARTA EN PANTALLA EN EL CENTRO)
      ========================================================================== */
   renderGameDeck() {
     const track = document.getElementById("game-deck-track");
@@ -169,6 +186,7 @@ class ScapeRoomApp {
     if (!char) return;
 
     const charData = this.gender === "female" ? char.female : char.male;
+    const backBaseUrl = this.getBackBase(char.id);
 
     // Actualizar nombre en la barra superior
     const nameEl = document.getElementById("game-char-name");
@@ -177,7 +195,7 @@ class ScapeRoomApp {
     track.innerHTML = "";
 
     // ------------------------------------------------------------------------
-    // CARTA 0: PRESENTACIÓN DEL PERSONAJE (GIRO 3D)
+    // CARTA 0: PRESENTACIÓN DEL PERSONAJE (GIRO 3D CON FONDO DE PERGAMINO)
     // ------------------------------------------------------------------------
     const charSlide = document.createElement("div");
     charSlide.className = "game-card-slide";
@@ -194,13 +212,16 @@ class ScapeRoomApp {
             </div>
           </div>
           <!-- Cara Trasera -->
-          <div class="flip-card-back">
-            <div class="card-back-header">
-              <span class="card-back-role">${charData.role}</span>
-              <h4 class="card-back-name">${charData.name}</h4>
+          <div class="flip-card-back" style="background-image: url('${backBaseUrl}');">
+            <div class="card-back-tint"></div>
+            <div class="card-back-content">
+              <div class="card-back-header">
+                <span class="card-back-role">${charData.role}</span>
+                <h4 class="card-back-name">${charData.name}</h4>
+              </div>
+              <p class="card-back-bio">${charData.bio}</p>
+              <div class="card-back-hint" style="margin-top:auto;">Toca para volver al frente</div>
             </div>
-            <p class="card-back-bio">${charData.bio}</p>
-            <div class="card-back-hint" style="margin-top:auto;">Toca para volver al frente</div>
           </div>
         </div>
       </div>
@@ -256,20 +277,22 @@ class ScapeRoomApp {
             <div class="card-back-hint" style="margin-top:auto;">Toca fuera para girar</div>
           </div>
 
-          <!-- Cara Trasera del Escáner (Preparada para imagen) -->
-          <div class="flip-card-back scanner-card-back">
-            <div class="card-back-header">
-              <span class="card-back-role">Detector Forense</span>
-              <h4 class="card-back-name">Lector de Evidencias</h4>
+          <!-- Cara Trasera del Escáner (Preparada para imagen de reverso) -->
+          <div class="flip-card-back scanner-card-back" style="background-image: url('src/assets/images/png/card-back-base-2.png');">
+            <div class="card-back-tint"></div>
+            <div class="card-back-content">
+              <div class="card-back-header">
+                <span class="card-back-role">Detector Forense</span>
+                <h4 class="card-back-name">Lector de Evidencias</h4>
+              </div>
+              <p class="card-back-bio">Escanea códigos QR físicos colocados en la escena. Cada pista descubierta se añadirá automáticamente a la derecha de este mazo deslizable.</p>
+              <div class="card-back-hint" style="margin-top:auto;">Toca para volver al escáner</div>
             </div>
-            <p class="card-back-bio">Escanea códigos QR físicos colocados en la escena. Cada pista descubierta se añadirá automáticamente a la derecha de este mazo deslizable.</p>
-            <div class="card-back-hint" style="margin-top:auto;">Toca para volver al escáner</div>
           </div>
         </div>
       </div>
     `;
 
-    // Giro al tocar fuera de controles interactivos
     scannerSlide.querySelector("#scanner-flip-card").addEventListener("click", function(e) {
       if (e.target.closest("#btn-scanner-toggle") || e.target.closest("#input-manual-code") || e.target.closest("#btn-submit-code")) {
         return;
@@ -306,20 +329,23 @@ class ScapeRoomApp {
               </div>
             </div>
 
-            <!-- Cara Trasera de la Pista -->
-            <div class="flip-card-back clue-back-face">
-              <div class="clue-back-header">
-                <span class="clue-seal-badge">EVIDENCIA REGISTRADA</span>
-                <span class="clue-card-id">${clue.id}</span>
-              </div>
-              <h4 class="clue-back-title">Análisis Forense</h4>
-              <p class="clue-back-detail">${clue.detail}</p>
-              <div class="clue-back-notes">
-                <strong>Estado:</strong> Prueba física autenticada en el expediente.
-              </div>
-              <div class="clue-flip-prompt">
-                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-                <span>Toca para volver</span>
+            <!-- Cara Trasera de la Pista con textura de cartas especiales -->
+            <div class="flip-card-back clue-back-face" style="background-image: url('src/assets/images/png/card-back-base-3.png');">
+              <div class="card-back-tint"></div>
+              <div class="card-back-content">
+                <div class="clue-back-header">
+                  <span class="clue-seal-badge">EVIDENCIA REGISTRADA</span>
+                  <span class="clue-card-id">${clue.id}</span>
+                </div>
+                <h4 class="clue-back-title">Análisis Forense</h4>
+                <p class="clue-back-detail">${clue.detail}</p>
+                <div class="clue-back-notes">
+                  <strong>Estado:</strong> Prueba física autenticada en el expediente.
+                </div>
+                <div class="clue-flip-prompt">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                  <span>Toca para volver</span>
+                </div>
               </div>
             </div>
           </div>
@@ -336,7 +362,7 @@ class ScapeRoomApp {
     // Reasignar referencias de escáner
     this.videoEl = document.getElementById("scanner-video");
     this.attachScannerEvents();
-    this.updateCardCounter();
+    this.updateCardSliderState();
   }
 
   attachScannerEvents() {
@@ -369,21 +395,42 @@ class ScapeRoomApp {
     }
   }
 
-  updateCardCounter() {
+  updateCardSliderState() {
     const track = document.getElementById("game-deck-track");
     const counterEl = document.getElementById("deck-card-counter");
-    if (!track || !counterEl) return;
+    const btnPrev = document.getElementById("btn-deck-prev");
+    const btnNext = document.getElementById("btn-deck-next");
+
+    if (!track) return;
 
     const slides = track.querySelectorAll(".game-card-slide");
     const total = slides.length;
     if (total === 0) return;
 
-    // Calcular índice actual según el scroll horizontal
     const scrollLeft = track.scrollLeft;
-    const slideWidth = slides[0].offsetWidth || 1;
-    const currentIndex = Math.min(Math.round(scrollLeft / slideWidth) + 1, total);
+    const trackWidth = track.clientWidth || 1;
+    const currentIndex = Math.min(Math.round(scrollLeft / trackWidth), total - 1);
 
-    counterEl.textContent = `${currentIndex} / ${total}`;
+    if (counterEl) {
+      counterEl.textContent = `${currentIndex + 1} / ${total}`;
+    }
+
+    // Lógica dinámica de visibilidad de flechitas
+    if (btnPrev) {
+      if (currentIndex === 0) {
+        btnPrev.classList.add("hidden");
+      } else {
+        btnPrev.classList.remove("hidden");
+      }
+    }
+
+    if (btnNext) {
+      if (currentIndex >= total - 1) {
+        btnNext.classList.add("hidden");
+      } else {
+        btnNext.classList.remove("hidden");
+      }
+    }
   }
 
   /* ==========================================================================
@@ -518,11 +565,12 @@ class ScapeRoomApp {
 
     // Desplazar automáticamente hacia la carta de la pista recién añadida
     setTimeout(() => {
+      const track = document.getElementById("game-deck-track");
       const targetCard = document.getElementById(`slide-clue-${clueId.toLowerCase()}`);
-      if (targetCard) {
+      if (track && targetCard) {
         targetCard.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
       }
-      this.updateCardCounter();
+      this.updateCardSliderState();
     }, 150);
   }
 
@@ -530,7 +578,7 @@ class ScapeRoomApp {
      GLOBAL EVENT LISTENERS
      ========================================================================== */
   setupGlobalEvents() {
-    // Modal de Género
+    // Selección de género con tarjetas de imagen reales
     const btnMale = document.getElementById("btn-choose-male");
     const btnFemale = document.getElementById("btn-choose-female");
 
@@ -544,16 +592,34 @@ class ScapeRoomApp {
         const scannerSlide = document.getElementById("slide-scanner-card");
         if (scannerSlide) {
           scannerSlide.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-          setTimeout(() => this.updateCardCounter(), 300);
+          setTimeout(() => this.updateCardSliderState(), 300);
         }
       });
     }
 
-    // Listener de scroll en el mazo para actualizar el contador de carta visible
+    // Flechitas flotantes de navegación con deslizamiento suave
+    const btnPrev = document.getElementById("btn-deck-prev");
+    const btnNext = document.getElementById("btn-deck-next");
     const track = document.getElementById("game-deck-track");
+
+    if (btnPrev && track) {
+      btnPrev.addEventListener("click", () => {
+        track.scrollBy({ left: -track.clientWidth, behavior: "smooth" });
+        setTimeout(() => this.updateCardSliderState(), 250);
+      });
+    }
+
+    if (btnNext && track) {
+      btnNext.addEventListener("click", () => {
+        track.scrollBy({ left: track.clientWidth, behavior: "smooth" });
+        setTimeout(() => this.updateCardSliderState(), 250);
+      });
+    }
+
+    // Listener de scroll en el mazo para actualizar contador y visibilidad de flechas
     if (track) {
       track.addEventListener("scroll", () => {
-        this.updateCardCounter();
+        this.updateCardSliderState();
       }, { passive: true });
     }
   }

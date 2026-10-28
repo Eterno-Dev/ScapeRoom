@@ -6,10 +6,10 @@
   <title>El Asesinato Embrujado — Escape Room</title>
   <meta name="description" content="Juego interactivo de escape room y deducción con escáner de pistas físicas." />
 
-  <!-- Google Fonts: Barlow Condensed & Inter -->
+  <!-- Google Fonts: Barlow Condensed, Cinzel & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Cinzel:wght@700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- Estilos Modulares (EternoDev Standard) -->
   <link rel="stylesheet" href="src/css/main.css" />
@@ -39,7 +39,7 @@
     </section>
 
     <!-- ==================================================================
-         PANTALLA 2: INTERFAZ EN PARTIDA (1 CARTA EN PANTALLA - SWIPE)
+         PANTALLA 2: INTERFAZ EN PARTIDA (1 CARTA EN PANTALLA - SWIPE & FLECHAS)
          ================================================================== -->
     <section id="view-game" class="view">
       <!-- Barra superior de partida -->
@@ -58,41 +58,51 @@
         </div>
       </div>
 
-      <!-- Mazo Deslizable: 1 carta en pantalla a la vez -->
+      <!-- Mazo Deslizable: 1 carta en el centro en todo momento -->
       <div class="game-deck-viewport" id="game-deck-viewport">
+        <!-- Flecha Izquierda Flotante con animación -->
+        <button class="deck-arrow deck-arrow-left hidden" id="btn-deck-prev" aria-label="Carta anterior">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+        </button>
+
         <div class="game-deck-track" id="game-deck-track">
-          <!-- Slide 0: Carta del Personaje (Giro 3D) -->
+          <!-- Slide 0: Carta del Personaje (Giro 3D con fondo aleatorio de pergamino) -->
           <!-- Slide 1: Carta del Escáner QR (Giro 3D) -->
           <!-- Slide 2+: Cartas de Pistas Escaneadas (Giro 3D) -->
         </div>
+
+        <!-- Flecha Derecha Flotante con animación -->
+        <button class="deck-arrow deck-arrow-right" id="btn-deck-next" aria-label="Siguiente carta">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </button>
       </div>
     </section>
 
   </div>
 
   <!-- ==================================================================
-       POP-UP 1: SELECCIÓN DE GÉNERO
+       POP-UP 1: SELECCIÓN DE GÉNERO CON TARJETAS REALES
        ================================================================== -->
   <div class="modal-overlay" id="gender-modal">
     <div class="modal-box">
       <h2 class="modal-title">Elige tu género</h2>
-      <p class="modal-subtitle">Selecciona para adaptar los personajes:</p>
+      <p class="modal-subtitle">Selecciona una tarjeta para adaptar los personajes:</p>
 
-      <div class="gender-options-grid">
-        <button class="btn-gender-card" id="btn-choose-male">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <circle cx="12" cy="4" r="2.5"></circle>
-            <path d="M7 9a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-1.5v6a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-6h-1v6a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-6H8a1 1 0 0 1-1-1V9z"></path>
-          </svg>
-          <span class="gender-card-label">Hombre</span>
+      <div class="gender-cards-grid">
+        <button class="gender-card-btn" id="btn-choose-male">
+          <div class="gender-card-frame">
+            <img src="src/assets/images/png/card-gender-male.png" alt="Hombre" class="gender-card-img" />
+          </div>
         </button>
 
-        <button class="btn-gender-card" id="btn-choose-female">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-            <circle cx="12" cy="4" r="2.5"></circle>
-            <path d="M10 8h4a1 1 0 0 1 1 1l2 7a1 1 0 0 1-1 1h-2v4a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-4H8a1 1 0 0 1-1-1l2-7a1 1 0 0 1 1-1z"></path>
-          </svg>
-          <span class="gender-card-label">Mujer</span>
+        <button class="gender-card-btn" id="btn-choose-female">
+          <div class="gender-card-frame">
+            <img src="src/assets/images/png/card-gender-female.png" alt="Mujer" class="gender-card-img" />
+          </div>
         </button>
       </div>
     </div>
