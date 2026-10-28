@@ -289,19 +289,13 @@ class ScapeRoomApp {
                 Activar escáner
               </button>
 
-              <div class="scanner-secondary-actions">
-                <button class="btn-scanner-alt" id="btn-scanner-photo" type="button">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
-                  Hacer foto
-                </button>
-                <button class="btn-scanner-alt" id="btn-open-code-modal" type="button">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                  Escribir código
-                </button>
-                <input type="file" id="scanner-file-input" accept="image/*" capture="environment" style="display: none;" />
-              </div>
-
-              <p class="scanner-instruction-text">Hazle fotos a las pruebas</p>
+              <button class="btn-scanner-toggle btn-scanner-manual" id="btn-open-code-modal" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                Escribir código
+              </button>
             </div>
           </div>
         </div>
@@ -310,7 +304,7 @@ class ScapeRoomApp {
 
     scannerSlide.querySelector("#scanner-flip-card").addEventListener("click", (e) => {
       if (this.hasDragged) return;
-      if (e.target.closest("#btn-scanner-toggle") || e.target.closest(".scanner-secondary-actions")) {
+      if (e.target.closest("#btn-scanner-toggle") || e.target.closest("#btn-open-code-modal")) {
         return;
       }
       e.currentTarget.classList.toggle("is-flipped");
@@ -440,17 +434,6 @@ class ScapeRoomApp {
     const btnScanner = document.getElementById("btn-scanner-toggle");
     if (btnScanner) {
       btnScanner.onclick = () => this.toggleScanner();
-    }
-
-    const btnPhoto = document.getElementById("btn-scanner-photo");
-    const fileInput = document.getElementById("scanner-file-input");
-    if (btnPhoto && fileInput) {
-      btnPhoto.onclick = () => fileInput.click();
-      fileInput.onchange = (e) => {
-        if (e.target.files && e.target.files[0]) {
-          this.handlePhotoFile(e.target.files[0]);
-        }
-      };
     }
 
     const btnOpenModal = document.getElementById("btn-open-code-modal");
@@ -696,10 +679,29 @@ class ScapeRoomApp {
       });
     }
 
-    // Botón para volver a selección de personajes
+    // Botón para volver a selección de personajes con Doble Verificación
     const btnBackToSelection = document.getElementById("btn-back-to-selection");
+    const confirmBackModal = document.getElementById("confirm-back-modal");
+    const btnCancelBack = document.getElementById("btn-cancel-back");
+    const btnAcceptBack = document.getElementById("btn-accept-back");
+
     if (btnBackToSelection) {
       btnBackToSelection.addEventListener("click", () => {
+        if (confirmBackModal) {
+          confirmBackModal.classList.add("active");
+        }
+      });
+    }
+
+    if (btnCancelBack && confirmBackModal) {
+      btnCancelBack.addEventListener("click", () => {
+        confirmBackModal.classList.remove("active");
+      });
+    }
+
+    if (btnAcceptBack && confirmBackModal) {
+      btnAcceptBack.addEventListener("click", () => {
+        confirmBackModal.classList.remove("active");
         this.stopScanner();
         this.selectedCharId = null;
         localStorage.removeItem("scaperoom_char_id");

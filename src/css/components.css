@@ -53,6 +53,95 @@
   margin-bottom: 16px;
 }
 
+.modal-gender-subtitle {
+  font-family: var(--font-title);
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-align: center;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  margin: 6px 0 16px 0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.modal-gender-subtitle strong {
+  color: var(--color-gold);
+  font-weight: 900;
+}
+
+/* Modal de Doble Verificación */
+.modal-confirm-box {
+  max-width: 330px;
+  text-align: center;
+  padding: 24px 20px;
+}
+
+.modal-confirm-title {
+  font-family: var(--font-title);
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--color-crimson);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
+}
+
+.modal-confirm-text {
+  font-size: 13.5px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin-bottom: 20px;
+}
+
+.modal-confirm-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-confirm-cancel {
+  flex: 1;
+  padding: 11px;
+  background-color: #1a1a24;
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+  font-family: var(--font-title);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.btn-confirm-cancel:hover {
+  background-color: #262634;
+  border-color: var(--color-gold);
+}
+
+.btn-confirm-accept {
+  flex: 1;
+  padding: 11px;
+  background-color: var(--color-crimson);
+  border: 1px solid var(--color-crimson);
+  color: #ffffff;
+  font-family: var(--font-title);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(185, 28, 28, 0.45);
+  transition: background-color 0.15s ease;
+}
+
+.btn-confirm-accept:hover {
+  background-color: var(--color-crimson-hover);
+}
+
 .gender-cards-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -364,7 +453,7 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
-  padding: 4px 0 0 0;
+  padding: 16px 0 0 0;
   min-height: 0;
 }
 
@@ -410,7 +499,7 @@
 }
 
 .game-card-flip {
-  height: min(67dvh, 520px);
+  height: min(62dvh, 485px);
   max-width: 92vw;
   aspect-ratio: 340 / 480;
   width: auto;
@@ -571,48 +660,18 @@
   color: #f4f4f5;
 }
 
-.scanner-instruction-text {
-  font-family: var(--font-title);
-  font-size: 14px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-  color: #121214;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.95), 0 0 8px rgba(255, 255, 255, 0.85);
-  text-align: center;
-  margin: 2px 0 0 0;
+.btn-scanner-manual {
+  background-color: #1a1a24;
+  border: 2px solid var(--border-strong);
+  color: #f4f4f5;
+  margin-top: 2px;
 }
 
-.scanner-secondary-actions {
-  display: flex;
-  gap: 8px;
-  width: 100%;
-}
-
-.btn-scanner-alt {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 8px 6px;
-  background-color: #1a1a22;
-  border: 1px solid var(--border-strong);
-  color: var(--text-primary);
-  font-family: var(--font-title);
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  transition: background-color 0.15s ease, border-color 0.15s ease;
-}
-
-.btn-scanner-alt:hover {
-  background-color: #262632;
+.btn-scanner-manual:hover {
+  background-color: #262634;
   border-color: var(--color-gold);
+  color: var(--color-gold);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.7);
 }
 
 .scanner-perm-alert {

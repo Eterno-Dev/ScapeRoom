@@ -22,20 +22,13 @@
          PANTALLA 1: SELECCIÓN DE PERSONAJE
          ================================================================== -->
     <section id="view-selection" class="view active">
-      <header class="header-hero">
-        <h1 class="title-spooky">El Asesinato Embrujado</h1>
-        <p class="subtitle-hero">Elige personaje</p>
-        <div class="header-action-row">
-          <button class="btn-debug-nav" id="btn-back-to-gender" title="Volver a seleccionar género">
-            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-            Cambiar Género
-          </button>
-        </div>
-      </header>
-
-      <div class="selection-hint-banner">
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-        <span>Toca cualquier tarjeta para voltearla y leer su historia</span>
+      <!-- Barra superior idéntica a la vista en partida -->
+      <div class="game-top-bar">
+        <button class="btn-top-icon" id="btn-back-to-gender" title="Volver a seleccionar género" aria-label="Volver">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <h2 class="char-active-name">Elegir Personaje</h2>
+        <div class="top-bar-spacer"></div>
       </div>
 
       <!-- Cuadrícula de Personajes con Giro 3D -->
@@ -79,6 +72,18 @@
 
   </div>
 
+  <!-- Modal de Doble Verificación para Volver Atrás desde la Partida -->
+  <div class="modal-overlay" id="confirm-back-modal">
+    <div class="modal-box modal-confirm-box">
+      <h3 class="modal-confirm-title">¿ESTÁS SEGURO?</h3>
+      <p class="modal-confirm-text">Si vuelves atrás se cancelará la selección de tu personaje actual.</p>
+      <div class="modal-confirm-actions">
+        <button class="btn-confirm-cancel" id="btn-cancel-back" type="button">Cancelar</button>
+        <button class="btn-confirm-accept" id="btn-accept-back" type="button">Volver</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Modal Manual para Introducir Código de Pista / Objeto -->
   <div class="modal-overlay" id="manual-code-modal">
     <div class="modal-box modal-code-box">
@@ -99,8 +104,7 @@
        ================================================================== -->
   <div class="modal-overlay" id="gender-modal">
     <div class="modal-box">
-      <h2 class="modal-title">Elige tu género</h2>
-      <p class="modal-subtitle">Selecciona una tarjeta para adaptar los personajes:</p>
+      <p class="modal-gender-subtitle">Selecciona un <strong>género</strong> para tu personaje</p>
 
       <div class="gender-cards-grid">
         <button class="gender-card-btn" id="btn-choose-male">
