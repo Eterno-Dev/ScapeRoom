@@ -32,103 +32,39 @@
         <span>Toca cualquier tarjeta para voltearla y leer su historia</span>
       </div>
 
-      <!-- Cuadrícula / Slider de Personajes con Giro 3D -->
+      <!-- Cuadrícula de Personajes con Giro 3D -->
       <div class="characters-grid" id="characters-grid">
-        <!-- Renderizado dinámicamente con JS -->
+        <!-- Inyectado dinámicamente con JS -->
       </div>
     </section>
 
     <!-- ==================================================================
-         PANTALLA 2: INTERFAZ EN PARTIDA
+         PANTALLA 2: INTERFAZ EN PARTIDA (1 CARTA EN PANTALLA - SWIPE)
          ================================================================== -->
     <section id="view-game" class="view">
-      <!-- Barra superior del personaje -->
+      <!-- Barra superior de partida -->
       <div class="game-top-bar">
         <div class="char-title-group">
           <h2 class="char-active-name" id="game-char-name">Cargando...</h2>
-          <button class="btn-info-circle" id="btn-char-info" title="Más información del personaje">
+        </div>
+        <div class="game-top-actions">
+          <button class="btn-top-camera" id="btn-goto-scanner" title="Ir al Escáner QR">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-              <line x1="12" y1="17" x2="12.01" y2="17"></line>
-            </svg>
-          </button>
-        </div>
-        <span class="char-locked-badge">En Partida</span>
-      </div>
-
-      <!-- Tarjeta 3D del Personaje Activo (Gira al pulsar) -->
-      <div class="active-char-section">
-        <div class="active-char-card-container">
-          <div class="flip-card char-card-flip" id="active-char-flip-card">
-            <div class="flip-card-inner">
-              <!-- Cara Frontal -->
-              <div class="flip-card-front">
-                <img id="game-char-img" src="" alt="Personaje" class="char-card-img" />
-                <div class="flip-hint-badge">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-                  Toca para girar
-                </div>
-              </div>
-              <!-- Cara Trasera -->
-              <div class="flip-card-back">
-                <div class="card-back-header">
-                  <span class="card-back-role" id="game-char-role">Rol</span>
-                  <h4 class="card-back-name" id="game-char-fullname">Nombre</h4>
-                </div>
-                <p class="card-back-bio" id="game-char-bio">Biografía...</p>
-                <div class="card-back-hint">Toca para volver al frente</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Tarjeta del Escáner QR -->
-      <div class="scanner-card">
-        <div class="scanner-header">
-          <span class="scanner-title">Escáner de Pistas QR</span>
-        </div>
-
-        <div class="scanner-video-wrapper" id="scanner-video-wrapper">
-          <video id="scanner-video" playsinline muted></video>
-          <div class="scanner-placeholder">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
               <circle cx="12" cy="13" r="4"></circle>
             </svg>
-            <span>Cámara Inactiva</span>
-          </div>
-          <div class="scanner-target-box"></div>
-        </div>
-
-        <button class="btn-scanner-toggle" id="btn-scanner-toggle">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-            <circle cx="12" cy="13" r="4"></circle>
-          </svg>
-          Activar escáner
-        </button>
-
-        <!-- Entrada manual / de prueba -->
-        <div class="code-manual-row">
-          <input type="text" id="input-manual-code" class="input-code" placeholder="Código (ej: PISTA-01)" />
-          <button class="btn-submit-code" id="btn-submit-code">Añadir</button>
+          </button>
+          <span class="char-locked-badge" id="deck-card-counter">1 / 2</span>
         </div>
       </div>
 
-      <!-- Sección de Pistas con Slider Lateral y Giro 3D -->
-      <div class="clues-section-header">
-        <h3 class="clues-section-title">Pistas Descubiertas</h3>
-        <div class="clues-nav-group">
-          <button class="btn-slider-arrow" id="btn-clues-prev" title="Anterior">&larr;</button>
-          <span class="clues-count-pill" id="clues-count-pill">0 / 8</span>
-          <button class="btn-slider-arrow" id="btn-clues-next" title="Siguiente">&rarr;</button>
+      <!-- Mazo Deslizable: 1 carta en pantalla a la vez -->
+      <div class="game-deck-viewport" id="game-deck-viewport">
+        <div class="game-deck-track" id="game-deck-track">
+          <!-- Slide 0: Carta del Personaje (Giro 3D) -->
+          <!-- Slide 1: Carta del Escáner QR (Giro 3D) -->
+          <!-- Slide 2+: Cartas de Pistas Escaneadas (Giro 3D) -->
         </div>
-      </div>
-
-      <div class="clues-deck-scroll" id="clues-deck-scroll">
-        <!-- Tarjetas inyectadas dinámicamente con giro 3D -->
       </div>
     </section>
 
@@ -159,32 +95,6 @@
           <span class="gender-card-label">Mujer</span>
         </button>
       </div>
-    </div>
-  </div>
-
-  <!-- ==================================================================
-       POP-UP 2: INFORMACIÓN DEL PERSONAJE (?)
-       ================================================================== -->
-  <div class="modal-overlay" id="info-modal">
-    <div class="modal-box">
-      <div class="modal-close-bar">
-        <button class="btn-close-modal" id="btn-close-info" title="Cerrar">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-
-      <div class="info-char-header">
-        <img id="info-avatar" src="" alt="Avatar" class="info-char-avatar" />
-        <div>
-          <h3 class="info-char-name" id="info-name">Nombre</h3>
-          <div class="info-char-role" id="info-role">Rol</div>
-        </div>
-      </div>
-
-      <p class="info-char-bio" id="info-bio">Biografía...</p>
     </div>
   </div>
 

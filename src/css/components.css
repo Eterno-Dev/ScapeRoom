@@ -1,6 +1,7 @@
 /**
- * ScapeRoom - Components, 3D Flip Cards & Modals (EternoDev Standard)
+ * ScapeRoom - Components, 3D Flip Cards & Single Card Slider (EternoDev Standard)
  * Cero Degradados - Cero Emojis - Flat Design Sólido
+ * En Partida: Solo 1 carta visible en pantalla, pasando con deslizar (swipe)
  */
 
 /* ==========================================================================
@@ -151,7 +152,7 @@
 }
 
 /* ==========================================================================
-   GRID DE PERSONAJES (PANTALLA 1)
+   PANTALLA 1: SELECCIÓN DE PERSONAJES
    ========================================================================== */
 .selection-hint-banner {
   text-align: center;
@@ -207,7 +208,7 @@
   position: absolute;
   bottom: 8px;
   right: 8px;
-  background-color: rgba(18, 18, 20, 0.88);
+  background-color: rgba(18, 18, 20, 0.9);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-sm);
   padding: 3px 6px;
@@ -222,7 +223,6 @@
   pointer-events: none;
 }
 
-/* Cara Trasera del Personaje */
 .card-back-header {
   border-bottom: 2px solid var(--border-subtle);
   padding-bottom: 8px;
@@ -288,56 +288,98 @@
 }
 
 /* ==========================================================================
-   PANTALLA 2: TARJETA DEL PERSONAJE ACTIVO (GIRO 3D)
+   PANTALLA 2: MAZO DESLIZABLE (SOLO 1 CARTA EN PANTALLA)
    ========================================================================== */
-.active-char-section {
-  margin-bottom: 16px;
-}
-
-.active-char-card-container {
-  width: 100%;
-  max-width: 260px;
-  margin: 0 auto;
-  aspect-ratio: 244 / 335;
-}
-
 .char-locked-badge {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.8px;
   text-transform: uppercase;
   color: var(--color-gold);
   background-color: var(--bg-card);
-  padding: 4px 8px;
+  padding: 6px 10px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
 }
 
-/* ==========================================================================
-   ESCÁNER QR
-   ========================================================================== */
-.scanner-card {
-  background-color: var(--bg-card);
-  border: 2px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 14px;
-  margin-bottom: 20px;
+.game-deck-viewport {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 6px 0 12px 0;
 }
 
-.scanner-header {
+.game-deck-track {
+  width: 100%;
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 0;
+  gap: 16px;
+}
+
+.game-deck-track::-webkit-scrollbar {
+  display: none;
+}
+
+.game-card-slide {
+  flex: 0 0 100%;
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 244 / 355;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.game-card-flip {
+  width: 100%;
+  height: 100%;
+}
+
+/* ==========================================================================
+   CARTA 2: ESCÁNER QR (COMO CARTA DEL MAZO)
+   ========================================================================== */
+.scanner-card-face {
+  background-color: var(--bg-card);
+  border: 2px solid var(--border-strong);
+  padding: 14px;
+  box-sizing: border-box;
+}
+
+.scanner-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
-.scanner-title {
-  font-family: var(--font-title);
-  font-size: 16px;
+.scanner-card-tag {
+  font-size: 10px;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  padding: 2px 6px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-crimson);
+  color: #ffffff;
+}
+
+.scanner-card-title {
+  font-family: var(--font-title);
+  font-size: 17px;
+  font-weight: 900;
   color: var(--color-gold);
+  text-transform: uppercase;
 }
 
 .scanner-video-wrapper {
@@ -351,7 +393,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .scanner-video-wrapper video {
@@ -370,17 +412,17 @@
   flex-direction: column;
   align-items: center;
   color: var(--text-muted);
-  gap: 8px;
+  gap: 6px;
 }
 
 .scanner-placeholder svg {
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   color: var(--text-secondary);
 }
 
 .scanner-placeholder span {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
 }
@@ -401,11 +443,11 @@
 
 .btn-scanner-toggle {
   width: 100%;
-  padding: 12px;
+  padding: 10px;
   background-color: var(--color-crimson);
   color: var(--text-on-accent);
   font-family: var(--font-title);
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -415,6 +457,7 @@
   justify-content: center;
   gap: 8px;
   transition: background-color 0.15s ease;
+  margin-bottom: 8px;
 }
 
 .btn-scanner-toggle:hover {
@@ -427,11 +470,10 @@
   color: var(--text-secondary);
 }
 
-/* Entrada rápida de código alternativo */
 .code-manual-row {
   display: flex;
-  gap: 8px;
-  margin-top: 10px;
+  gap: 6px;
+  margin-bottom: 6px;
 }
 
 .input-code {
@@ -439,9 +481,9 @@
   background-color: var(--bg-input);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius-sm);
-  padding: 8px 12px;
+  padding: 6px 10px;
   color: var(--text-primary);
-  font-size: 13px;
+  font-size: 12px;
   text-transform: uppercase;
 }
 
@@ -450,141 +492,35 @@
 }
 
 .btn-submit-code {
-  padding: 8px 14px;
+  padding: 6px 12px;
   background-color: var(--color-gold);
   color: #121214;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
   border-radius: var(--radius-sm);
+}
+
+.scanner-card-back {
+  background-color: #17171d;
+  border: 2px solid var(--color-crimson);
 }
 
 /* ==========================================================================
-   SLIDER HORIZONTAL DE TARJETAS DE PISTAS (SWIPE + GIRO 3D)
+   CARTAS 3+: PISTAS ESCANEADAS (COMO CARTAS DEL MAZO)
    ========================================================================== */
-.clues-section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.clues-section-title {
-  font-family: var(--font-title);
-  font-size: 18px;
-  font-weight: 900;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  letter-spacing: 1px;
-}
-
-.clues-nav-group {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.btn-slider-arrow {
-  width: 28px;
-  height: 28px;
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-sm);
-  color: var(--text-primary);
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.15s ease;
-}
-
-.btn-slider-arrow:active {
-  background-color: var(--bg-card-hover);
-}
-
-.clues-count-pill {
-  font-size: 11px;
-  font-weight: 800;
-  background-color: var(--bg-card);
-  color: var(--color-gold);
-  padding: 4px 8px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-subtle);
-}
-
-.clues-deck-scroll {
-  display: flex;
-  gap: 14px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  padding-bottom: 14px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-strong) var(--bg-surface);
-}
-
-.clues-deck-scroll::-webkit-scrollbar {
-  height: 6px;
-}
-
-.clues-deck-scroll::-webkit-scrollbar-thumb {
-  background-color: var(--border-strong);
-  border-radius: 3px;
-}
-
-/* Tarjeta 3D de Pista */
-.clue-flip-card {
-  flex: 0 0 85%;
-  max-width: 310px;
-  aspect-ratio: 244 / 340;
-  scroll-snap-align: start;
-  perspective: 1200px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.clue-flip-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-style: preserve-3d;
-}
-
-.clue-flip-card.is-flipped .clue-flip-inner {
-  transform: rotateY(180deg);
-}
-
-.clue-flip-front,
-.clue-flip-back {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  border-radius: 14px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  box-sizing: border-box;
-}
-
-/* Cara Frontal de la Pista */
-.clue-flip-front {
-  transform: rotateY(0deg);
+.clue-front-face {
   background-color: var(--bg-card);
   border: 2px solid var(--border-strong);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+  padding: 16px;
+  box-sizing: border-box;
 }
 
 .clue-front-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .clue-card-tag {
@@ -604,18 +540,18 @@
 
 .clue-card-title {
   font-family: var(--font-title);
-  font-size: 21px;
+  font-size: 22px;
   font-weight: 900;
   color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .clue-card-desc {
   font-size: 13.5px;
   color: var(--text-secondary);
-  line-height: 1.45;
+  line-height: 1.5;
   flex: 1;
 }
 
@@ -627,19 +563,18 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   color: var(--color-gold);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-/* Cara Trasera de la Pista */
-.clue-flip-back {
-  transform: rotateY(180deg);
+.clue-back-face {
   background-color: #17171d;
   border: 2px solid var(--color-crimson);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
+  padding: 16px;
+  box-sizing: border-box;
 }
 
 .clue-seal-badge {
@@ -658,16 +593,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .clue-back-title {
   font-family: var(--font-title);
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 900;
   color: var(--text-primary);
   text-transform: uppercase;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .clue-back-detail {
@@ -675,10 +610,10 @@
   color: var(--text-secondary);
   line-height: 1.45;
   background-color: var(--bg-input);
-  padding: 10px 12px;
+  padding: 12px;
   border-radius: var(--radius-sm);
   border-left: 3px solid var(--color-crimson);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .clue-back-notes {
@@ -686,80 +621,4 @@
   color: var(--text-muted);
   line-height: 1.35;
   flex: 1;
-}
-
-.empty-clues-placeholder {
-  width: 100%;
-  padding: 28px 16px;
-  background-color: var(--bg-card);
-  border: 2px dashed var(--border-subtle);
-  border-radius: var(--radius-sm);
-  text-align: center;
-  color: var(--text-muted);
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-/* ==========================================================================
-   MODAL DE INFORMACIÓN DEL PERSONAJE
-   ========================================================================== */
-.modal-close-bar {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 10px;
-}
-
-.btn-close-modal {
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-muted);
-}
-
-.btn-close-modal svg {
-  width: 20px;
-  height: 20px;
-}
-
-.info-char-header {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 16px;
-}
-
-.info-char-avatar {
-  width: 70px;
-  height: 96px;
-  object-fit: cover;
-  border-radius: 8px;
-  border: 2px solid var(--color-gold);
-}
-
-.info-char-name {
-  font-family: var(--font-title);
-  font-size: 22px;
-  font-weight: 900;
-  text-transform: uppercase;
-  color: var(--text-primary);
-}
-
-.info-char-role {
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-  color: var(--color-gold);
-  margin-top: 2px;
-}
-
-.info-char-bio {
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  background-color: var(--bg-input);
-  padding: 14px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border-subtle);
 }
