@@ -7,6 +7,7 @@ export const CLUES = {
   "OBJETO-02": {
     id: "OBJETO-02",
     num: 2,
+    letter: "B",
     token: "k9x7m2",
     title: "Llave grande",
     category: "Acceso / Puerta",
@@ -18,6 +19,7 @@ export const CLUES = {
   "OBJETO-03": {
     id: "OBJETO-03",
     num: 3,
+    letter: "C",
     token: "w3b8r5",
     title: "Llave pequeña",
     category: "Cerradura Secreta",
@@ -29,6 +31,7 @@ export const CLUES = {
   "OBJETO-04": {
     id: "OBJETO-04",
     num: 4,
+    letter: "D",
     token: "p7q2t4",
     title: "Destornillador",
     category: "Herramienta",
@@ -40,6 +43,7 @@ export const CLUES = {
   "OBJETO-05": {
     id: "OBJETO-05",
     num: 5,
+    letter: "E",
     token: "m5v8y1",
     title: "Collar",
     category: "Joya Valiosa",
@@ -51,6 +55,7 @@ export const CLUES = {
   "OBJETO-06": {
     id: "OBJETO-06",
     num: 6,
+    letter: "F",
     token: "j4h6s9",
     title: "Boli",
     category: "Escritura",
@@ -62,6 +67,7 @@ export const CLUES = {
   "OBJETO-07": {
     id: "OBJETO-07",
     num: 7,
+    letter: "G",
     token: "d2n8k3",
     title: "Candelabro",
     category: "Objeto Pesado",
@@ -73,6 +79,7 @@ export const CLUES = {
   "OBJETO-08": {
     id: "OBJETO-08",
     num: 8,
+    letter: "H",
     token: "z6f3w8",
     title: "Tijeras",
     category: "Corte",
@@ -84,6 +91,7 @@ export const CLUES = {
   "OBJETO-09": {
     id: "OBJETO-09",
     num: 9,
+    letter: "I",
     token: "x8c5g1",
     title: "Medicina",
     category: "Fármaco / Botica",
@@ -95,6 +103,7 @@ export const CLUES = {
   "OBJETO-10": {
     id: "OBJETO-10",
     num: 10,
+    letter: "J",
     token: "b4m9v2",
     title: "Caja fuerte",
     category: "Seguridad",
@@ -106,6 +115,7 @@ export const CLUES = {
   "OBJETO-11": {
     id: "OBJETO-11",
     num: 11,
+    letter: "K",
     token: "q7r3t8",
     title: "Papeles",
     category: "Documentación",
@@ -118,6 +128,7 @@ export const CLUES = {
   "OBJETO-12": {
     id: "OBJETO-12",
     num: 12,
+    letter: "L",
     token: "h2j6k9",
     title: "Nota",
     category: "Mensaje Secreto",
@@ -130,6 +141,7 @@ export const CLUES = {
   "OBJETO-13": {
     id: "OBJETO-13",
     num: 13,
+    letter: "M",
     token: "l5n8p1",
     title: "Copa",
     category: "Cristalería",
@@ -141,6 +153,7 @@ export const CLUES = {
   "OBJETO-14": {
     id: "OBJETO-14",
     num: 14,
+    letter: "N",
     token: "v9w3x7",
     title: "Carpeta",
     category: "Expediente",
@@ -153,6 +166,7 @@ export const CLUES = {
   "OBJETO-15": {
     id: "OBJETO-15",
     num: 15,
+    letter: "O",
     token: "c6d1f4",
     title: "Cartuchos",
     category: "Munición",
@@ -164,6 +178,7 @@ export const CLUES = {
   "OBJETO-16": {
     id: "OBJETO-16",
     num: 16,
+    letter: "P",
     token: "g8s4z2",
     title: "Pluma",
     category: "Reliquia",
@@ -175,24 +190,40 @@ export const CLUES = {
 };
 
 /**
- * Resuelve una entrada (token único, ID completo, o número de objeto/QR) al ID canónico (ej: OBJETO-02)
+ * Resuelve una entrada (token único, ID completo, letra indicadora, o número de objeto/QR) al ID canónico (ej: OBJETO-02)
  */
 export function resolveClueId(rawInput) {
   if (!rawInput) return null;
   const input = String(rawInput).trim().toLowerCase();
 
-  // 1. Buscar coincidencia exacta por token secreto (del QR)
+  // 1. Buscar coincidencia por letra única (ej: "b", "c", "k") o frase (ej: "pista b", "sobre b")
+  for (const [id, clue] of Object.entries(CLUES)) {
+    if (clue.letter && clue.letter.toLowerCase() === input) {
+      return id;
+    }
+  }
+  const letterPrefixMatch = input.match(/^(?:pista|objeto|sobre|letra)\s*([a-z])$/i);
+  if (letterPrefixMatch) {
+    const targetLetter = letterPrefixMatch[1].toUpperCase();
+    for (const [id, clue] of Object.entries(CLUES)) {
+      if (clue.letter === targetLetter) {
+        return id;
+      }
+    }
+  }
+
+  // 2. Buscar coincidencia exacta por token secreto (del QR)
   for (const [id, clue] of Object.entries(CLUES)) {
     if (clue.token && clue.token.toLowerCase() === input) {
       return id;
     }
   }
 
-  // 2. Buscar por ID estándar (ej: OBJETO-02 u OBJETO-2)
+  // 3. Buscar por ID estándar (ej: OBJETO-02 u OBJETO-2)
   const upper = input.toUpperCase();
   if (CLUES[upper]) return upper;
 
-  // 3. Buscar por coincidencia con número de objeto o QR (ej: "2", "qr2", "objeto2", "pista2")
+  // 4. Buscar por coincidencia con número de objeto o QR (ej: "2", "qr2", "objeto2", "pista2")
   const numMatch = input.match(/(\d+)/);
   if (numMatch) {
     const num = parseInt(numMatch[1], 10);

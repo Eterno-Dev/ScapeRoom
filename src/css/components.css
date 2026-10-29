@@ -1179,6 +1179,42 @@
   border: 2px solid var(--color-crimson);
   padding: 16px;
   box-sizing: border-box;
+  position: relative;
+}
+
+/* ==========================================================================
+   INSIGNIA / BADGE INDICADOR DE LETRA EN PISTAS (A - Z) PARA SOBRES
+   ========================================================================== */
+.clue-corner-letter {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  background-color: #121217;
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.75);
+  z-index: 20;
+  user-select: none;
+  pointer-events: none;
+}
+
+.clue-corner-letter span {
+  font-family: var(--font-title);
+  font-size: 24px;
+  font-weight: 900;
+  color: #ffffff;
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.clue-back-face .card-back-header {
+  padding: 0 40px 6px 40px;
 }
 
 .clue-seal-badge {

@@ -367,6 +367,11 @@ class ScapeRoomApp {
             <!-- Cara Trasera del Objeto (Detalles e Información) -->
             <div class="flip-card-back clue-back-face" style="background-image: url('src/assets/images/tarjetas/${clue.backBase}');">
               
+              <!-- Letra Indicadora en la Esquina Superior (Identificador para sobres de pistas) -->
+              <div class="clue-corner-letter" title="Pista ${clue.letter}">
+                <span>${clue.letter}</span>
+              </div>
+
               <!-- Escudo de Confidencialidad para Pistas Privadas (Ojito) -->
               ${clue.isPrivate ? `
                 <div class="private-shield-overlay" id="shield-${clue.id}">
@@ -407,7 +412,6 @@ class ScapeRoomApp {
                 ` : ""}
 
                 <div class="card-back-header">
-                  <span class="card-back-role">OBJETO ${clue.num} — ${clue.category}</span>
                   <h4 class="card-back-name">${clue.title}</h4>
                 </div>
                 <p class="card-back-bio">${clue.desc}</p>
