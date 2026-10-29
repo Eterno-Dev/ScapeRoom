@@ -1,7 +1,7 @@
 /**
  * TEMPORAL: Lógica del Panel de Ajuste de Outlines y Sombreados
  * Fija Barlow Condensed para Títulos y Fredoka para Subtítulos/Cartas.
- * Permite afinar grosores (4px a 8px) para cerrar orificios de letras interiores.
+ * Rellena al 100% los orificios de letras interiores (e, o, a, d).
  */
 
 export function initCardTextPreview() {
@@ -27,7 +27,7 @@ export function initCardTextPreview() {
   const thicknessPills = document.querySelectorAll("[data-outline-preset]");
 
   let areAllFlipped = false;
-  let currentOutlineWidth = parseFloat(outlineSlider ? outlineSlider.value : 6.0);
+  let currentOutlineWidth = 6.5; // Predeterminado a 6.5 como pidió el usuario
 
   // Alternar Colapsar / Expandir panel
   if (toggleBtn) {
@@ -108,15 +108,11 @@ export function initCardTextPreview() {
     let strokeBio = "none";
     let shadowList = [];
 
-    // Cálculo de grosor para título y bio
-    // Para que los huecos de la 'e' y 'o' se sellen, bio usa casi el mismo grosor completo
-    const bioStrokeWidth = outlineWidth > 0 ? (outlineWidth >= 5 ? outlineWidth : (outlineWidth * 0.95).toFixed(1)) : 0;
-
     // 1. TÉCNICA DE OUTLINE VECTORIAL LIMPIO
     if (outlineWidth > 0) {
       if (outlineMethod === "stroke" || outlineMethod === "both") {
         strokeTitle = `${outlineWidth}px ${outlineColor}`;
-        strokeBio = `${bioStrokeWidth}px ${outlineColor}`;
+        strokeBio = `${outlineWidth}px ${outlineColor}`;
       }
 
       if (outlineMethod === "shadow") {
@@ -124,7 +120,18 @@ export function initCardTextPreview() {
       }
     }
 
-    // 2. SOMBRA / AURA SUAVE (CON BLUR SUAVE PARA CERO PUNTITOS)
+    // 2. RELLENO INTERNO TOTAL DE AGUJEROS (e, o, a, d) MEDIANTE SOMBRAS MULTICAPA CONCÉNTRICAS
+    if (outlineWidth >= 4) {
+      shadowList.push(
+        `0 0 1px ${outlineColor}`,
+        `0 0 2px ${outlineColor}`,
+        `0 0 3px ${outlineColor}`,
+        `0 0 4px ${outlineColor}`,
+        `0 0 5px ${outlineColor}`
+      );
+    }
+
+    // 3. SOMBRA / AURA SUAVE (CON BLUR SUAVE PARA CERO PUNTITOS)
     const softShadowColor = hexToRgba(shadowColor, 0.85);
     const wideShadowColor = hexToRgba(shadowColor, 0.70);
     const deepShadowColor = hexToRgba(shadowColor, 0.50);
@@ -191,6 +198,7 @@ export function initCardTextPreview() {
 
   // Slider continuo de grosor
   if (outlineSlider) {
+    outlineSlider.value = currentOutlineWidth;
     outlineSlider.addEventListener("input", (e) => {
       currentOutlineWidth = parseFloat(e.target.value);
       thicknessPills.forEach(p => {
@@ -240,7 +248,7 @@ export function initCardTextPreview() {
   if (copyCssBtn) {
     copyCssBtn.addEventListener("click", () => {
       const s = computeStyles();
-      const cssString = `/* Estilos de Tipografía con Outline & Aura Suave */
+      const cssString = `/* Estilos de Tipografía con Outline & Relleno Interno */
 /* Títulos: Barlow Condensed */
 .char-active-name,
 .modal-title,
@@ -264,6 +272,8 @@ export function initCardTextPreview() {
   font-family: 'Fredoka', sans-serif !important;
   font-weight: 700 !important;
   color: ${s.textColor} !important;
+  line-height: 1.5 !important;
+  letter-spacing: 1.5px !important;
   -webkit-text-stroke: ${s.strokeBio};
   paint-order: stroke fill;
   text-shadow: ${s.finalShadow} !important;
@@ -283,6 +293,14 @@ export function initCardTextPreview() {
     });
   }
 
-  // Inicializar al cargar con 6.0px
+  // Inicializar al cargar con 6.5px y marcar el pill 6.5px
+  thicknessPills.forEach(p => {
+    if (p.getAttribute("data-outline-preset") === "6.5") {
+      p.classList.add("active");
+    } else {
+      p.classList.remove("active");
+    }
+  });
+
   applyStyles();
 }
