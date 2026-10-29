@@ -9,7 +9,7 @@
   <!-- Google Fonts: Barlow Condensed, Cinzel, Inter + Fuentes de Prueba (Cartoon, Redondas, Gruesas) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Bangers&family=Barlow+Condensed:wght@700;800;900&family=Black+Ops+One&family=Carter+One&family=Cinzel:wght@700;800;900&family=Creepster&family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&family=Luckiest+Guy&family=Nunito:wght@700;800;900&family=Paytone+One&family=Quicksand:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Bangers&family=Barlow+Condensed:wght@700;800;900&family=Black+Ops+One&family=Carter+One&family=Cinzel:wght@700;800;900&family=Creepster&family=Fredoka:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=Luckiest+Guy&family=Nunito:wght@700;800;900&family=Paytone+One&family=Quicksand:wght@600;700&display=swap" rel="stylesheet" />
 
   <!-- Estilos Modulares (EternoDev Standard) -->
   <link rel="stylesheet" href="src/css/main.css" />
@@ -65,12 +65,12 @@
               <span>Presets de Estilos Rápidos</span>
             </div>
             <div class="preview-presets-row">
+              <button type="button" class="btn-preset-pill active" data-preview-preset="fredoka-perfect">✨ Fredoka + Outline (Tu Selección)</button>
               <button type="button" class="btn-preset-pill" data-preview-preset="cartoon-pop">💥 Cartoon Pop</button>
               <button type="button" class="btn-preset-pill" data-preview-preset="rounded-clean">🧸 Redondito Limpio</button>
               <button type="button" class="btn-preset-pill" data-preview-preset="comic-bangers">🦸 Cómic Bangers</button>
               <button type="button" class="btn-preset-pill" data-preview-preset="poster-heavy">⚡ Poster Grueso</button>
               <button type="button" class="btn-preset-pill" data-preview-preset="mystery-gothic">🦇 Gótico Misterio</button>
-              <button type="button" class="btn-preset-pill" data-preview-preset="original-improved">✨ Original + Outline</button>
               <button type="button" class="btn-preset-pill" data-preview-preset="original-default">🔄 Original por Defecto</button>
             </div>
           </div>
@@ -81,6 +81,11 @@
             <div class="preview-control-group">
               <label class="preview-label" for="preview-font-title-select">Fuente Título</label>
               <select id="preview-font-title-select" class="preview-select">
+                <optgroup label="--- Clásicas / Por Defecto ---">
+                  <option value="'Barlow Condensed', sans-serif" selected>Barlow Condensed (Por Defecto)</option>
+                  <option value="'Cinzel', serif">Cinzel (Romana Misterio)</option>
+                  <option value="'Inter', sans-serif">Inter (Sans limpia)</option>
+                </optgroup>
                 <optgroup label="--- Estilo Cartoon ---">
                   <option value="'Luckiest Guy', cursive">Luckiest Guy (Cartoon)</option>
                   <option value="'Bangers', cursive">Bangers (Cómic)</option>
@@ -98,11 +103,6 @@
                   <option value="'Black Ops One', cursive">Black Ops One (Fuerte)</option>
                   <option value="Impact, fantasy">Impact (Ultra Pesada)</option>
                 </optgroup>
-                <optgroup label="--- Clásicas / Misterio ---">
-                  <option value="'Barlow Condensed', sans-serif" selected>Barlow Condensed (Actual)</option>
-                  <option value="'Cinzel', serif">Cinzel (Romana Misterio)</option>
-                  <option value="'Inter', sans-serif">Inter (Sans limpia)</option>
-                </optgroup>
               </select>
             </div>
 
@@ -110,10 +110,10 @@
             <div class="preview-control-group">
               <label class="preview-label" for="preview-font-bio-select">Fuente Descripción</label>
               <select id="preview-font-bio-select" class="preview-select">
-                <option value="'Inter', sans-serif" selected>Inter (Actual)</option>
-                <option value="'Fredoka', sans-serif">Fredoka (Redondita)</option>
+                <option value="'Fredoka', sans-serif" selected>Fredoka (Redondita)</option>
                 <option value="'Nunito', sans-serif">Nunito (Redonda suave)</option>
                 <option value="'Quicksand', sans-serif">Quicksand (Geométrica)</option>
+                <option value="'Inter', sans-serif">Inter (Sans limpia)</option>
                 <option value="'Barlow Condensed', sans-serif">Barlow Condensed</option>
                 <option value="'Cinzel', serif">Cinzel</option>
               </select>
@@ -123,11 +123,11 @@
             <div class="preview-control-group">
               <label class="preview-label" for="preview-outline-width-select">Grosor Outline</label>
               <select id="preview-outline-width-select" class="preview-select">
-                <option value="0" selected>Sin outline (0px)</option>
+                <option value="0">Sin outline (0px)</option>
                 <option value="1">Fino (1px)</option>
                 <option value="1.5">Medio (1.5px)</option>
                 <option value="2">Grueso (2px)</option>
-                <option value="2.5">Muy Grueso (2.5px)</option>
+                <option value="2.5" selected>Muy Grueso (2.5px)</option>
                 <option value="3">Ultra Cómic (3px)</option>
                 <option value="4">Sticker (4px)</option>
               </select>
@@ -137,9 +137,9 @@
             <div class="preview-control-group">
               <label class="preview-label" for="preview-outline-method-select">Técnica Outline</label>
               <select id="preview-outline-method-select" class="preview-select">
-                <option value="shadow" selected>Multipunto (Conserva letra)</option>
-                <option value="stroke">Trazo Vectorial (Stroke)</option>
-                <option value="both">Combinado (Trazo + Sombra)</option>
+                <option value="both" selected>Combinado (Trazo Vector + Aura Suave)</option>
+                <option value="stroke">Trazo Vectorial Nítido (Stroke)</option>
+                <option value="shadow">Anillo Continuo 360° (36 ángulos)</option>
               </select>
             </div>
 
@@ -157,14 +157,14 @@
               <label class="preview-label" for="preview-text-color-input">Color del Texto</label>
               <div class="preview-color-row">
                 <select id="preview-text-color-select" class="preview-select" style="flex:1;">
-                  <option value="#121214" selected>Negro (#121214)</option>
-                  <option value="#ffffff">Blanco (#FFFFFF)</option>
+                  <option value="#ffffff" selected>Blanco (#FFFFFF)</option>
+                  <option value="#121214">Negro (#121214)</option>
                   <option value="#fef3c7">Marfil / Crema</option>
                   <option value="#fbbf24">Dorado</option>
                   <option value="#b91c1c">Carmesí</option>
                   <option value="custom">Personalizado...</option>
                 </select>
-                <input type="color" id="preview-text-color-input" class="preview-color-picker" value="#121214" />
+                <input type="color" id="preview-text-color-input" class="preview-color-picker" value="#ffffff" />
               </div>
             </div>
 
@@ -172,12 +172,12 @@
             <div class="preview-control-group">
               <label class="preview-label" for="preview-shadow-type-select">Estilo Sombreado</label>
               <select id="preview-shadow-type-select" class="preview-select">
-                <option value="original" selected>Resplandor Original (Glow)</option>
+                <option value="glow-intense" selected>Aura Intensa Suave</option>
                 <option value="glow-soft">Resplandor Suave</option>
-                <option value="glow-intense">Aura Intensa</option>
                 <option value="drop-3d">Sombra 3D Dura (Cartoon)</option>
                 <option value="drop-soft">Sombra Suave Caída</option>
                 <option value="deep-contrast">Sombra Profunda (Contraste)</option>
+                <option value="original">Resplandor Original</option>
                 <option value="none">Sin sombra</option>
               </select>
             </div>
@@ -186,7 +186,7 @@
             <div class="preview-control-group">
               <label class="preview-label" for="preview-shadow-color-input">Color Sombra</label>
               <div class="preview-color-row">
-                <input type="color" id="preview-shadow-color-input" class="preview-color-picker" value="#ffffff" />
+                <input type="color" id="preview-shadow-color-input" class="preview-color-picker" value="#000000" />
                 <span class="preview-label" style="text-transform:none;">Sombra</span>
               </div>
             </div>

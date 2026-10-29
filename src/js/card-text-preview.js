@@ -1,7 +1,7 @@
 /**
  * TEMPORAL: Lógica del Panel de Pruebas de Tipografía, Outlines y Sombreados
  * Modifica en tiempo real las variables CSS aplicadas a los reversos de las cartas
- * y a los textos de la interfaz.
+ * y a los textos de la interfaz con renderizado vectorial limpio (cero puntitos).
  */
 
 export function initCardTextPreview() {
@@ -81,7 +81,33 @@ export function initCardTextPreview() {
     });
   }
 
-  // Generador dinámico de sombras y outline
+  // Conversión de color HEX a RGBA para sombras suaves
+  function hexToRgba(hex, alpha) {
+    let cleanHex = hex.replace("#", "");
+    if (cleanHex.length === 3) {
+      cleanHex = cleanHex.split("").map(c => c + c).join("");
+    }
+    const r = parseInt(cleanHex.substring(0, 2), 16) || 0;
+    const g = parseInt(cleanHex.substring(2, 4), 16) || 0;
+    const b = parseInt(cleanHex.substring(4, 6), 16) || 0;
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
+  // Generador de anillo continuo de 36 ángulos (cero puntitos o muescas)
+  function generateDenseShadowRing(radius, color) {
+    if (radius <= 0) return [];
+    const count = 36; // 36 puntos = 1 cada 10 grados, subpixel continuo
+    const list = [];
+    for (let i = 0; i < count; i++) {
+      const rad = (i * 2 * Math.PI) / count;
+      const x = (Math.cos(rad) * radius).toFixed(2);
+      const y = (Math.sin(rad) * radius).toFixed(2);
+      list.push(`${x}px ${y}px 0 ${color}`);
+    }
+    return list;
+  }
+
+  // Generador dinámico de sombras y outline vectorial limpio
   function computeStyles() {
     const fontTitle = fontTitleSelect.value;
     const fontBio = fontBioSelect.value;
@@ -92,45 +118,65 @@ export function initCardTextPreview() {
     const shadowColor = shadowColorInput.value;
     const textColor = textColorInput.value;
 
-    let strokeCss = "none";
+    let strokeTitle = "none";
+    let strokeBio = "none";
     let shadowList = [];
 
-    // 1. Cálculo del Outline
+    // Cálculo proporcional de grosor para título y bio
+    const bioStrokeWidth = outlineWidth > 0 ? Math.max(1.0, (outlineWidth * 0.85)).toFixed(1) : 0;
+
+    // 1. TÉCNICA DE OUTLINE VECTORIAL LIMPIO
     if (outlineWidth > 0) {
       if (outlineMethod === "stroke" || outlineMethod === "both") {
-        strokeCss = `${outlineWidth}px ${outlineColor}`;
+        // Trazo vectorial puro por GPU sin dientes ni puntos
+        strokeTitle = `${outlineWidth}px ${outlineColor}`;
+        strokeBio = `${bioStrokeWidth}px ${outlineColor}`;
       }
 
-      if (outlineMethod === "shadow" || outlineMethod === "both") {
-        // Outline 8 direcciones mediante text-shadow (mantiene 100% el grosor de la letra)
-        const d = outlineWidth;
-        const dDiag = (outlineWidth * 0.707).toFixed(1);
-        shadowList.push(
-          `-${d}px 0 0 ${outlineColor}`,
-          `${d}px 0 0 ${outlineColor}`,
-          `0 -${d}px 0 ${outlineColor}`,
-          `0 ${d}px 0 ${outlineColor}`,
-          `-${dDiag}px -${dDiag}px 0 ${outlineColor}`,
-          `${dDiag}px -${dDiag}px 0 ${outlineColor}`,
-          `-${dDiag}px ${dDiag}px 0 ${outlineColor}`,
-          `${dDiag}px ${dDiag}px 0 ${outlineColor}`
-        );
+      if (outlineMethod === "shadow") {
+        // Anillo denso de 36 ángulos para máxima suavidad matemática
+        shadowList.push(...generateDenseShadowRing(outlineWidth, outlineColor));
       }
     }
 
-    // 2. Cálculo de la Sombra / Glow
-    if (shadowType === "glow-soft") {
-      shadowList.push(`0 0 8px ${shadowColor}`);
-    } else if (shadowType === "glow-intense") {
-      shadowList.push(`0 1px 3px ${shadowColor}`, `0 0 14px ${shadowColor}`);
+    // 2. SOMBRA / AURA SUAVE (CON BLUR SUAVE PARA CERO PUNTITOS)
+    const softShadowColor = hexToRgba(shadowColor, 0.85);
+    const wideShadowColor = hexToRgba(shadowColor, 0.70);
+    const deepShadowColor = hexToRgba(shadowColor, 0.50);
+
+    if (shadowType === "glow-intense") {
+      // Aura intensa con desenfoque suave (sin aristas)
+      shadowList.push(
+        `0 2px 6px ${softShadowColor}`,
+        `0 0 12px ${wideShadowColor}`,
+        `0 0 20px ${deepShadowColor}`
+      );
+    } else if (shadowType === "glow-soft") {
+      shadowList.push(
+        `0 1px 4px ${softShadowColor}`,
+        `0 0 10px ${wideShadowColor}`
+      );
     } else if (shadowType === "drop-3d") {
-      shadowList.push(`3px 3px 0 ${shadowColor}`, `4px 4px 2px rgba(0,0,0,0.5)`);
+      // Sombra 3D desplazada limpia
+      shadowList.push(
+        `3px 3px 0 ${outlineColor}`,
+        `4px 4px 5px ${softShadowColor}`
+      );
     } else if (shadowType === "drop-soft") {
-      shadowList.push(`0 4px 10px ${shadowColor}`);
+      shadowList.push(
+        `0 3px 8px ${softShadowColor}`,
+        `0 6px 16px ${wideShadowColor}`
+      );
     } else if (shadowType === "deep-contrast") {
-      shadowList.push(`0 2px 4px rgba(0,0,0,0.9)`, `0 4px 14px ${shadowColor}`);
+      shadowList.push(
+        `0 2px 4px rgba(0, 0, 0, 0.95)`,
+        `0 4px 14px ${softShadowColor}`
+      );
     } else if (shadowType === "original") {
-      shadowList.push(`0 1px 3px rgba(255, 255, 255, 0.95)`, `0 0 10px rgba(255, 255, 255, 0.85)`);
+      shadowList.push(
+        `0 1px 3px rgba(255, 255, 255, 0.95)`,
+        `0 0 10px rgba(255, 255, 255, 0.85)`
+      );
     }
 
     const finalShadow = shadowList.length > 0 ? shadowList.join(", ") : "none";
@@ -139,7 +185,8 @@ export function initCardTextPreview() {
       fontTitle,
       fontBio,
       textColor,
-      strokeCss,
+      strokeTitle,
+      strokeBio,
       finalShadow,
       outlineWidth,
       outlineColor
@@ -153,9 +200,9 @@ export function initCardTextPreview() {
     root.style.setProperty("--preview-font-title", s.fontTitle);
     root.style.setProperty("--preview-font-bio", s.fontBio);
     root.style.setProperty("--preview-color-title", s.textColor);
-    root.style.setProperty("--preview-color-bio", s.textColor === "#ffffff" ? "#f4f4f6" : s.textColor);
-    root.style.setProperty("--preview-stroke-title", s.strokeCss);
-    root.style.setProperty("--preview-stroke-bio", s.strokeCss !== "none" ? `1px ${s.outlineColor}` : "none");
+    root.style.setProperty("--preview-color-bio", s.textColor);
+    root.style.setProperty("--preview-stroke-title", s.strokeTitle);
+    root.style.setProperty("--preview-stroke-bio", s.strokeBio);
     root.style.setProperty("--preview-shadow-title", s.finalShadow);
     root.style.setProperty("--preview-shadow-bio", s.finalShadow);
   }
@@ -174,7 +221,6 @@ export function initCardTextPreview() {
   inputs.forEach(input => {
     if (input) {
       input.addEventListener("input", () => {
-        // Deseleccionar preset activo al modificar manualmente
         presetPills.forEach(p => p.classList.remove("active"));
         applyStyles();
       });
@@ -189,18 +235,20 @@ export function initCardTextPreview() {
   if (copyCssBtn) {
     copyCssBtn.addEventListener("click", () => {
       const s = computeStyles();
-      const cssString = `/* Estilos de Texto seleccionados para el Reverso de Cartas */
+      const cssString = `/* Estilos de Texto para Cartas (Título Barlow Condensed + Bio Fredoka) */
 .card-back-role-title {
   font-family: ${s.fontTitle};
   color: ${s.textColor};
-  -webkit-text-stroke: ${s.strokeCss};
+  -webkit-text-stroke: ${s.strokeTitle};
   paint-order: stroke fill;
   text-shadow: ${s.finalShadow};
 }
 
 .card-back-bio {
   font-family: ${s.fontBio};
-  color: ${s.textColor === "#ffffff" ? "#f4f4f6" : s.textColor};
+  color: ${s.textColor};
+  -webkit-text-stroke: ${s.strokeBio};
+  paint-order: stroke fill;
   text-shadow: ${s.finalShadow};
 }`;
 
@@ -220,6 +268,16 @@ export function initCardTextPreview() {
 
   // Presets preconfigurados
   const presetsData = {
+    "fredoka-perfect": {
+      fontTitle: "'Barlow Condensed', sans-serif",
+      fontBio: "'Fredoka', sans-serif",
+      outlineWidth: "2.5",
+      outlineMethod: "both",
+      outlineColor: "#000000",
+      shadowType: "glow-intense",
+      shadowColor: "#000000",
+      textColor: "#ffffff"
+    },
     "cartoon-pop": {
       fontTitle: "'Luckiest Guy', cursive",
       fontBio: "'Fredoka', sans-serif",
@@ -231,18 +289,18 @@ export function initCardTextPreview() {
       textColor: "#ffffff"
     },
     "rounded-clean": {
-      fontTitle: "'Fredoka', sans-serif",
-      fontBio: "'Nunito', sans-serif",
-      outlineWidth: "1.5",
-      outlineMethod: "shadow",
-      outlineColor: "#ffffff",
+      fontTitle: "'Barlow Condensed', sans-serif",
+      fontBio: "'Fredoka', sans-serif",
+      outlineWidth: "2",
+      outlineMethod: "both",
+      outlineColor: "#000000",
       shadowType: "glow-soft",
-      shadowColor: "#ffffff",
-      textColor: "#121214"
+      shadowColor: "#000000",
+      textColor: "#ffffff"
     },
     "comic-bangers": {
       fontTitle: "'Bangers', cursive",
-      fontBio: "'Inter', sans-serif",
+      fontBio: "'Fredoka', sans-serif",
       outlineWidth: "3",
       outlineMethod: "both",
       outlineColor: "#000000",
@@ -252,8 +310,8 @@ export function initCardTextPreview() {
     },
     "poster-heavy": {
       fontTitle: "'Alfa Slab One', cursive",
-      fontBio: "'Inter', sans-serif",
-      outlineWidth: "2",
+      fontBio: "'Fredoka', sans-serif",
+      outlineWidth: "2.2",
       outlineMethod: "both",
       outlineColor: "#000000",
       shadowType: "deep-contrast",
@@ -262,22 +320,12 @@ export function initCardTextPreview() {
     },
     "mystery-gothic": {
       fontTitle: "'Cinzel', serif",
-      fontBio: "'Inter', sans-serif",
-      outlineWidth: "1.5",
+      fontBio: "'Fredoka', sans-serif",
+      outlineWidth: "2",
       outlineMethod: "both",
       outlineColor: "#b91c1c",
       shadowType: "deep-contrast",
       shadowColor: "#000000",
-      textColor: "#ffffff"
-    },
-    "original-improved": {
-      fontTitle: "'Barlow Condensed', sans-serif",
-      fontBio: "'Inter', sans-serif",
-      outlineWidth: "1.5",
-      outlineMethod: "shadow",
-      outlineColor: "#000000",
-      shadowType: "glow-soft",
-      shadowColor: "#ffffff",
       textColor: "#ffffff"
     },
     "original-default": {
@@ -315,6 +363,21 @@ export function initCardTextPreview() {
     });
   });
 
-  // Aplicar estilos iniciales al cargar
+  // Aplicar estilos iniciales exactos pedidos por el usuario:
+  // Título: Barlow Condensed (por defecto) con outline
+  // Subtítulos/Bio: Fredoka blanca con outline negro limpio y aura intensa
+  if (presetsData["fredoka-perfect"]) {
+    const defaultCfg = presetsData["fredoka-perfect"];
+    fontTitleSelect.value = defaultCfg.fontTitle;
+    fontBioSelect.value = defaultCfg.fontBio;
+    outlineWidthSelect.value = defaultCfg.outlineWidth;
+    outlineMethodSelect.value = defaultCfg.outlineMethod;
+    outlineColorInput.value = defaultCfg.outlineColor;
+    shadowTypeSelect.value = defaultCfg.shadowType;
+    shadowColorInput.value = defaultCfg.shadowColor;
+    textColorInput.value = defaultCfg.textColor;
+    textColorSelect.value = defaultCfg.textColor;
+  }
+
   applyStyles();
 }

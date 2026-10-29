@@ -9,17 +9,17 @@
    ========================================================================== */
 :root {
   --preview-font-title: 'Barlow Condensed', sans-serif;
-  --preview-font-bio: 'Inter', sans-serif;
+  --preview-font-bio: 'Fredoka', sans-serif;
   --preview-weight-title: 900;
-  --preview-weight-bio: 600;
-  --preview-color-title: #121214;
-  --preview-color-bio: #18181e;
-  --preview-stroke-title: none;
-  --preview-stroke-bio: none;
-  --preview-shadow-title: 0 1px 3px rgba(255, 255, 255, 0.95), 0 0 10px rgba(255, 255, 255, 0.85);
-  --preview-shadow-bio: 0 1px 3px rgba(255, 255, 255, 0.9), 0 0 6px rgba(255, 255, 255, 0.8);
+  --preview-weight-bio: 700;
+  --preview-color-title: #ffffff;
+  --preview-color-bio: #ffffff;
+  --preview-stroke-title: 2.5px #000000;
+  --preview-stroke-bio: 2px #000000;
+  --preview-shadow-title: 0 2px 6px rgba(0, 0, 0, 0.85), 0 0 12px rgba(0, 0, 0, 0.75);
+  --preview-shadow-bio: 0 2px 6px rgba(0, 0, 0, 0.85), 0 0 12px rgba(0, 0, 0, 0.75);
   --preview-letter-spacing-title: 1.5px;
-  --preview-bio-size: 14px;
+  --preview-bio-size: 14.5px;
 }
 
 /* ==========================================================================
