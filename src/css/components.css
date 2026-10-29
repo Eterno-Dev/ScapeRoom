@@ -229,7 +229,6 @@
   border: none;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.75);
   transition: box-shadow 0.15s ease;
-  position: relative;
 }
 
 .flip-card-front::after {
@@ -259,7 +258,6 @@
   padding: 18px 16px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
   box-sizing: border-box;
-  position: relative;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
@@ -1179,7 +1177,6 @@
   border: 2px solid var(--color-crimson);
   padding: 16px;
   box-sizing: border-box;
-  position: relative;
 }
 
 /* ==========================================================================
