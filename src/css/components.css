@@ -884,6 +884,266 @@
 }
 
 /* ==========================================================================
+   TARJETA ESPECIAL DEL ABOGADO: REPRODUCTOR CASSETTE "ÚLTIMAS PALABRAS"
+   ========================================================================== */
+.tape-card-back {
+  background-color: transparent;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid #2563eb !important;
+  box-shadow: 0 0 16px rgba(37, 99, 235, 0.45) !important;
+  padding: 16px 14px;
+  box-sizing: border-box;
+}
+
+.tape-back-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tape-header {
+  text-align: center;
+  border-bottom: 2px solid rgba(18, 18, 20, 0.35);
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.tape-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #2563eb;
+  margin-bottom: 2px;
+}
+
+.tape-title {
+  font-family: var(--font-title);
+  font-size: 24px;
+  font-weight: 900;
+  color: #121214;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin: 0;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.95);
+}
+
+.cassette-player-box {
+  background-color: #121217;
+  border: 1.5px solid #2563eb;
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.cassette-body {
+  width: 100%;
+  height: 64px;
+  background: #181822;
+  border: 1.5px solid #2a2a3c;
+  border-radius: 6px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.7);
+}
+
+.cassette-label {
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  right: 8px;
+  height: 18px;
+  background-color: #2563eb;
+  color: #ffffff;
+  font-family: var(--font-title);
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.cassette-window {
+  margin-top: 18px;
+  width: 58%;
+  height: 28px;
+  background-color: #0b0b10;
+  border-radius: 4px;
+  border: 1px solid #313144;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 8px;
+  position: relative;
+}
+
+.cassette-spool {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px dashed #93c5fd;
+  background-color: #181824;
+}
+
+.cassette-tape-bridge {
+  flex: 1;
+  height: 4px;
+  background-color: #382416;
+  margin: 0 4px;
+  border-radius: 2px;
+}
+
+.cassette-player-box.is-playing .cassette-spool {
+  animation: spinReel 1.8s linear infinite;
+}
+
+@keyframes spinReel {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.audio-timeline {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.audio-progress {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  background: #272736;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+}
+
+.audio-progress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.8);
+}
+
+.audio-time-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 11px;
+  font-weight: 700;
+  font-family: var(--font-title);
+  color: #93c5fd;
+  letter-spacing: 0.5px;
+}
+
+.audio-controls-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-audio-play {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background-color: #2563eb;
+  border: 2px solid #3b82f6;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.5);
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-audio-play:hover {
+  background-color: #1d4ed8;
+  transform: scale(1.05);
+}
+
+.btn-audio-play:active {
+  transform: scale(0.96);
+}
+
+.btn-audio-reset {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background-color: #1f1f2c;
+  border: 1px solid #3f3f56;
+  color: #a1a1aa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-audio-reset:hover {
+  background-color: #2d2d3e;
+  color: #ffffff;
+}
+
+.tape-transcript-box {
+  flex: 1;
+  max-height: 115px;
+  overflow-y: auto;
+  background-color: #14141c;
+  border-left: 3px solid #2563eb;
+  padding: 8px 10px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+.tape-transcript-box p {
+  font-size: 11.5px;
+  color: #e4e4e7;
+  line-height: 1.4;
+  margin: 0;
+  font-style: italic;
+}
+
+.btn-scanner-toggle.btn-scanner-blue {
+  background-color: #161622;
+  border: 1.5px solid #2563eb;
+  color: #93c5fd;
+  margin-top: 2px;
+}
+
+.btn-scanner-toggle.btn-scanner-blue:hover {
+  background-color: #2563eb;
+  color: #ffffff;
+}
+
+/* ==========================================================================
    PISTAS CONFIDENCIALES / PRIVADAS — ESCUDO CON CONTENIDO SENSIBLE (OJITO)
    ========================================================================== */
 .private-shield-overlay {

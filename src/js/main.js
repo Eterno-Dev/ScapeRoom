@@ -31,6 +31,9 @@ class ScapeRoomApp {
     // Id temporal para confirmación de personaje especial Administrador
     this.pendingAdminCharId = null;
 
+    // Referencia al audio del reproductor de cassette de las Últimas Palabras
+    this.currentCassetteAudio = null;
+
     this.init();
   }
 
@@ -292,66 +295,157 @@ class ScapeRoomApp {
     track.appendChild(charSlide);
 
     // ------------------------------------------------------------------------
-    // CARTA 1: ESCÁNER DE PISTAS QR (GIRO 3D)
+    // CARTA 1: CÁMARA (O CASSETTE DE ÚLTIMAS PALABRAS PARA EL ABOGADO)
     // ------------------------------------------------------------------------
     const scannerSlide = document.createElement("div");
     scannerSlide.className = "game-card-slide";
     scannerSlide.id = "slide-scanner-card";
-    scannerSlide.innerHTML = `
-      <div class="flip-card game-card-flip" id="scanner-flip-card">
-        <div class="flip-card-inner">
-          <!-- Cara Frontal del Escáner (Imagen de Cámara) -->
-          <div class="flip-card-front">
-            <img src="src/assets/images/objetos/card-scanner-camera.png" alt="Cámara de Investigación" class="char-card-img" />
-          </div>
 
-          <!-- Cara Trasera del Escáner (Cámara + Botón Activar Escáner + Acciones de Respaldo) -->
-          <div class="flip-card-back scanner-card-back" style="background-image: url('src/assets/images/tarjetas/card-back-base-2.png');">
-            <div class="scanner-back-content">
-              <div class="scanner-video-wrapper" id="scanner-video-wrapper">
-                <video id="scanner-video" playsinline muted></video>
-                <div class="scanner-placeholder">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                    <circle cx="12" cy="13" r="4"></circle>
+    if (char.isAdmin) {
+      // Tarjeta exclusiva para el Abogado: Cassette con las Últimas Palabras del difunto
+      scannerSlide.innerHTML = `
+        <div class="flip-card game-card-flip is-admin-card" id="scanner-flip-card">
+          <div class="flip-card-inner">
+            <!-- Cara Frontal de la Tarjeta (Imagen de Cámara con Borde Azul) -->
+            <div class="flip-card-front">
+              <img src="src/assets/images/objetos/card-scanner-camera.png" alt="Grabación de las Últimas Palabras" class="char-card-img" />
+            </div>
+
+            <!-- Cara Trasera: Reproductor de Cassette con Audio -->
+            <div class="flip-card-back tape-card-back" style="background-image: url('src/assets/images/tarjetas/card-back-base-2.png');">
+              <div class="tape-back-content">
+                <div class="tape-header">
+                  <span class="tape-badge">GRABACIÓN CONFIDENCIAL</span>
+                  <h3 class="tape-title">ÚLTIMAS PALABRAS</h3>
+                </div>
+
+                <!-- Reproductor de Cassette -->
+                <div class="cassette-player-box" id="cassette-player-box">
+                  <div class="cassette-body">
+                    <div class="cassette-label">DISQUETE TESTAMENTARIO</div>
+                    <div class="cassette-window">
+                      <div class="cassette-spool left-spool"></div>
+                      <div class="cassette-tape-bridge"></div>
+                      <div class="cassette-spool right-spool"></div>
+                    </div>
+                  </div>
+
+                  <div class="audio-timeline">
+                    <input type="range" class="audio-progress" id="audio-progress-bar" value="0" min="0" max="100" step="0.1" />
+                    <div class="audio-time-row">
+                      <span id="audio-time-current">0:00</span>
+                      <span id="audio-time-total">--:--</span>
+                    </div>
+                  </div>
+
+                  <div class="audio-controls-row">
+                    <button class="btn-audio-reset" id="btn-audio-rewind" type="button" title="Reiniciar">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="11 19 2 12 11 5 11 19"></polygon>
+                        <polygon points="22 19 13 12 22 5 22 19"></polygon>
+                      </svg>
+                    </button>
+
+                    <button class="btn-audio-play" id="btn-audio-play-toggle" type="button" title="Reproducir">
+                      <svg class="icon-play" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                      </svg>
+                      <svg class="icon-pause" style="display:none;" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <rect x="6" y="4" width="4" height="16"></rect>
+                        <rect x="14" y="4" width="4" height="16"></rect>
+                      </svg>
+                    </button>
+                  </div>
+
+                  <audio id="audio-ultimas-palabras" src="src/assets/audio/ultimas_palabras.mp3" preload="metadata"></audio>
+                </div>
+
+                <!-- Transcripción del Audio para lectura -->
+                <div class="tape-transcript-box">
+                  <p>«Si estáis escuchando esto... mis sospechas eran ciertas: estoy muerto, y uno de vosotros me ha quitado la vida. Y el resto... habéis venido como buitres, esperando un cheque. Llevo meses notando cómo alguien intentaba acabar conmigo poco a poco... En la carpeta que custodia mi abogado hay documentos suficientes para mandar a prisión a cualquiera de los que estáis sentados en esa sala. Mi fortuna pasará íntegra a la persona que sea capaz de señalar con pruebas quién me ha matado y cómo lo ha hecho. Quien lo resuelva se queda con la herencia. Si vence el plazo y nadie descubre al culpable, mi abogado remitirá todos vuestros expedientes a los juzgados... Os quedaréis sin un céntimo, arruinados y compartiendo celda con mi asesino. Mi tiempo se ha acabado... pero el vuestro empieza ahora. Suerte.»</p>
+                </div>
+
+                <!-- Botón para escribir código de pistas -->
+                <button class="btn-scanner-toggle btn-scanner-manual btn-scanner-blue" id="btn-open-code-modal" type="button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                   </svg>
-                  <span>Cámara Inactiva</span>
-                </div>
-                <div class="scanner-perm-alert" id="scanner-perm-alert" style="display: none;">
-                  <p>Cámara no disponible</p>
-                  <span>Permite la cámara en el navegador o usa las opciones de abajo.</span>
-                </div>
-                <div class="scanner-target-box"></div>
+                  Escribir código de pista
+                </button>
               </div>
-
-              <button class="btn-scanner-toggle" id="btn-scanner-toggle">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
-                  <circle cx="12" cy="13" r="4"></circle>
-                </svg>
-                Activar escáner
-              </button>
-
-              <button class="btn-scanner-toggle btn-scanner-manual" id="btn-open-code-modal" type="button">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                </svg>
-                Escribir código
-              </button>
             </div>
           </div>
         </div>
-      </div>
-    `;
+      `;
 
-    scannerSlide.querySelector("#scanner-flip-card").addEventListener("click", (e) => {
-      if (this.hasDragged) return;
-      if (e.target.closest("#btn-scanner-toggle") || e.target.closest("#btn-open-code-modal")) {
-        return;
-      }
-      e.currentTarget.classList.toggle("is-flipped");
-    });
+      scannerSlide.querySelector("#scanner-flip-card").addEventListener("click", (e) => {
+        if (this.hasDragged) return;
+        if (e.target.closest("#cassette-player-box") || e.target.closest("#btn-open-code-modal") || e.target.closest(".tape-transcript-box")) {
+          return;
+        }
+        e.currentTarget.classList.toggle("is-flipped");
+      });
+
+      this.setupCassettePlayer(scannerSlide);
+    } else {
+      // Tarjeta estándar para los demás jugadores: Escáner de Cámara QR
+      scannerSlide.innerHTML = `
+        <div class="flip-card game-card-flip" id="scanner-flip-card">
+          <div class="flip-card-inner">
+            <!-- Cara Frontal del Escáner (Imagen de Cámara) -->
+            <div class="flip-card-front">
+              <img src="src/assets/images/objetos/card-scanner-camera.png" alt="Cámara de Investigación" class="char-card-img" />
+            </div>
+
+            <!-- Cara Trasera del Escáner (Cámara + Botón Activar Escáner + Acciones de Respaldo) -->
+            <div class="flip-card-back scanner-card-back" style="background-image: url('src/assets/images/tarjetas/card-back-base-2.png');">
+              <div class="scanner-back-content">
+                <div class="scanner-video-wrapper" id="scanner-video-wrapper">
+                  <video id="scanner-video" playsinline muted></video>
+                  <div class="scanner-placeholder">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                      <circle cx="12" cy="13" r="4"></circle>
+                    </svg>
+                    <span>Cámara Inactiva</span>
+                  </div>
+                  <div class="scanner-perm-alert" id="scanner-perm-alert" style="display: none;">
+                    <p>Cámara no disponible</p>
+                    <span>Permite la cámara en el navegador o usa las opciones de abajo.</span>
+                  </div>
+                  <div class="scanner-target-box"></div>
+                </div>
+
+                <button class="btn-scanner-toggle" id="btn-scanner-toggle">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                    <circle cx="12" cy="13" r="4"></circle>
+                  </svg>
+                  Activar escáner
+                </button>
+
+                <button class="btn-scanner-toggle btn-scanner-manual" id="btn-open-code-modal" type="button">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                  Escribir código
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      scannerSlide.querySelector("#scanner-flip-card").addEventListener("click", (e) => {
+        if (this.hasDragged) return;
+        if (e.target.closest("#btn-scanner-toggle") || e.target.closest("#btn-open-code-modal")) {
+          return;
+        }
+        e.currentTarget.classList.toggle("is-flipped");
+      });
+    }
 
     track.appendChild(scannerSlide);
 
@@ -474,6 +568,104 @@ class ScapeRoomApp {
     if (btnOpenModal) {
       btnOpenModal.onclick = () => this.showCodeModal();
     }
+  }
+
+  setupCassettePlayer(container) {
+    const audio = container.querySelector("#audio-ultimas-palabras");
+    const btnPlay = container.querySelector("#btn-audio-play-toggle");
+    const btnRewind = container.querySelector("#btn-audio-rewind");
+    const iconPlay = btnPlay?.querySelector(".icon-play");
+    const iconPause = btnPlay?.querySelector(".icon-pause");
+    const progressBar = container.querySelector("#audio-progress-bar");
+    const timeCurrent = container.querySelector("#audio-time-current");
+    const timeTotal = container.querySelector("#audio-time-total");
+    const playerBox = container.querySelector("#cassette-player-box");
+
+    if (!audio || !btnPlay) return;
+    this.currentCassetteAudio = audio;
+
+    const formatTime = (secs) => {
+      if (isNaN(secs) || secs < 0) return "0:00";
+      const m = Math.floor(secs / 60);
+      const s = Math.floor(secs % 60);
+      return `${m}:${s < 10 ? "0" : ""}${s}`;
+    };
+
+    audio.addEventListener("loadedmetadata", () => {
+      if (timeTotal && !isNaN(audio.duration)) {
+        timeTotal.textContent = formatTime(audio.duration);
+      }
+    });
+
+    if (!isNaN(audio.duration) && audio.duration > 0 && timeTotal) {
+      timeTotal.textContent = formatTime(audio.duration);
+    }
+
+    btnPlay.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (audio.paused) {
+        audio.play().then(() => {
+          playerBox?.classList.add("is-playing");
+          if (iconPlay) iconPlay.style.display = "none";
+          if (iconPause) iconPause.style.display = "block";
+        }).catch(err => {
+          console.warn("Audio play prevented:", err);
+        });
+      } else {
+        audio.pause();
+        playerBox?.classList.remove("is-playing");
+        if (iconPlay) iconPlay.style.display = "block";
+        if (iconPause) iconPause.style.display = "none";
+      }
+    });
+
+    if (btnRewind) {
+      btnRewind.addEventListener("click", (e) => {
+        e.stopPropagation();
+        audio.currentTime = 0;
+        if (progressBar) progressBar.value = 0;
+        if (timeCurrent) timeCurrent.textContent = "0:00";
+      });
+    }
+
+    audio.addEventListener("timeupdate", () => {
+      if (!isNaN(audio.duration) && audio.duration > 0) {
+        const progress = (audio.currentTime / audio.duration) * 100;
+        if (progressBar) progressBar.value = progress;
+        if (timeCurrent) timeCurrent.textContent = formatTime(audio.currentTime);
+        if (timeTotal && (timeTotal.textContent === "--:--" || timeTotal.textContent === "0:00")) {
+          timeTotal.textContent = formatTime(audio.duration);
+        }
+      }
+    });
+
+    if (progressBar) {
+      progressBar.addEventListener("input", (e) => {
+        e.stopPropagation();
+        if (!isNaN(audio.duration) && audio.duration > 0) {
+          audio.currentTime = (progressBar.value / 100) * audio.duration;
+        }
+      });
+      progressBar.addEventListener("click", (e) => e.stopPropagation());
+    }
+
+    audio.addEventListener("ended", () => {
+      playerBox?.classList.remove("is-playing");
+      if (iconPlay) iconPlay.style.display = "block";
+      if (iconPause) iconPause.style.display = "none";
+      if (progressBar) progressBar.value = 0;
+      if (timeCurrent) timeCurrent.textContent = "0:00";
+    });
+  }
+
+  stopCassetteAudio() {
+    if (this.currentCassetteAudio) {
+      this.currentCassetteAudio.pause();
+      this.currentCassetteAudio.currentTime = 0;
+      this.currentCassetteAudio = null;
+    }
+    const playerBox = document.getElementById("cassette-player-box");
+    if (playerBox) playerBox.classList.remove("is-playing");
   }
 
   updateCardSliderState() {
@@ -751,6 +943,7 @@ class ScapeRoomApp {
       btnAcceptBack.addEventListener("click", () => {
         confirmBackModal.classList.remove("active");
         this.stopScanner();
+        this.stopCassetteAudio();
         this.selectedCharId = null;
         localStorage.removeItem("scaperoom_char_id");
         this.showView("view-selection");
