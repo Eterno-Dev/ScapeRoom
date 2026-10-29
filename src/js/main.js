@@ -187,6 +187,15 @@ class ScapeRoomApp {
                 <h3 class="card-back-role-title">${data.role}</h3>
               </div>
               <p class="card-back-bio">${data.bio}</p>
+              ${data.secret ? `
+                <div class="char-back-secret">
+                  <div class="char-secret-tag">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span>INFORMACIÓN CONFIDENCIAL</span>
+                  </div>
+                  <p class="char-secret-desc">${data.secret}</p>
+                </div>
+              ` : ""}
               <div class="card-back-actions">
                 ${!isLocked ? `<button class="${btnClass}" data-select-char="${char.id}">${btnText}</button>` : `<span class="char-locked-badge">${lockedText}</span>`}
               </div>
@@ -282,6 +291,15 @@ class ScapeRoomApp {
                 <h3 class="card-back-role-title">${charData.role}</h3>
               </div>
               <p class="card-back-bio">${charData.bio}</p>
+              ${charData.secret ? `
+                <div class="char-back-secret">
+                  <div class="char-secret-tag">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span>INFORMACIÓN CONFIDENCIAL</span>
+                  </div>
+                  <p class="char-secret-desc">${charData.secret}</p>
+                </div>
+              ` : ""}
             </div>
           </div>
         </div>
@@ -506,7 +524,13 @@ class ScapeRoomApp {
                   <h4 class="card-back-name">${clue.title}</h4>
                 </div>
                 <p class="card-back-bio">${clue.desc}</p>
-                <div class="clue-back-detail">${clue.detail}</div>
+                <div class="clue-back-detail">
+                  <div class="clue-detail-tag">
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    <span>INFORMACIÓN CONFIDENCIAL</span>
+                  </div>
+                  <p class="clue-detail-text">${clue.detail}</p>
+                </div>
 
                 ${clue.isPrivate ? `
                   <button class="btn-reshield-sensitive" data-shield-id="shield-${clue.id}" type="button">
@@ -972,16 +996,38 @@ class ScapeRoomApp {
       });
     }
 
-    // Botón de camarita en la cabecera: Salta directamente a la carta de escáner (mostrando la cara frontal de cámara)
+    // Botón de camarita en la cabecera: Desplazamiento recto hacia la carta de escáner y giro al llegar
     const btnGotoScanner = document.getElementById("btn-goto-scanner");
     if (btnGotoScanner) {
       btnGotoScanner.addEventListener("click", () => {
         const scannerSlide = document.getElementById("slide-scanner-card");
         if (scannerSlide) {
-          // Asegurar que todas las cartas vuelvan a su cara frontal
-          document.querySelectorAll(".game-card-flip.is-flipped").forEach(c => c.classList.remove("is-flipped"));
-          scannerSlide.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-          setTimeout(() => this.updateCardSliderState(), 300);
+          const scannerFlipCard = scannerSlide.querySelector(".game-card-flip");
+
+          // Desgirar cualquier otra carta para que el desplazamiento sea limpio y recto
+          document.querySelectorAll(".game-card-flip.is-flipped").forEach(c => {
+            if (c !== scannerFlipCard) c.classList.remove("is-flipped");
+          });
+
+          const track = document.getElementById("game-deck-track");
+          const isAlreadyThere = track && Math.abs(scannerSlide.offsetLeft - track.scrollLeft) < 30;
+
+          if (isAlreadyThere) {
+            // Ya estamos situados sobre la carta de la cámara: girar a la cara trasera directamente
+            if (scannerFlipCard) scannerFlipCard.classList.add("is-flipped");
+          } else {
+            // Desplazamiento recto hacia la tarjeta de cámara (cara frontal primero)
+            if (scannerFlipCard) scannerFlipCard.classList.remove("is-flipped");
+            scannerSlide.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+
+            // Al llegar recto a la tarjeta de cámara, girar hacia el reverso
+            setTimeout(() => {
+              this.updateCardSliderState();
+              if (scannerFlipCard) {
+                scannerFlipCard.classList.add("is-flipped");
+              }
+            }, 380);
+          }
         }
       });
     }
