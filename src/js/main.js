@@ -152,8 +152,7 @@ class ScapeRoomApp {
           <div class="flip-card-back" style="background-image: url('${backBaseUrl}');">
             <div class="card-back-content">
               <div class="card-back-header">
-                <span class="card-back-role">${data.role}</span>
-                <h4 class="card-back-name">${data.name}</h4>
+                <h3 class="card-back-role-title">${data.role}</h3>
               </div>
               <p class="card-back-bio">${data.bio}</p>
               <div class="card-back-actions">
@@ -231,8 +230,7 @@ class ScapeRoomApp {
           <div class="flip-card-back" style="background-image: url('${backBaseUrl}');">
             <div class="card-back-content">
               <div class="card-back-header">
-                <span class="card-back-role">${charData.role}</span>
-                <h4 class="card-back-name">${charData.name}</h4>
+                <h3 class="card-back-role-title">${charData.role}</h3>
               </div>
               <p class="card-back-bio">${charData.bio}</p>
             </div>
@@ -460,6 +458,20 @@ class ScapeRoomApp {
     if (counterBottomEl) {
       counterBottomEl.textContent = counterText;
     }
+
+    // Auto-volteo: La información nunca debe quedar a la vista al pasar de carta
+    slides.forEach((slide, idx) => {
+      if (idx !== currentIndex) {
+        const flipCard = slide.querySelector(".flip-card");
+        if (flipCard && flipCard.classList.contains("is-flipped")) {
+          flipCard.classList.remove("is-flipped");
+        }
+        const shield = slide.querySelector(".private-shield-overlay");
+        if (shield && shield.classList.contains("revealed")) {
+          shield.classList.remove("revealed");
+        }
+      }
+    });
   }
 
   snapToClosestCard() {
@@ -710,15 +722,15 @@ class ScapeRoomApp {
       });
     }
 
-    // Botón de camarita en la cabecera: Salta directamente a la carta de escáner y la gira
+    // Botón de camarita en la cabecera: Salta directamente a la carta de escáner (mostrando la cara frontal de cámara)
     const btnGotoScanner = document.getElementById("btn-goto-scanner");
     if (btnGotoScanner) {
       btnGotoScanner.addEventListener("click", () => {
         const scannerSlide = document.getElementById("slide-scanner-card");
         if (scannerSlide) {
+          // Asegurar que todas las cartas vuelvan a su cara frontal
+          document.querySelectorAll(".game-card-flip.is-flipped").forEach(c => c.classList.remove("is-flipped"));
           scannerSlide.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-          const flipCard = scannerSlide.querySelector(".game-card-flip");
-          if (flipCard) flipCard.classList.add("is-flipped");
           setTimeout(() => this.updateCardSliderState(), 300);
         }
       });

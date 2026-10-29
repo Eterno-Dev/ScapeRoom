@@ -1,6 +1,7 @@
 /**
  * Catálogo Oficial de Personajes — El Asesinato Embrujado
  * EternoDev Web Standards - 9 Perfiles Hombres y Mujeres con Tarjetas Reales
+ * Roles y descripciones concisas y relevantes
  */
 
 export const CHARACTERS = [
@@ -10,14 +11,14 @@ export const CHARACTERS = [
     backBase: "card-back-base-1.png",
     male: {
       name: "El Cazador",
-      role: "Cazador de la Finca",
-      bio: "Cazador de la finca del difunto. Se encargaba de acompañarlo en las jornadas de caza y conocía todos los senderos y recovecos del bosque.",
+      role: "Cazador",
+      bio: "Conoce todos los senderos y secretos del bosque de la finca.",
       cardImage: "src/assets/images/personajes_masculinos/card-m-cazador.png"
     },
     female: {
       name: "La Cazadora",
-      role: "Cazadora de la Finca",
-      bio: "Cazadora de la finca del difunto. Se encargaba de acompañarlo en las jornadas de caza y conocía todos los senderos y recovecos del bosque.",
+      role: "Cazadora",
+      bio: "Conoce todos los senderos y secretos del bosque de la finca.",
       cardImage: "src/assets/images/personajes_femeninos/card-f-cazadora.png"
     }
   },
@@ -27,14 +28,14 @@ export const CHARACTERS = [
     backBase: "card-back-base-2.png",
     male: {
       name: "Leonardo Vargas",
-      role: "Músico Famoso",
-      bio: "Músico famoso y reconocido que se encontraba en la mansión a punto de realizar una interpretación musical exclusiva durante la cena.",
+      role: "Músico",
+      bio: "Amenizaba la velada exclusiva antes de que se apagaran las luces.",
       cardImage: "src/assets/images/personajes_masculinos/card-m-leonardo.png"
     },
     female: {
       name: "Valentina Santos",
-      role: "Música Famosa",
-      bio: "Cantante y música de renombre que amenizaba la velada antes de que se apagaran las luces.",
+      role: "Música",
+      bio: "Amenizaba la velada exclusiva antes de que se apagaran las luces.",
       cardImage: "src/assets/images/personajes_femeninos/card-f-valentina.png"
     }
   },
@@ -44,14 +45,14 @@ export const CHARACTERS = [
     backBase: "card-back-base-3.png",
     male: {
       name: "Dr. Alfonso Rivas",
-      role: "Médico de Cabecera",
-      bio: "Médico personal que se encargaba del tratamiento y de administrar la estricta medicación diaria al fallecido.",
+      role: "Médico",
+      bio: "Administraba la medicación diaria y confidencial del difunto.",
       cardImage: "src/assets/images/personajes_masculinos/card-m-alfonso.png"
     },
     female: {
       name: "Dra. Isabel Ortega",
-      role: "Médica Forense",
-      bio: "Médica particular encargada de la salud y recetas confidenciales del difunto señor de la mansión.",
+      role: "Médica",
+      bio: "Administraba la medicación diaria y confidencial del difunto.",
       cardImage: "src/assets/images/personajes_femeninos/card-f-isabel.png"
     }
   },
@@ -61,14 +62,14 @@ export const CHARACTERS = [
     backBase: "card-back-base-1.png",
     male: {
       name: "General Santamaría",
-      role: "Militar Veterano",
-      bio: "General del ejército y amigo de toda la vida del difunto desde su juventud, cuando ambos compartieron carrera y confidencias.",
+      role: "Militar",
+      bio: "General y viejo amigo de juventud de la víctima.",
       cardImage: "src/assets/images/personajes_masculinos/card-m-santamaria.png"
     },
     female: {
       name: "General Araujo",
-      role: "Militar Veterana",
-      bio: "Alta oficial del ejército y vieja camarada de armas del difunto desde sus tiempos de juventud.",
+      role: "Militar",
+      bio: "General y vieja amiga de juventud de la víctima.",
       cardImage: "src/assets/images/personajes_femeninos/card-f-araujo.png"
     }
   },
@@ -78,14 +79,14 @@ export const CHARACTERS = [
     backBase: "card-back-base-2.png",
     male: {
       name: "Elías Moreno",
-      role: "Nieto & Heredero",
-      bio: "Nieto joven del difunto y uno de los principales herederos de la fortuna familiar junto a su hermano Raúl.",
+      role: "Heredero",
+      bio: "Nieto del fallecido y aspirante a la herencia familiar.",
       cardImage: "src/assets/images/personajes_masculinos/card-m-elias.png"
     },
     female: {
       name: "Isadora Pérez",
-      role: "Nieta & Heredera",
-      bio: "Nieta y principal aspirante a la herencia legítima de las fincas y propiedades familiares.",
+      role: "Heredera",
+      bio: "Nieta del fallecido y aspirante a la herencia familiar.",
       cardImage: "src/assets/images/personajes_femeninos/card-f-isadora.png"
     }
   },
@@ -96,13 +97,13 @@ export const CHARACTERS = [
     male: {
       name: "Victor Dávila",
       role: "Historiador",
-      bio: "Historiador y anticuario erudito, invitado a la mansión para autenticar archivos y reliquias de gran valor patrimonial.",
+      bio: "Invitado para autenticar las valiosas reliquias y archivos.",
       cardImage: "src/assets/images/personajes_masculinos/card-m-victor.png"
     },
     female: {
       name: "Elena Torres",
       role: "Historiadora",
-      bio: "Investigadora y experta en antigüedades góticas que revisaba los documentos históricos de la familia.",
+      bio: "Invitada para autenticar las valiosas reliquias y archivos.",
       cardImage: "src/assets/images/personajes_femeninos/card-f-elena.png"
     }
   },
@@ -112,14 +113,14 @@ export const CHARACTERS = [
     backBase: "card-back-base-1.png",
     male: {
       name: "Hugo Bermejo",
-      role: "Jardinero Mayor",
-      bio: "Jardinero de la casa. Cuida los terrenos, el invernadero y las herramientas, y sabe qué accesos exteriores se abrieron esa noche.",
+      role: "Jardinero",
+      bio: "Cuida los terrenos y sabe quién usó los accesos exteriores.",
       cardImage: "src/assets/images/personajes_masculinos/card-m-hugo.png"
     },
     female: {
       name: "Lucía Herrera",
-      role: "Jardinera Mayor",
-      bio: "Jardinera de la finca. Conoce cada rincón exterior, el cobertizo y las huellas dejadas en el barro.",
+      role: "Jardinera",
+      bio: "Cuida los terrenos y sabe quién usó los accesos exteriores.",
       cardImage: "src/assets/images/personajes_femeninos/card-f-lucia.png"
     }
   },
@@ -129,14 +130,14 @@ export const CHARACTERS = [
     backBase: "card-back-base-2.png",
     male: {
       name: "Raúl Fernández",
-      role: "Hermano & Heredero",
-      bio: "Hermano de Elías y co-heredero legítimo de la finca familiar. Sus aspiraciones económicas chocaban con el testamento.",
+      role: "Heredero",
+      bio: "Hermano en disputa económica por el reparto testamentario.",
       cardImage: "src/assets/images/personajes_masculinos/card-m-raul.png"
     },
     female: {
       name: "Sofía Villalba",
-      role: "Hermana & Heredera",
-      bio: "Hermana de Isadora y co-heredera directa. En conflicto latente por la repartición del patrimonio.",
+      role: "Heredera",
+      bio: "Hermana en disputa económica por el reparto testamentario.",
       cardImage: "src/assets/images/personajes_femeninos/card-f-sofia.png"
     }
   },
@@ -146,14 +147,14 @@ export const CHARACTERS = [
     backBase: "card-back-base-3.png",
     male: {
       name: "Javier Escudero",
-      role: "Abogado Notarial",
-      bio: "Abogado y albacea encargado de la redacción, custodia y lectura del polémico testamento.",
+      role: "Abogado",
+      bio: "Albacea encargado de la lectura del polémico testamento.",
       cardImage: "src/assets/images/personajes_masculinos/card-m-javier.png"
     },
     female: {
       name: "Carmen Ruiz",
-      role: "Abogada Notarial",
-      bio: "Albacea y letrada encargada del testamento notarial que iba a ser proclamado esa medianoche.",
+      role: "Abogada",
+      bio: "Albacea encargada de la lectura del polémico testamento.",
       cardImage: "src/assets/images/personajes_femeninos/card-f-carmen.png"
     }
   }
