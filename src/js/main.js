@@ -190,8 +190,8 @@ class ScapeRoomApp {
               ${data.secret ? `
                 <div class="char-back-secret">
                   <div class="char-secret-tag">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    <span>INFORMACIÓN CONFIDENCIAL</span>
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span>PRUEBA INCRIMINATORIA</span>
                   </div>
                   <p class="char-secret-desc">${data.secret}</p>
                 </div>
@@ -294,8 +294,8 @@ class ScapeRoomApp {
               ${charData.secret ? `
                 <div class="char-back-secret">
                   <div class="char-secret-tag">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    <span>INFORMACIÓN CONFIDENCIAL</span>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span>PRUEBA INCRIMINATORIA</span>
                   </div>
                   <p class="char-secret-desc">${charData.secret}</p>
                 </div>
@@ -390,7 +390,7 @@ class ScapeRoomApp {
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                     <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                   </svg>
-                  Introduce el código de la pista
+                  Introduce el código
                 </button>
               </div>
             </div>
@@ -449,7 +449,7 @@ class ScapeRoomApp {
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                     <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                   </svg>
-                  Introduce el código de la pista
+                  Introduce el código
                 </button>
               </div>
             </div>
@@ -526,8 +526,8 @@ class ScapeRoomApp {
                 <p class="card-back-bio">${clue.desc}</p>
                 <div class="clue-back-detail">
                   <div class="clue-detail-tag">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <span>INFORMACIÓN CONFIDENCIAL</span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span>PRUEBA INCRIMINATORIA</span>
                   </div>
                   <p class="clue-detail-text">${clue.detail}</p>
                 </div>
@@ -1050,7 +1050,7 @@ class ScapeRoomApp {
           this.closeCodeModal();
           this.unlockClue(resolved);
         } else {
-          alert(`Código no reconocido ("${val}"). Introduce el código de la pista.`);
+          alert(`Código no reconocido ("${val}"). Introduce el código.`);
         }
       });
     }
