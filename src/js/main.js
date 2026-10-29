@@ -137,8 +137,11 @@ class ScapeRoomApp {
       const isDisabled = isLocked && !isSelected;
       const backBaseUrl = this.getBackBase(char.id);
 
+      const btnClass = char.isNarrator ? "btn-confirm-char btn-confirm-narrator" : "btn-confirm-char";
+      const btnText = char.isNarrator ? "Elegir Narrador" : "Elegir Personaje";
+
       const card = document.createElement("div");
-      card.className = `flip-card char-card-flip ${isSelected ? "selected" : ""} ${isDisabled ? "disabled" : ""}`;
+      card.className = `flip-card char-card-flip ${isSelected ? "selected" : ""} ${isDisabled ? "disabled" : ""} ${char.isNarrator ? "is-narrator-card" : ""}`;
       card.setAttribute("data-char-id", char.id);
 
       card.innerHTML = `
@@ -152,11 +155,12 @@ class ScapeRoomApp {
           <div class="flip-card-back" style="background-image: url('${backBaseUrl}');">
             <div class="card-back-content">
               <div class="card-back-header">
+                ${char.isNarrator ? `<span class="narrator-pill-badge">Rol Especial</span>` : ""}
                 <h3 class="card-back-role-title">${data.role}</h3>
               </div>
               <p class="card-back-bio">${data.bio}</p>
               <div class="card-back-actions">
-                ${!isLocked ? `<button class="btn-confirm-char" data-select-char="${char.id}">Elegir Personaje</button>` : `<span class="char-locked-badge">Elegido</span>`}
+                ${!isLocked ? `<button class="${btnClass}" data-select-char="${char.id}">${btnText}</button>` : `<span class="char-locked-badge">${char.isNarrator ? "Narrador Elegido" : "Elegido"}</span>`}
               </div>
             </div>
           </div>

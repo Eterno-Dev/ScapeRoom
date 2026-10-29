@@ -86,31 +86,33 @@ def main():
         'c:/Users/paucr/Documents/CluedoWeb'
     ]
 
-    # 1. CARTAS HOMBRE
+    # 1. CARTAS HOMBRE (8 Jugadores Oficiales)
     sheet_m = 'C:/Users/paucr/Downloads/cartas_hombre.png'
     im_m, x_m, y_m = get_intervals(sheet_m)
     m_names = [
         ['card-m-cazador.png', 'card-m-leonardo.png', 'card-m-alfonso.png'],
         ['card-m-santamaria.png', 'card-m-elias.png', 'card-m-victor.png'],
-        ['card-m-hugo.png', 'card-m-raul.png', 'card-m-javier.png']
+        ['card-m-hugo.png', None, 'card-m-javier.png']
     ]
     for r in range(3):
         for c in range(3):
-            crop = im_m.crop((x_m[c][0], y_m[r][0], x_m[c][1], y_m[r][1]))
-            save_card(crop, 'personajes_masculinos', m_names[r][c], base_dirs)
+            if m_names[r][c]:
+                crop = im_m.crop((x_m[c][0], y_m[r][0], x_m[c][1], y_m[r][1]))
+                save_card(crop, 'personajes_masculinos', m_names[r][c], base_dirs)
 
-    # 2. CARTAS MUJER
+    # 2. CARTAS MUJER (8 Jugadoras Oficiales)
     sheet_f = 'C:/Users/paucr/Downloads/cartas_mujer.png'
     im_f, x_f, y_f = get_intervals(sheet_f)
     f_names = [
         ['card-f-cazadora.png', 'card-f-valentina.png', 'card-f-isabel.png'],
-        ['card-f-araujo.png', 'card-f-isadora.png', 'card-f-elena.png'],
+        ['card-f-araujo.png', None, 'card-f-elena.png'],
         ['card-f-lucia.png', 'card-f-sofia.png', 'card-f-carmen.png']
     ]
     for r in range(3):
         for c in range(3):
-            crop = im_f.crop((x_f[c][0], y_f[r][0], x_f[c][1], y_f[r][1]))
-            save_card(crop, 'personajes_femeninos', f_names[r][c], base_dirs)
+            if f_names[r][c]:
+                crop = im_f.crop((x_f[c][0], y_f[r][0], x_f[c][1], y_f[r][1]))
+                save_card(crop, 'personajes_femeninos', f_names[r][c], base_dirs)
 
     # 3. CARTAS ESPECIALES
     sheet_esp = 'C:/Users/paucr/Downloads/cartas_especiales.png'

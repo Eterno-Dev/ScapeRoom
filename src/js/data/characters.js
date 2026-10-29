@@ -1,7 +1,7 @@
 /**
  * Catálogo Oficial de Personajes — El Asesinato Embrujado
- * EternoDev Web Standards - 9 Perfiles Hombres y Mujeres con Tarjetas Reales
- * Roles y descripciones concisas y relevantes
+ * EternoDev Web Standards - 8 Personajes Oficiales (Aventura para 8 Jugadores)
+ * Incluye al Narrador Especial (Javier Escudero / Carmen Ruiz) con botón distintivo
  */
 
 export const CHARACTERS = [
@@ -80,37 +80,20 @@ export const CHARACTERS = [
     male: {
       name: "Elías Moreno",
       role: "Heredero",
-      bio: "Nieto del fallecido y aspirante a la herencia familiar.",
+      bio: "Nieto del difunto y aspirante directo a la fortuna familiar.",
       cardImage: "src/assets/images/personajes_masculinos/card-m-elias.png"
     },
     female: {
-      name: "Isadora Pérez",
+      name: "Sofía Villalba",
       role: "Heredera",
-      bio: "Nieta del fallecido y aspirante a la herencia familiar.",
-      cardImage: "src/assets/images/personajes_femeninos/card-f-isadora.png"
+      bio: "Nieta del difunto y aspirante directa a la fortuna familiar.",
+      cardImage: "src/assets/images/personajes_femeninos/card-f-sofia.png"
     }
   },
   {
     id: 6,
     tag: "Persona 6",
     backBase: "card-back-base-3.png",
-    male: {
-      name: "Victor Dávila",
-      role: "Historiador",
-      bio: "Invitado para autenticar las valiosas reliquias y archivos.",
-      cardImage: "src/assets/images/personajes_masculinos/card-m-victor.png"
-    },
-    female: {
-      name: "Elena Torres",
-      role: "Historiadora",
-      bio: "Invitada para autenticar las valiosas reliquias y archivos.",
-      cardImage: "src/assets/images/personajes_femeninos/card-f-elena.png"
-    }
-  },
-  {
-    id: 7,
-    tag: "Persona 7",
-    backBase: "card-back-base-1.png",
     male: {
       name: "Hugo Bermejo",
       role: "Jardinero",
@@ -125,36 +108,37 @@ export const CHARACTERS = [
     }
   },
   {
-    id: 8,
-    tag: "Persona 8",
-    backBase: "card-back-base-2.png",
+    id: 7,
+    tag: "Persona 7",
+    backBase: "card-back-base-1.png",
     male: {
-      name: "Raúl Fernández",
+      name: "Víctor Dávila",
       role: "Heredero",
-      bio: "Hermano en disputa económica por el reparto testamentario.",
-      cardImage: "src/assets/images/personajes_masculinos/card-m-raul.png"
+      bio: "Hermano del fallecido en disputa económica por el testamento.",
+      cardImage: "src/assets/images/personajes_masculinos/card-m-victor.png"
     },
     female: {
-      name: "Sofía Villalba",
+      name: "Elena Torres",
       role: "Heredera",
-      bio: "Hermana en disputa económica por el reparto testamentario.",
-      cardImage: "src/assets/images/personajes_femeninos/card-f-sofia.png"
+      bio: "Hermana de la víctima en disputa económica por el testamento.",
+      cardImage: "src/assets/images/personajes_femeninos/card-f-elena.png"
     }
   },
   {
-    id: 9,
-    tag: "Persona 9",
-    backBase: "card-back-base-3.png",
+    id: 8,
+    tag: "Persona 8",
+    backBase: "card-back-base-2.png",
+    isNarrator: true,
     male: {
       name: "Javier Escudero",
-      role: "Abogado",
-      bio: "Albacea encargado de la lectura del polémico testamento.",
+      role: "Narrador",
+      bio: "Abogado albacea y narrador que guía la historia y custodia sus secretos.",
       cardImage: "src/assets/images/personajes_masculinos/card-m-javier.png"
     },
     female: {
       name: "Carmen Ruiz",
-      role: "Abogada",
-      bio: "Albacea encargada de la lectura del polémico testamento.",
+      role: "Narradora",
+      bio: "Abogada albacea y narradora que guía la historia y custodia sus secretos.",
       cardImage: "src/assets/images/personajes_femeninos/card-f-carmen.png"
     }
   }
