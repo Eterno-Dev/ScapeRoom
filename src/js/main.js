@@ -122,7 +122,7 @@ class ScapeRoomApp {
       titleEl.textContent = activeGender === "female" ? "ABOGADA" : "ABOGADO";
     }
     if (acceptBtn) {
-      acceptBtn.textContent = activeGender === "female" ? "Elegir Abogada" : "Elegir Abogado";
+      acceptBtn.textContent = activeGender === "female" ? "Soy administradora" : "Soy administrador";
     }
     if (modal) modal.classList.add("active");
   }
@@ -162,12 +162,8 @@ class ScapeRoomApp {
       const backBaseUrl = this.getBackBase(char.id);
 
       const btnClass = char.isAdmin ? "btn-confirm-char btn-confirm-admin" : "btn-confirm-char";
-      const btnText = char.isAdmin
-        ? (activeGender === "female" ? "Elegir Abogada" : "Elegir Abogado")
-        : "Elegir Personaje";
-      const lockedText = char.isAdmin
-        ? (activeGender === "female" ? "Abogada Elegida" : "Abogado Elegido")
-        : "Elegido";
+      const btnText = "Elegir Personaje";
+      const lockedText = "Elegido";
 
       const card = document.createElement("div");
       card.className = `flip-card char-card-flip ${isSelected ? "selected" : ""} ${isDisabled ? "disabled" : ""} ${char.isAdmin ? "is-admin-card" : ""}`;
@@ -184,7 +180,6 @@ class ScapeRoomApp {
           <div class="flip-card-back" style="background-image: url('${backBaseUrl}');">
             <div class="card-back-content">
               <div class="card-back-header">
-                ${char.isAdmin ? `<span class="admin-pill-badge">Rol Especial</span>` : ""}
                 <h3 class="card-back-role-title">${data.role}</h3>
               </div>
               <p class="card-back-bio">${data.bio}</p>

@@ -114,13 +114,13 @@ export const CHARACTERS = [
     male: {
       name: "Víctor Dávila",
       role: "Heredero",
-      bio: "Hermano del fallecido en disputa económica por el testamento.",
+      bio: "Era hermano del fallecido en disputa por el testamento.",
       cardImage: "src/assets/images/personajes_masculinos/card-m-victor.png"
     },
     female: {
       name: "Elena Torres",
       role: "Heredera",
-      bio: "Hermana de la víctima en disputa económica por el testamento.",
+      bio: "Era hermana de la víctima en disputa por el testamento.",
       cardImage: "src/assets/images/personajes_femeninos/card-f-elena.png"
     }
   },
