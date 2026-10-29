@@ -6,6 +6,7 @@
 
 import { CHARACTERS } from "./data/characters.js";
 import { CLUES, resolveClueId } from "./data/clues.js";
+import { initCardTextPreview } from "./card-text-preview.js";
 
 class ScapeRoomApp {
   constructor() {
@@ -40,6 +41,9 @@ class ScapeRoomApp {
   init() {
     this.setupGlobalEvents();
     this.renderCharactersGrid();
+
+    // Inicializar panel de previsualización de tipografías y outline (temporal)
+    initCardTextPreview();
 
     // Comprobar parámetros en la URL (escaneo directo desde cámara nativa con token único o pista)
     const params = new URLSearchParams(window.location.search);
