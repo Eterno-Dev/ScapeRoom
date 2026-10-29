@@ -192,7 +192,20 @@ class ScapeRoomApp {
           }
           return;
         }
-        card.classList.toggle("is-flipped");
+
+        const wasFlipped = card.classList.contains("is-flipped");
+        // Solo 1 carta girada a la vez: devolver todas las demás cartas a su cara frontal
+        container.querySelectorAll(".char-card-flip.is-flipped").forEach((otherCard) => {
+          if (otherCard !== card) {
+            otherCard.classList.remove("is-flipped");
+          }
+        });
+
+        if (wasFlipped) {
+          card.classList.remove("is-flipped");
+        } else {
+          card.classList.add("is-flipped");
+        }
       });
 
       container.appendChild(card);
@@ -243,7 +256,7 @@ class ScapeRoomApp {
     charSlide.className = "game-card-slide";
     charSlide.id = "slide-character-card";
     charSlide.innerHTML = `
-      <div class="flip-card game-card-flip">
+      <div class="flip-card game-card-flip ${char.isAdmin ? "is-admin-card" : ""}">
         <div class="flip-card-inner">
           <!-- Cara Frontal -->
           <div class="flip-card-front">
@@ -797,7 +810,7 @@ class ScapeRoomApp {
           this.closeCodeModal();
           this.unlockClue(resolved);
         } else {
-          alert(`Código no reconocido ("${val}"). Introduce el número del objeto (ej: 11) o su token.`);
+          alert(`Código no reconocido ("${val}"). Introduce el código de la pista.`);
         }
       });
     }

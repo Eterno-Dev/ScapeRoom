@@ -229,23 +229,38 @@
   border: none;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.75);
   transition: box-shadow 0.15s ease;
+  position: relative;
 }
 
-.flip-card:hover .flip-card-front {
-  box-shadow: inset 0 0 0 2px var(--color-crimson), 0 6px 18px rgba(0, 0, 0, 0.85);
+.flip-card-front::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  border: 2px solid transparent;
+  box-sizing: border-box;
+  pointer-events: none;
+  z-index: 5;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* Cara trasera con textura de pergamino sangriento de fondo */
+.flip-card:hover .flip-card-front::after {
+  border-color: var(--color-crimson);
+  box-shadow: 0 0 12px rgba(185, 28, 28, 0.45);
+}
+
+/* Cara trasera con textura de pergamino de fondo */
 .flip-card-back {
   transform: rotateY(180deg);
   background-color: #16161b;
   background-size: cover;
   background-position: center;
-  border: 2px solid var(--color-gold);
+  border: 2px solid var(--color-crimson);
   padding: 18px 16px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
   box-sizing: border-box;
   position: relative;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .card-back-tint {
@@ -347,12 +362,35 @@
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.85);
 }
 
-.char-card-flip.selected .flip-card-front {
-  box-shadow: inset 0 0 0 3.5px var(--color-crimson), 0 0 16px rgba(185, 28, 28, 0.5);
+.char-card-flip.is-admin-card:hover .flip-card-front::after {
+  border-color: #2563eb;
+  box-shadow: 0 0 12px rgba(37, 99, 235, 0.5);
 }
 
-.char-card-flip.is-admin-card.selected .flip-card-front {
-  box-shadow: inset 0 0 0 3.5px #2563eb, 0 0 18px rgba(37, 99, 235, 0.55);
+.char-card-flip.is-admin-card .flip-card-back {
+  border-color: #2563eb;
+}
+
+/* Selección frontal: la línea se dibuja por delante de la imagen con z-index alto */
+.char-card-flip.selected .flip-card-front::after {
+  border: 3.5px solid var(--color-crimson);
+  box-shadow: 0 0 16px rgba(185, 28, 28, 0.6);
+}
+
+.char-card-flip.is-admin-card.selected .flip-card-front::after {
+  border: 3.5px solid #2563eb;
+  box-shadow: 0 0 18px rgba(37, 99, 235, 0.65);
+}
+
+/* Selección trasera: cuando se gira la carta seleccionada para ver detalles */
+.char-card-flip.selected .flip-card-back {
+  border: 3.5px solid var(--color-crimson);
+  box-shadow: 0 0 16px rgba(185, 28, 28, 0.6);
+}
+
+.char-card-flip.is-admin-card.selected .flip-card-back {
+  border: 3.5px solid #2563eb;
+  box-shadow: 0 0 18px rgba(37, 99, 235, 0.65);
 }
 
 .char-card-img {
@@ -627,6 +665,26 @@
   margin: 0 auto;
 }
 
+.game-card-flip .flip-card-front::after {
+  border: 2px solid var(--color-crimson);
+  box-shadow: 0 0 12px rgba(185, 28, 28, 0.4);
+}
+
+.game-card-flip.is-admin-card .flip-card-front::after {
+  border: 2px solid #2563eb;
+  box-shadow: 0 0 14px rgba(37, 99, 235, 0.45);
+}
+
+.game-card-flip .flip-card-back {
+  border: 2px solid var(--color-crimson);
+  box-shadow: 0 0 12px rgba(185, 28, 28, 0.4);
+}
+
+.game-card-flip.is-admin-card .flip-card-back {
+  border: 2px solid #2563eb;
+  box-shadow: 0 0 14px rgba(37, 99, 235, 0.45);
+}
+
 /* Flechas eliminadas para navegación táctil y ratón pura */
 .deck-arrow {
   display: none !important;
@@ -666,7 +724,8 @@
   background-color: transparent;
   background-size: cover;
   background-position: center;
-  border: 2px solid var(--border-strong);
+  border: 2px solid var(--color-crimson);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.7);
   padding: 16px;
   box-sizing: border-box;
   display: flex;
