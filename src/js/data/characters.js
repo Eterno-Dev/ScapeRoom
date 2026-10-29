@@ -147,14 +147,12 @@ export const CHARACTERS = [
       name: "Javier Escudero",
       role: "Abogado",
       bio: "Abogado albacea de la familia. Custodia los documentos legales y secretos de la finca.",
-      secret: "Custodia la documentación definitiva que enviará a prisión a todos los invitados.",
       cardImage: "src/assets/images/personajes_masculinos/card-m-javier.png"
     },
     female: {
       name: "Carmen Ruiz",
       role: "Abogada",
       bio: "Abogada albacea de la familia. Custodia los documentos legales y secretos de la finca.",
-      secret: "Custodia la documentación definitiva que enviará a prisión a todos los invitados.",
       cardImage: "src/assets/images/personajes_femeninos/card-f-carmen.png"
     }
   }

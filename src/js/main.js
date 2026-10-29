@@ -30,6 +30,8 @@ class ScapeRoomApp {
 
     // Id temporal para confirmación de personaje especial Administrador
     this.pendingAdminCharId = null;
+    // Id temporal para confirmación de personaje normal (información reservada)
+    this.pendingNormalCharId = null;
 
     // Referencia al audio del reproductor de cassette de las Últimas Palabras
     this.currentCassetteAudio = null;
@@ -137,6 +139,25 @@ class ScapeRoomApp {
     if (modal) modal.classList.remove("active");
   }
 
+  showCharConfirmModal(charId) {
+    this.pendingNormalCharId = charId;
+    const modal = document.getElementById("char-confirm-modal");
+    const titleEl = document.getElementById("char-modal-role-title");
+    const char = CHARACTERS.find(c => c.id === charId);
+    if (char && titleEl) {
+      const activeGender = this.gender || "male";
+      const charData = activeGender === "female" ? char.female : char.male;
+      titleEl.textContent = charData.role.toUpperCase();
+    }
+    if (modal) modal.classList.add("active");
+  }
+
+  closeCharConfirmModal() {
+    this.pendingNormalCharId = null;
+    const modal = document.getElementById("char-confirm-modal");
+    if (modal) modal.classList.remove("active");
+  }
+
   /* ==========================================================================
      LÓGICA DE GÉNERO Y PERSONAJES
      ========================================================================== */
@@ -187,15 +208,6 @@ class ScapeRoomApp {
                 <h3 class="card-back-role-title">${data.role}</h3>
               </div>
               <p class="card-back-bio">${data.bio}</p>
-              ${data.secret ? `
-                <div class="char-back-secret">
-                  <div class="char-secret-tag">
-                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    <span>PRUEBA INCRIMINATORIA</span>
-                  </div>
-                  <p class="char-secret-desc">${data.secret}</p>
-                </div>
-              ` : ""}
               <div class="card-back-actions">
                 ${!isLocked ? `<button class="${btnClass}" data-select-char="${char.id}">${btnText}</button>` : `<span class="char-locked-badge">${lockedText}</span>`}
               </div>
@@ -210,7 +222,7 @@ class ScapeRoomApp {
           if (char.isAdmin) {
             this.showAdminConfirmModal(char.id);
           } else {
-            this.selectCharacter(char.id);
+            this.showCharConfirmModal(char.id);
           }
           return;
         }
@@ -990,6 +1002,26 @@ class ScapeRoomApp {
       btnAcceptAdmin.addEventListener("click", () => {
         const charId = this.pendingAdminCharId;
         this.closeAdminConfirmModal();
+        if (charId) {
+          this.selectCharacter(charId);
+        }
+      });
+    }
+
+    // Modal de confirmación para Personajes Normales (Información Reservada)
+    const btnCancelChar = document.getElementById("btn-cancel-select-char");
+    const btnAcceptChar = document.getElementById("btn-accept-select-char");
+
+    if (btnCancelChar) {
+      btnCancelChar.addEventListener("click", () => {
+        this.closeCharConfirmModal();
+      });
+    }
+
+    if (btnAcceptChar) {
+      btnAcceptChar.addEventListener("click", () => {
+        const charId = this.pendingNormalCharId;
+        this.closeCharConfirmModal();
         if (charId) {
           this.selectCharacter(charId);
         }
