@@ -131,14 +131,14 @@ export const CHARACTERS = [
     isAdmin: true,
     male: {
       name: "Javier Escudero",
-      role: "Administrador",
-      bio: "Abogado albacea y administrador de la campaña que guía la historia.",
+      role: "Abogado",
+      bio: "Abogado albacea de la familia. Custodia los documentos legales y secretos de la finca.",
       cardImage: "src/assets/images/personajes_masculinos/card-m-javier.png"
     },
     female: {
       name: "Carmen Ruiz",
-      role: "Administradora",
-      bio: "Abogada albacea y administradora de la campaña que guía la historia.",
+      role: "Abogada",
+      bio: "Abogada albacea de la familia. Custodia los documentos legales y secretos de la finca.",
       cardImage: "src/assets/images/personajes_femeninos/card-f-carmen.png"
     }
   }

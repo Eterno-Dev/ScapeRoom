@@ -115,6 +115,15 @@ class ScapeRoomApp {
   showAdminConfirmModal(charId) {
     this.pendingAdminCharId = charId;
     const modal = document.getElementById("admin-confirm-modal");
+    const titleEl = document.getElementById("admin-modal-role-title");
+    const acceptBtn = document.getElementById("btn-accept-admin");
+    const activeGender = this.gender || "male";
+    if (titleEl) {
+      titleEl.textContent = activeGender === "female" ? "ABOGADA" : "ABOGADO";
+    }
+    if (acceptBtn) {
+      acceptBtn.textContent = activeGender === "female" ? "Elegir Abogada" : "Elegir Abogado";
+    }
     if (modal) modal.classList.add("active");
   }
 
@@ -153,7 +162,12 @@ class ScapeRoomApp {
       const backBaseUrl = this.getBackBase(char.id);
 
       const btnClass = char.isAdmin ? "btn-confirm-char btn-confirm-admin" : "btn-confirm-char";
-      const btnText = char.isAdmin ? "Elegir Administrador" : "Elegir Personaje";
+      const btnText = char.isAdmin
+        ? (activeGender === "female" ? "Elegir Abogada" : "Elegir Abogado")
+        : "Elegir Personaje";
+      const lockedText = char.isAdmin
+        ? (activeGender === "female" ? "Abogada Elegida" : "Abogado Elegido")
+        : "Elegido";
 
       const card = document.createElement("div");
       card.className = `flip-card char-card-flip ${isSelected ? "selected" : ""} ${isDisabled ? "disabled" : ""} ${char.isAdmin ? "is-admin-card" : ""}`;
@@ -175,7 +189,7 @@ class ScapeRoomApp {
               </div>
               <p class="card-back-bio">${data.bio}</p>
               <div class="card-back-actions">
-                ${!isLocked ? `<button class="${btnClass}" data-select-char="${char.id}">${btnText}</button>` : `<span class="char-locked-badge">${char.isAdmin ? "Administrador Elegido" : "Elegido"}</span>`}
+                ${!isLocked ? `<button class="${btnClass}" data-select-char="${char.id}">${btnText}</button>` : `<span class="char-locked-badge">${lockedText}</span>`}
               </div>
             </div>
           </div>
@@ -374,14 +388,9 @@ class ScapeRoomApp {
 
               <!-- Escudo de Confidencialidad para Pistas Privadas (Ojito) -->
               ${clue.isPrivate ? `
-                <div class="private-shield-overlay" id="shield-${clue.id}">
-                  <div class="shield-badge">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    <span>PISTA PRIVADA</span>
-                  </div>
-
+                <div class="private-shield-overlay" id="shield-${clue.id}" style="background-image: url('src/assets/images/tarjetas/${clue.backBase}');">
                   <div class="shield-eye-icon-box">
-                    <svg class="shield-eye-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg class="shield-eye-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
                       <line x1="1" y1="1" x2="23" y2="23"></line>
                     </svg>
@@ -389,28 +398,20 @@ class ScapeRoomApp {
 
                   <h3 class="shield-title">¿ESTÁS SEGURO?</h3>
                   <p class="shield-warning">
-                    Esta pista contiene información reservada.<br />
-                    <strong>NO SE PUEDE COMPARTIR</strong> con los demás.
+                    Esta pista contiene información reservada, no se puede compartir.
                   </p>
 
                   <button class="btn-reveal-sensitive" data-target-shield="shield-${clue.id}" type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                       <circle cx="12" cy="13" r="3"></circle>
                     </svg>
-                    <span>CLICA PARA VER</span>
+                    <span>Clica para ver</span>
                   </button>
                 </div>
               ` : ""}
 
               <div class="card-back-content">
-                ${clue.isPrivate ? `
-                  <div class="confidential-pill">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                    <span>CONFIDENCIAL — PROHIBIDO COMPARTIR</span>
-                  </div>
-                ` : ""}
-
                 <div class="card-back-header">
                   <h4 class="card-back-name">${clue.title}</h4>
                 </div>
