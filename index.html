@@ -32,13 +32,13 @@
       </div>
 
       <!-- ==================================================================
-           TEMPORAL: PANEL DE PRUEBAS DE TIPOGRAFÍA, OUTLINES Y SOMBREADO
+           TEMPORAL: PANEL DE PRUEBAS DE OUTLINES Y SOMBREADO (BARLOW & FREDOKA)
            ================================================================== -->
       <aside class="text-preview-panel" id="text-preview-panel">
         <div class="preview-panel-header" id="preview-panel-header">
           <div class="preview-panel-title-wrap">
-            <span class="preview-panel-badge">TEST</span>
-            <h3 class="preview-panel-title">Probador de Tipografía y Outline</h3>
+            <span class="preview-panel-badge">OUTLINE</span>
+            <h3 class="preview-panel-title">Ajuste de Grosor y Sombra</h3>
           </div>
           <button class="preview-toggle-btn" id="btn-toggle-preview-panel" type="button">
             Minimizar &blacktriangle;
@@ -59,87 +59,40 @@
           </div>
           <div class="preview-copy-toast" id="preview-copy-toast"></div>
 
-          <!-- Presets Rápidos de 1 Clic -->
+          <!-- Selector Rápido de Grosor (Probador de cierre de orificios) -->
           <div>
             <div class="preview-section-title">
-              <span>Presets de Estilos Rápidos</span>
+              <span>Probar Grosores de Outline</span>
             </div>
             <div class="preview-presets-row">
-              <button type="button" class="btn-preset-pill active" data-preview-preset="fredoka-perfect">✨ Fredoka + Outline (Tu Selección)</button>
-              <button type="button" class="btn-preset-pill" data-preview-preset="cartoon-pop">💥 Cartoon Pop</button>
-              <button type="button" class="btn-preset-pill" data-preview-preset="rounded-clean">🧸 Redondito Limpio</button>
-              <button type="button" class="btn-preset-pill" data-preview-preset="comic-bangers">🦸 Cómic Bangers</button>
-              <button type="button" class="btn-preset-pill" data-preview-preset="poster-heavy">⚡ Poster Grueso</button>
-              <button type="button" class="btn-preset-pill" data-preview-preset="mystery-gothic">🦇 Gótico Misterio</button>
-              <button type="button" class="btn-preset-pill" data-preview-preset="original-default">🔄 Original por Defecto</button>
+              <button type="button" class="btn-preset-pill" data-outline-preset="4.0">4.0px</button>
+              <button type="button" class="btn-preset-pill" data-outline-preset="4.5">4.5px</button>
+              <button type="button" class="btn-preset-pill" data-outline-preset="5.0">5.0px</button>
+              <button type="button" class="btn-preset-pill" data-outline-preset="5.5">5.5px</button>
+              <button type="button" class="btn-preset-pill active" data-outline-preset="6.0">6.0px (Cierra huecos)</button>
+              <button type="button" class="btn-preset-pill" data-outline-preset="6.5">6.5px</button>
+              <button type="button" class="btn-preset-pill" data-outline-preset="7.0">7.0px</button>
             </div>
+          </div>
+
+          <!-- Slider Continuo de Grosor -->
+          <div class="preview-control-group full-width" style="margin-top: -4px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <label class="preview-label" for="preview-outline-slider">Grosor en Vivo (Slider)</label>
+              <span id="preview-outline-val-badge" style="font-family:var(--font-title); font-size:15px; font-weight:900; color:var(--color-gold);">6.0px</span>
+            </div>
+            <input type="range" id="preview-outline-slider" min="3" max="8" step="0.25" value="6.0" style="width:100%; accent-color:var(--color-crimson); cursor:pointer;" />
           </div>
 
           <!-- Controles de Ajuste Manual -->
           <div class="preview-controls-grid">
-            <!-- Tipografía de Títulos -->
-            <div class="preview-control-group">
-              <label class="preview-label" for="preview-font-title-select">Fuente Título</label>
-              <select id="preview-font-title-select" class="preview-select">
-                <optgroup label="--- Clásicas / Por Defecto ---">
-                  <option value="'Barlow Condensed', sans-serif" selected>Barlow Condensed (Por Defecto)</option>
-                  <option value="'Cinzel', serif">Cinzel (Romana Misterio)</option>
-                  <option value="'Inter', sans-serif">Inter (Sans limpia)</option>
-                </optgroup>
-                <optgroup label="--- Estilo Cartoon ---">
-                  <option value="'Luckiest Guy', cursive">Luckiest Guy (Cartoon)</option>
-                  <option value="'Bangers', cursive">Bangers (Cómic)</option>
-                  <option value="'Carter One', cursive">Carter One (Retro)</option>
-                  <option value="'Creepster', cursive">Creepster (Terror)</option>
-                </optgroup>
-                <optgroup label="--- Estilo Redonditas ---">
-                  <option value="'Fredoka', sans-serif">Fredoka (Redondita)</option>
-                  <option value="'Nunito', sans-serif">Nunito (Suave)</option>
-                  <option value="'Quicksand', sans-serif">Quicksand (Geométrica)</option>
-                </optgroup>
-                <optgroup label="--- Estilo Gruesas / Impacto ---">
-                  <option value="'Alfa Slab One', cursive">Alfa Slab One (Muy Gruesa)</option>
-                  <option value="'Paytone One', sans-serif">Paytone One (Display)</option>
-                  <option value="'Black Ops One', cursive">Black Ops One (Fuerte)</option>
-                  <option value="Impact, fantasy">Impact (Ultra Pesada)</option>
-                </optgroup>
-              </select>
-            </div>
-
-            <!-- Tipografía de Biografía -->
-            <div class="preview-control-group">
-              <label class="preview-label" for="preview-font-bio-select">Fuente Descripción</label>
-              <select id="preview-font-bio-select" class="preview-select">
-                <option value="'Fredoka', sans-serif" selected>Fredoka (Redondita)</option>
-                <option value="'Nunito', sans-serif">Nunito (Redonda suave)</option>
-                <option value="'Quicksand', sans-serif">Quicksand (Geométrica)</option>
-                <option value="'Inter', sans-serif">Inter (Sans limpia)</option>
-                <option value="'Barlow Condensed', sans-serif">Barlow Condensed</option>
-                <option value="'Cinzel', serif">Cinzel</option>
-              </select>
-            </div>
-
-            <!-- Grosor de Outline -->
-            <div class="preview-control-group">
-              <label class="preview-label" for="preview-outline-width-select">Grosor Outline</label>
-              <select id="preview-outline-width-select" class="preview-select">
-                <option value="0">Sin outline (0px)</option>
-                <option value="1">Fino (1px)</option>
-                <option value="1.5">Medio (1.5px)</option>
-                <option value="2">Grueso (2px)</option>
-                <option value="2.5" selected>Muy Grueso (2.5px)</option>
-                <option value="3">Ultra Cómic (3px)</option>
-                <option value="4">Sticker (4px)</option>
-              </select>
-            </div>
-
-            <!-- Método de Outline -->
+            <!-- Técnica de Outline -->
             <div class="preview-control-group">
               <label class="preview-label" for="preview-outline-method-select">Técnica Outline</label>
               <select id="preview-outline-method-select" class="preview-select">
                 <option value="both" selected>Combinado (Trazo Vector + Aura Suave)</option>
-                <option value="stroke">Trazo Vectorial Nítido (Stroke)</option>
-                <option value="shadow">Anillo Continuo 360° (36 ángulos)</option>
+                <option value="stroke">Trazo Vectorial Puro</option>
+                <option value="shadow">Anillo Continuo 360°</option>
               </select>
             </div>
 
@@ -168,7 +121,7 @@
               </div>
             </div>
 
-            <!-- Tipo de Sombreado -->
+            <!-- Estilo Sombreado -->
             <div class="preview-control-group">
               <label class="preview-label" for="preview-shadow-type-select">Estilo Sombreado</label>
               <select id="preview-shadow-type-select" class="preview-select">
@@ -177,26 +130,17 @@
                 <option value="drop-3d">Sombra 3D Dura (Cartoon)</option>
                 <option value="drop-soft">Sombra Suave Caída</option>
                 <option value="deep-contrast">Sombra Profunda (Contraste)</option>
-                <option value="original">Resplandor Original</option>
                 <option value="none">Sin sombra</option>
               </select>
             </div>
 
             <!-- Color de Sombreado -->
-            <div class="preview-control-group">
-              <label class="preview-label" for="preview-shadow-color-input">Color Sombra</label>
+            <div class="preview-control-group full-width">
+              <label class="preview-label" for="preview-shadow-color-input">Color Sombra / Aura</label>
               <div class="preview-color-row">
                 <input type="color" id="preview-shadow-color-input" class="preview-color-picker" value="#000000" />
-                <span class="preview-label" style="text-transform:none;">Sombra</span>
+                <span class="preview-label" style="text-transform:none;">Aura Suave</span>
               </div>
-            </div>
-
-            <!-- Checkbox Aplicar Outline a toda la App -->
-            <div class="preview-control-group full-width">
-              <label class="preview-checkbox-label">
-                <input type="checkbox" id="preview-app-outline-checkbox" />
-                <span>Aplicar outline también a títulos y textos de la app</span>
-              </label>
             </div>
           </div>
         </div>
