@@ -1,7 +1,7 @@
 /**
  * Catálogo Oficial de Personajes — El Asesinato Embrujado
  * EternoDev Web Standards - 8 Personajes Oficiales (Aventura para 8 Jugadores)
- * Incluye al Narrador Especial (Javier Escudero / Carmen Ruiz) con botón distintivo
+ * Incluye al Administrador Especial de la Campaña (Javier Escudero / Carmen Ruiz) con selección en azul
  */
 
 export const CHARACTERS = [
@@ -128,17 +128,17 @@ export const CHARACTERS = [
     id: 8,
     tag: "Persona 8",
     backBase: "card-back-base-2.png",
-    isNarrator: true,
+    isAdmin: true,
     male: {
       name: "Javier Escudero",
-      role: "Narrador",
-      bio: "Abogado albacea y narrador que guía la historia y custodia sus secretos.",
+      role: "Administrador",
+      bio: "Abogado albacea y administrador de la campaña que guía la historia.",
       cardImage: "src/assets/images/personajes_masculinos/card-m-javier.png"
     },
     female: {
       name: "Carmen Ruiz",
-      role: "Narradora",
-      bio: "Abogada albacea y narradora que guía la historia y custodia sus secretos.",
+      role: "Administradora",
+      bio: "Abogada albacea y administradora de la campaña que guía la historia.",
       cardImage: "src/assets/images/personajes_femeninos/card-f-carmen.png"
     }
   }

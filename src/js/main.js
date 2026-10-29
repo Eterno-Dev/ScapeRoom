@@ -28,6 +28,9 @@ class ScapeRoomApp {
     this.dragStartX = 0;
     this.dragScrollStart = 0;
 
+    // Id temporal para confirmación de personaje especial Administrador
+    this.pendingAdminCharId = null;
+
     this.init();
   }
 
@@ -109,6 +112,18 @@ class ScapeRoomApp {
     if (modal) modal.classList.remove("active");
   }
 
+  showAdminConfirmModal(charId) {
+    this.pendingAdminCharId = charId;
+    const modal = document.getElementById("admin-confirm-modal");
+    if (modal) modal.classList.add("active");
+  }
+
+  closeAdminConfirmModal() {
+    this.pendingAdminCharId = null;
+    const modal = document.getElementById("admin-confirm-modal");
+    if (modal) modal.classList.remove("active");
+  }
+
   /* ==========================================================================
      LÓGICA DE GÉNERO Y PERSONAJES
      ========================================================================== */
@@ -137,11 +152,11 @@ class ScapeRoomApp {
       const isDisabled = isLocked && !isSelected;
       const backBaseUrl = this.getBackBase(char.id);
 
-      const btnClass = char.isNarrator ? "btn-confirm-char btn-confirm-narrator" : "btn-confirm-char";
-      const btnText = char.isNarrator ? "Elegir Narrador" : "Elegir Personaje";
+      const btnClass = char.isAdmin ? "btn-confirm-char btn-confirm-admin" : "btn-confirm-char";
+      const btnText = char.isAdmin ? "Elegir Administrador" : "Elegir Personaje";
 
       const card = document.createElement("div");
-      card.className = `flip-card char-card-flip ${isSelected ? "selected" : ""} ${isDisabled ? "disabled" : ""} ${char.isNarrator ? "is-narrator-card" : ""}`;
+      card.className = `flip-card char-card-flip ${isSelected ? "selected" : ""} ${isDisabled ? "disabled" : ""} ${char.isAdmin ? "is-admin-card" : ""}`;
       card.setAttribute("data-char-id", char.id);
 
       card.innerHTML = `
@@ -155,12 +170,12 @@ class ScapeRoomApp {
           <div class="flip-card-back" style="background-image: url('${backBaseUrl}');">
             <div class="card-back-content">
               <div class="card-back-header">
-                ${char.isNarrator ? `<span class="narrator-pill-badge">Rol Especial</span>` : ""}
+                ${char.isAdmin ? `<span class="admin-pill-badge">Rol Especial</span>` : ""}
                 <h3 class="card-back-role-title">${data.role}</h3>
               </div>
               <p class="card-back-bio">${data.bio}</p>
               <div class="card-back-actions">
-                ${!isLocked ? `<button class="${btnClass}" data-select-char="${char.id}">${btnText}</button>` : `<span class="char-locked-badge">${char.isNarrator ? "Narrador Elegido" : "Elegido"}</span>`}
+                ${!isLocked ? `<button class="${btnClass}" data-select-char="${char.id}">${btnText}</button>` : `<span class="char-locked-badge">${char.isAdmin ? "Administrador Elegido" : "Elegido"}</span>`}
               </div>
             </div>
           </div>
@@ -170,7 +185,11 @@ class ScapeRoomApp {
       card.addEventListener("click", (e) => {
         if (e.target.closest("[data-select-char]")) {
           e.stopPropagation();
-          this.selectCharacter(char.id);
+          if (char.isAdmin) {
+            this.showAdminConfirmModal(char.id);
+          } else {
+            this.selectCharacter(char.id);
+          }
           return;
         }
         card.classList.toggle("is-flipped");
@@ -723,6 +742,26 @@ class ScapeRoomApp {
         localStorage.removeItem("scaperoom_char_id");
         this.showView("view-selection");
         this.renderCharactersGrid();
+      });
+    }
+
+    // Modal de confirmación para Personaje Especial (Administrador)
+    const btnCancelAdmin = document.getElementById("btn-cancel-admin");
+    const btnAcceptAdmin = document.getElementById("btn-accept-admin");
+
+    if (btnCancelAdmin) {
+      btnCancelAdmin.addEventListener("click", () => {
+        this.closeAdminConfirmModal();
+      });
+    }
+
+    if (btnAcceptAdmin) {
+      btnAcceptAdmin.addEventListener("click", () => {
+        const charId = this.pendingAdminCharId;
+        this.closeAdminConfirmModal();
+        if (charId) {
+          this.selectCharacter(charId);
+        }
       });
     }
 
