@@ -327,11 +327,11 @@ def generate_warbes_pdf(output_filename="2_periodico_warbes.pdf"):
     ]
 
     col2 = [
-        Image(grafica_path, width=220, height=105),
+        Image(grafica_path, width=150, height=139),
         Spacer(1, 3),
         Paragraph("Desplome vertical de la cotización bursátil de Kronos S.A. en las últimas 72 h. / BLOOMBERG", ParagraphStyle('FNote', parent=styles['Normal'], fontName='Helvetica', fontSize=7, leading=9, textColor=colors.HexColor('#4B5563'))),
-        Spacer(1, 6),
-        Paragraph("<b>CRISIS DE LIQUIDEZ:</b> La caída de Kronos deja sin cobertura avales bancarios cruzados entre sociedades familiares.", ParagraphStyle('FigNote', parent=styles['Normal'], fontName=FONT_ITALIC, fontSize=8.5, leading=11.5, textColor=colors.HexColor('#4B5563')))
+        Spacer(1, 4),
+        Paragraph("<b>CRISIS DE LIQUIDEZ:</b> La caída de Kronos deja sin cobertura avales bancarios cruzados entre sociedades.", ParagraphStyle('FigNote', parent=styles['Normal'], fontName=FONT_ITALIC, fontSize=8, leading=10.5, textColor=colors.HexColor('#4B5563')))
     ]
 
     col3_text = (

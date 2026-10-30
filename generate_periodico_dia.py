@@ -37,20 +37,18 @@ def get_proportional_image(path, target_width=None, target_height=None):
         return Image(path, width=w_px * scale, height=h_px * scale)
 
 def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
-    # Rutas a las imágenes reales
     path_grafica = "src/assets/images/periodico_dia/grafica_2.png"
     path_muerte = "src/assets/images/periodico_dia/muerte_periodico.png"
     path_caballo = "src/assets/images/periodico_dia/caballo_periodico.png"
     path_militares = "src/assets/images/periodico_dia/militares_periodico.png"
 
-    # A4 = 595.27 x 841.89 pt. Ancho útil = 595.27 - 48 = 547.27 pt.
     doc = SimpleDocTemplate(
         output_filename,
         pagesize=A4,
         leftMargin=24,
         rightMargin=24,
-        topMargin=14,
-        bottomMargin=14
+        topMargin=12,
+        bottomMargin=12
     )
 
     styles = getSampleStyleSheet()
@@ -86,7 +84,6 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         textColor=colors.HexColor('#991B1B')
     )
 
-    # 1. KRONOS (HERO)
     hero_title = ParagraphStyle(
         'HeroTitle',
         parent=styles['Heading1'],
@@ -108,7 +105,6 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         spaceAfter=3
     )
 
-    # 2. MUERTE DEL MAGNATE
     mag_title = ParagraphStyle(
         'MagTitle',
         parent=styles['Heading2'],
@@ -130,7 +126,6 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         spaceAfter=3
     )
 
-    # 3. TITULARES SECUNDARIOS (HÍPICA E ISRAEL)
     sec_title = ParagraphStyle(
         'SecTitle',
         parent=styles['Heading2'],
@@ -171,10 +166,16 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         textColor=colors.HexColor('#4B5563')
     )
 
+    caption_center = ParagraphStyle(
+        'CaptionC',
+        parent=caption_style,
+        alignment=1 # Centered
+    )
+
     story = []
 
     # =========================================================================
-    # 1. CABECERA: EL DIARIO DEL DÍA (ESTILO EL PAÍS)
+    # 1. CABECERA: EL DIARIO DEL DÍA
     # =========================================================================
     top_bar = Table([[
         Paragraph("<font size=6.5 color='#4B5563'>www.eldiariodeldia.com</font>", ParagraphStyle('TL', parent=styles['Normal'])),
@@ -213,7 +214,8 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
     story.append(Spacer(1, 3))
 
     # =========================================================================
-    # 2. NOTICIA PRINCIPAL (HERO): KRONOS REPUNTA UN 120% EN 12 HORAS (GRAFICA_2)
+    # 2. NOTICIA PRINCIPAL (HERO): KRONOS REPUNTA UN 120% EN 12 HORAS
+    # GRÁFICA 2 MÁS ANCHA Y PROPORCIONAL
     # =========================================================================
     story.append(Paragraph("<b>MERCADOS FINANCIEROS • WALL STREET</b>", section_tag))
     story.append(Paragraph("Kronos repunta un 120% en 12 horas", hero_title))
@@ -227,15 +229,26 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
     )
 
     kronos_col2 = (
-        "La quiebra técnica amenazaba con paralizar divisiones clave del sector logístico.<br/><br/>"
-        "La dirección de Kronos aseguró en un escueto comunicado que la liquidez está garantizada para afrontar sus compromisos financieros inmediatos.<br/>"
+        "La quiebra técnica amenazaba con paralizar divisiones clave del sector logístico y arrastrar a proveedores estratégicos.<br/><br/>"
+        "La dirección de Kronos aseguró en un escueto comunicado que la liquidez está garantizada para afrontar sus compromisos financieros inmediatos.<br/><br/>"
+        "Analistas del parqué califican la maniobra de rescate in extremis.<br/>"
         "<font size=6 color='#6B7280'>Pasa a la pág. 14 / Finanzas</font>"
     )
 
-    # Gráfica cuadrada proporcional sin chafeado
-    kronos_img = get_proportional_image(path_grafica, target_width=140)
+    # Gráfica 2 más ancha (185 pt de ancho) y 100% proporcional
+    kronos_img = get_proportional_image(path_grafica, target_width=182)
+    t_kronos_img = Table([[kronos_img]], colWidths=[192])
+    t_kronos_img.setStyle(TableStyle([
+        ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+        ('VALIGN', (0,0), (-1,-1), 'TOP'),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 0),
+        ('TOPPADDING', (0,0), (-1,-1), 0),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 0),
+    ]))
+
     kronos_photo_col = [
-        kronos_img,
+        t_kronos_img,
         Spacer(1, 2),
         Paragraph("<i>* Gráfica acortada para mostrar los datos relevantes de la cotización. / BLOOMBERG</i>", caption_style)
     ]
@@ -244,7 +257,7 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         Paragraph(kronos_col1, body_news),
         Paragraph(kronos_col2, body_news),
         kronos_photo_col
-    ]], colWidths=[195, 195, 155])
+    ]], colWidths=[175, 175, 197])
     hero_layout.setStyle(TableStyle([
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
         ('LINEBEFORE', (1,0), (1,0), 0.5, colors.HexColor('#D1D5DB')),
@@ -269,8 +282,7 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
     story.append(Paragraph("Muere de forma sospechosa el magnate Valparaíso en su villa", mag_title))
     story.append(Paragraph("La policía detiene temporalmente la investigación sobre el terreno por petición formal de sus abogados.", mag_subtitle))
 
-    # Imagen muerte proporcional sin chafeado
-    muerte_img = get_proportional_image(path_muerte, target_width=145)
+    muerte_img = get_proportional_image(path_muerte, target_width=140)
     mag_photo_col = [
         muerte_img,
         Spacer(1, 2),
@@ -293,7 +305,7 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         mag_photo_col,
         Paragraph(mag_text1, body_news),
         Paragraph(mag_text2, body_news)
-    ]], colWidths=[145, 195, 205])
+    ]], colWidths=[150, 195, 202])
     t_magnate.setStyle(TableStyle([
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
         ('LEFTPADDING', (0,0), (-1,-1), 0),
@@ -312,16 +324,27 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
     story.append(HRFlowable(width="100%", thickness=0.8, color=colors.HexColor('#000000'), spaceBefore=1, spaceAfter=2))
 
     # =========================================================================
-    # 4. SECCIÓN MEDIA: CABALLO Y MILITARES (PROPORCIONALES)
+    # 4. SECCIÓN MEDIA: CABALLO Y MILITARES (PERFECTAMENTE CENTRADAS)
     # =========================================================================
     caballo_img = get_proportional_image(path_caballo, target_width=210)
+    # Centrar imagen en tabla interna
+    t_caballo_center = Table([[caballo_img]], colWidths=[255])
+    t_caballo_center.setStyle(TableStyle([
+        ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 0),
+        ('TOPPADDING', (0,0), (-1,-1), 0),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 0),
+    ]))
+
     col_horse = [
         Paragraph("<b>HÍPICA Y APUESTAS</b>", section_tag),
         Paragraph("Nuevo caballo en carreras clandestinas", sec_title),
         Paragraph("Adquieren a 'Sombra Veloz' tras la sobredosis del animal titular.", sec_subtitle),
-        caballo_img,
+        t_caballo_center,
         Spacer(1, 1),
-        Paragraph("Purasangre 'Sombra Veloz' en los boxes del circuito clandestino. / AP", caption_style),
+        Paragraph("Purasangre 'Sombra Veloz' en los boxes del circuito clandestino. / AP", caption_center),
         Spacer(1, 2),
         Paragraph(
             "<b>LOUISVILLE. —</b> Tras el colapso del purasangre <i>'Tormenta Negra'</i> —cuya necropsia reveló una <b>dosis masiva de estimulantes</b>—, "
@@ -331,13 +354,24 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
     ]
 
     militares_img = get_proportional_image(path_militares, target_width=210)
+    # Centrar imagen en tabla interna
+    t_militares_center = Table([[militares_img]], colWidths=[265])
+    t_militares_center.setStyle(TableStyle([
+        ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 0),
+        ('TOPPADDING', (0,0), (-1,-1), 0),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 0),
+    ]))
+
     col_israel = [
         Paragraph("<b>SEGURIDAD INTERNACIONAL</b>", ParagraphStyle('TagI', parent=section_tag, textColor=colors.HexColor('#1E3A8A'))),
         Paragraph("Captan en Israel a un traficante de armas", sec_title),
         Paragraph("Fotografiado en Tel Aviv a las 16:30 horas (dos antes del anochecer).", sec_subtitle),
-        militares_img,
+        t_militares_center,
         Spacer(1, 1),
-        Paragraph("Registro militar obtenido a las 16:30 h en Tel Aviv. / AFP", caption_style),
+        Paragraph("Registro militar obtenido a las 16:30 h en Tel Aviv. / AFP", caption_center),
         Spacer(1, 2),
         Paragraph(
             "<b>TEL AVIV. —</b> Informes militares sitúan a un intermediario cerrando un pacto bélico en Oriente Próximo.<br/>"
@@ -358,7 +392,7 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         ('BOTTOMPADDING', (0,0), (-1,-1), 2),
     ]))
     story.append(mid_table)
-    story.append(Spacer(1, 3))
+    story.append(Spacer(1, 2))
 
     # =========================================================================
     # 5. MÓDULO INFERIOR DE IMPACTO SOCIAL
