@@ -714,7 +714,7 @@ def generate_informe_medico_previo_pdf(output_filename="6_informe_medico_previo.
     print("Documento 6 generado:", output_filename)
 
 # =============================================================================
-# 6. GENERAR DOCUMENTO CONSOLIDADO (6 PÁGINAS)
+# 6. GENERAR DOCUMENTO CONSOLIDADO (11 PÁGINAS)
 # =============================================================================
 def generate_consolidated_pdf(output_filename="documentos_investigacion.pdf"):
     merger = pymupdf.open()
@@ -731,9 +731,30 @@ def generate_consolidated_pdf(output_filename="documentos_investigacion.pdf"):
             doc = pymupdf.open(f)
             merger.insert_pdf(doc)
             doc.close()
-    merger.save(output_filename)
+
+    # Páginas del dossier físico (5 imágenes A4 de margen a margen)
+    dossier_images = [
+        os.path.join(PROJECT_ROOT, "src", "assets", "images", "dossier", "page_cover.png"),
+        os.path.join(PROJECT_ROOT, "src", "assets", "images", "dossier", "page_1.png"),
+        os.path.join(PROJECT_ROOT, "src", "assets", "images", "dossier", "page_2.png"),
+        os.path.join(PROJECT_ROOT, "src", "assets", "images", "dossier", "page_3.png"),
+        os.path.join(PROJECT_ROOT, "src", "assets", "images", "dossier", "page_back.png")
+    ]
+    A4_WIDTH = 595.27557
+    A4_HEIGHT = 841.88977
+    page_rect = pymupdf.Rect(0, 0, A4_WIDTH, A4_HEIGHT)
+
+    for img_path in dossier_images:
+        if os.path.exists(img_path):
+            page = merger.new_page(width=A4_WIDTH, height=A4_HEIGHT)
+            page.insert_image(page_rect, filename=img_path)
+            print(f"[OK] Insertada página dossier en consolidado: {os.path.basename(img_path)}")
+        else:
+            print(f"[WARN] No se encontró {img_path}")
+
+    merger.save(output_filename, deflate=True)
     merger.close()
-    print("PDF consolidado generado con éxito:", output_filename)
+    print("PDF consolidado de 11 páginas generado con éxito:", output_filename)
     
     # Limpiar PDFs sueltos para mantener únicamente el documento completo unificado
     for f in temp_files:
