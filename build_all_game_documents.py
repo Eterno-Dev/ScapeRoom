@@ -564,19 +564,22 @@ def generate_pasaporte_pdf(output_filename="4_pasaporte_falso.pdf"):
     print("Documento 4 generado:", output_filename)
 
 # =============================================================================
-# 5. GENERAR DOCUMENTO CONSOLIDADO (4 PÁGINAS)
+# 5. GENERAR DOCUMENTO CONSOLIDADO (5 PÁGINAS)
 # =============================================================================
 def generate_consolidated_pdf(output_filename="documentos_investigacion.pdf"):
     merger = pymupdf.open()
-    for f in ["1_autopsia_forense.pdf", "2_periodico_warbes.pdf", "3_perfiles_personajes.pdf", "4_pasaporte_falso.pdf"]:
-        doc = pymupdf.open(f)
-        merger.insert_pdf(doc)
+    for f in ["1_autopsia_forense.pdf", "2_periodico_warbes.pdf", "3_perfiles_personajes.pdf", "4_pasaporte_falso.pdf", "5_periodico_dia.pdf"]:
+        if os.path.exists(f):
+            doc = pymupdf.open(f)
+            merger.insert_pdf(doc)
     merger.save(output_filename)
-    print("PDF consolidado generado con éxito (4 páginas):", output_filename)
+    print("PDF consolidado generado con éxito:", output_filename)
 
 if __name__ == '__main__':
     generate_autopsia_pdf()
     generate_warbes_pdf()
     generate_perfiles_pdf()
     generate_pasaporte_pdf()
+    from generate_periodico_dia import build_periodico_dia_pdf
+    build_periodico_dia_pdf("5_periodico_dia.pdf")
     generate_consolidated_pdf()
