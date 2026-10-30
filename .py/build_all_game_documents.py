@@ -607,11 +607,125 @@ def generate_pasaporte_pdf(output_filename="4_pasaporte_falso.pdf"):
     print("Documento 4 generado:", output_filename)
 
 # =============================================================================
-# 5. GENERAR DOCUMENTO CONSOLIDADO (5 PÁGINAS)
+# 5. DOCUMENTO 6: CONSULTA MÉDICA PREVIA AL ACCIDENTE (MEDIA PÁGINA RECORTABLE)
+# =============================================================================
+def generate_informe_medico_previo_pdf(output_filename="6_informe_medico_previo.pdf"):
+    doc = SimpleDocTemplate(
+        output_filename, pagesize=A4,
+        leftMargin=25, rightMargin=25, topMargin=16, bottomMargin=16
+    )
+    styles = getSampleStyleSheet()
+    story = []
+
+    # Cabecera institucional hospitalaria
+    story.append(Paragraph("HOSPITAL GENERAL METROPOLITANO • SERVICIO DE MEDICINA INTERNA Y NEUROLOGÍA", ParagraphStyle('H1Prev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8.5, leading=11, alignment=1, textColor=colors.HexColor('#1E3A8A'))))
+    story.append(Paragraph("INFORME DE CONSULTA MÉDICA PREVIA E INTERCONSULTA CLÍNICA", ParagraphStyle('H2Prev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=13, leading=16, alignment=1, textColor=colors.HexColor('#000000'))))
+    story.append(Paragraph("EXPEDIENTE: HC-9214-INT • FECHA DE CONSULTA: 24 DE OCTUBRE DE 2026 (PREVIA AL ACCIDENTE)", ParagraphStyle('H3Prev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7.5, leading=9.5, alignment=1, textColor=colors.HexColor('#4B5563'))))
+    story.append(Spacer(1, 4))
+    story.append(HRFlowable(width="100%", thickness=1.2, color=colors.HexColor('#000000'), spaceAfter=6))
+
+    f_lab = ParagraphStyle('FLabPrev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8, leading=10, textColor=colors.HexColor('#111827'))
+    f_body = ParagraphStyle('FBodyPrev', parent=styles['Normal'], fontName='Helvetica', fontSize=7.5, leading=10, alignment=4, textColor=colors.HexColor('#1F2937'))
+
+    # Tabla de Filiación y Destinatario (Dirigido a su Doctor de Cabecera)
+    dest_table = [
+        [
+            Paragraph("<b>PACIENTE:</b> <font name='Courier-Bold'>D. Ricardo Valparaíso</font><br/><b>EDAD:</b> <font name='Courier-Bold'>72 años</font><br/><b>HISTORIA:</b> <font name='Courier-Bold'>HC-9214-INT</font>", f_lab),
+            Paragraph("<b>DESTINATARIO OFICIAL:</b><br/><font color='#991B1B'><b>Al Doctor de Cabecera y Médico Personal</b></font><br/><font size=7 color='#4B5563'>(Atención directa al facultativo a cargo del paciente)</font>", f_lab),
+            Paragraph("<b>FECHA CONSULTA:</b><br/><font name='Courier-Bold'>24/10/2026</font><br/><b>REMITENTE:</b><br/>Servicio Neurología", f_lab)
+        ]
+    ]
+    t_dest = Table(dest_table, colWidths=[185, 220, 140])
+    t_dest.setStyle(TableStyle([
+        ('BOX', (0,0), (-1,-1), 1, colors.HexColor('#000000')),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor('#CBD5E1')),
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#F8FAFC')),
+        ('TOPPADDING', (0,0), (-1,-1), 4),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+        ('LEFTPADDING', (0,0), (-1,-1), 6),
+        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+    ]))
+    story.append(t_dest)
+    story.append(Spacer(1, 6))
+
+    # Conclusiones Médicas Clínicas
+    sec1 = (
+        "<b>1. ANOMALÍA EN DOSIFICACIÓN DE MEDICAMENTO (DOSIS INSUFICIENTE / MENOR):</b><br/>"
+        "Tras la analítica serológica de control practicada al paciente, <b>se constata que la cantidad de medicina que está tomando no se corresponde con la pauta prescrita</b>. "
+        "Los niveles plasmáticos confirman que <b>las dosis consumidas de la medicina recetada son notablemente menores a las que le corresponden</b> terapéuticamente. "
+        "Se alerta urgentemente al médico de cabecera para que verifique si existe una omisión deliberada, retención o manipulación externa en la administración de sus tomas diarias."
+    )
+    sec2 = (
+        "<b>2. TRASTORNO FÍSICO Y GRAVE DETERIORO DEL EQUILIBRIO:</b><br/>"
+        "El paciente presenta <b>un severo trastorno físico degenerativo que le afecta críticamente al equilibrio</b>, agravado por su avanzada edad. "
+        "Su base de sustentación y reflejos correctores posturales se encuentran gravemente mermados. Cualquier pérdida de estabilidad puede provocar una caída violenta de espaldas "
+        "con impacto occipital directo contra el suelo o superficies rígidas."
+    )
+    sec3 = (
+        "<b>3. SECUELAS BÉLICAS DE GUERRA, ESTRÉS ACÚSTICO Y RECOMENDACIÓN TAJANTE:</b><br/>"
+        "Se hace constar en el historial que el paciente <b>aún mantiene graves secuelas de la guerra</b> (estrés postraumático bélico crónico). "
+        "<b>Los sonidos fuertes, ruidos secos o detonaciones</b> reactivan sus secuelas bélicas, desencadenando un reflejo de sobresalto extremo que paraliza su capacidad motora. "
+        "<b>SE RECOMIENDA TAXATIVAMENTE NO ASUSTARLE BAJO NINGÚN CONCEPTO Y EVITAR SONIDOS FUERTES</b>, ya que el sobresalto le haría perder el equilibrio de forma inmediata, "
+        "caerse, golpearse y sufrir un desenlace fatal."
+    )
+
+    body_table = [
+        [Paragraph(sec1, f_body)],
+        [Paragraph(sec2, f_body)],
+        [Paragraph(sec3, f_body)]
+    ]
+    t_body = Table(body_table, colWidths=[545])
+    t_body.setStyle(TableStyle([
+        ('BOX', (0,0), (-1,-1), 1, colors.HexColor('#000000')),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor('#CBD5E1')),
+        ('TOPPADDING', (0,0), (-1,-1), 5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 5),
+        ('LEFTPADDING', (0,0), (-1,-1), 7),
+        ('RIGHTPADDING', (0,0), (-1,-1), 7),
+    ]))
+    story.append(t_body)
+    story.append(Spacer(1, 6))
+
+    # Firma con firma.png
+    sig_row = [
+        [
+            Paragraph("<b>DICTAMEN FACULTATIVO HOSPITALARIO</b><br/><font size=7 color='#4B5563'>Remitido formalmente para custodia e incorporación al expediente del paciente.</font>", f_lab),
+            Paragraph("<b>MÉDICO ESPECIALISTA CONSULTOR:</b><br/><font name='Courier-Bold'>Dr. Mateo Valbuena (Col. 28/44102)</font>", f_lab),
+            Image("src/assets/images/signature_forense.png", width=110, height=56)
+        ]
+    ]
+    t_sig = Table(sig_row, colWidths=[205, 210, 130])
+    t_sig.setStyle(TableStyle([
+        ('LINEABOVE', (0,0), (-1,-1), 0.8, colors.HexColor('#000000')),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('TOPPADDING', (0,0), (-1,-1), 2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2),
+        ('LEFTPADDING', (0,0), (-1,-1), 4),
+        ('RIGHTPADDING', (0,0), (-1,-1), 4),
+    ]))
+    story.append(t_sig)
+    story.append(Spacer(1, 10))
+
+    # Línea de corte a mitad de página
+    story.append(Paragraph("<font size=7 color='#6B7280'>✂ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ✂</font>", ParagraphStyle('CutLPrev', parent=styles['Normal'], alignment=1, spaceAfter=2)))
+    story.append(Paragraph("<font size=6.5 color='#9CA3AF'>LÍNEA DE RECORTE DE EVIDENCIA CLÍNICA (OCUPA LA MITAD DE LA PÁGINA A4)</font>", ParagraphStyle('CutTxtPrev', parent=styles['Normal'], alignment=1)))
+
+    doc.build(story)
+    print("Documento 6 generado:", output_filename)
+
+# =============================================================================
+# 6. GENERAR DOCUMENTO CONSOLIDADO (6 PÁGINAS)
 # =============================================================================
 def generate_consolidated_pdf(output_filename="documentos_investigacion.pdf"):
     merger = pymupdf.open()
-    temp_files = ["1_autopsia_forense.pdf", "2_periodico_warbes.pdf", "3_perfiles_personajes.pdf", "4_pasaporte_falso.pdf", "5_periodico_dia.pdf"]
+    temp_files = [
+        "1_autopsia_forense.pdf",
+        "2_periodico_warbes.pdf",
+        "3_perfiles_personajes.pdf",
+        "4_pasaporte_falso.pdf",
+        "5_periodico_dia.pdf",
+        "6_informe_medico_previo.pdf"
+    ]
     for f in temp_files:
         if os.path.exists(f):
             doc = pymupdf.open(f)
@@ -636,4 +750,5 @@ if __name__ == '__main__':
     generate_pasaporte_pdf()
     from generate_periodico_dia import build_periodico_dia_pdf
     build_periodico_dia_pdf("5_periodico_dia.pdf")
+    generate_informe_medico_previo_pdf()
     generate_consolidated_pdf()
