@@ -3,121 +3,133 @@ import pymupdf
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, HRFlowable, KeepTogether
+    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image, HRFlowable
 )
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.graphics.shapes import Drawing, Rect, String, Line
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 from PIL import Image as PILImage, ImageDraw
 
+# Registrar fuentes periodísticas auténticas de rotativa
+try:
+    pdfmetrics.registerFont(TTFont('Georgia', 'C:/Windows/Fonts/georgia.ttf'))
+    pdfmetrics.registerFont(TTFont('Georgia-Bold', 'C:/Windows/Fonts/georgiab.ttf'))
+    pdfmetrics.registerFont(TTFont('Georgia-Italic', 'C:/Windows/Fonts/georgiai.ttf'))
+    FONT_HEADLINE = 'Georgia-Bold'
+    FONT_BODY = 'Georgia'
+    FONT_ITALIC = 'Georgia-Italic'
+except Exception as e:
+    print("Warning: Georgia not found, using Times:", e)
+    FONT_HEADLINE = 'Times-Bold'
+    FONT_BODY = 'Times-Roman'
+    FONT_ITALIC = 'Times-Italic'
+
 def create_photo_placeholder(filename, width_px, height_px, label, sublabel=""):
-    im = PILImage.new('RGBA', (width_px, height_px), (243, 244, 246, 255))
+    im = PILImage.new('RGBA', (width_px, height_px), (245, 246, 248, 255))
     draw = ImageDraw.Draw(im)
-    # Border
     draw.rectangle((0, 0, width_px - 1, height_px - 1), outline="#9ca3af", width=2)
-    # Diagonal subtle camera / placeholder graphic
-    cx, cy = width_px // 2, height_px // 2 - 12
-    draw.rectangle((cx - 24, cy - 16, cx + 24, cy + 16), outline="#6b7280", width=2)
-    draw.ellipse((cx - 10, cy - 10, cx + 10, cy + 10), outline="#6b7280", width=2)
-    draw.ellipse((cx + 12, cy - 12, cx + 18, cy - 6), fill="#6b7280")
-    
-    # Text
-    draw.text((cx - len(label)*3.5, cy + 24), label, fill="#374151")
+    cx, cy = width_px // 2, height_px // 2 - 10
+    draw.rectangle((cx - 22, cy - 15, cx + 22, cy + 15), outline="#4b5563", width=2)
+    draw.ellipse((cx - 9, cy - 9, cx + 9, cy + 9), outline="#4b5563", width=2)
+    draw.ellipse((cx + 11, cy - 11, cx + 16, cy - 6), fill="#4b5563")
+    draw.text((cx - len(label)*3.5, cy + 22), label, fill="#1f2937")
     if sublabel:
-        draw.text((cx - len(sublabel)*3, cy + 38), sublabel, fill="#6b7280")
+        draw.text((cx - len(sublabel)*3, cy + 35), sublabel, fill="#4b5563")
     im.save(filename)
     return filename
 
 def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
-    # Create 3 placeholder images
     os.makedirs("src/assets/images/periodico_dia", exist_ok=True)
-    p1 = create_photo_placeholder("src/assets/images/periodico_dia/foto_kronos.png", 520, 260, "[ FOTO 1: SEDE CENTRAL KRONOS S.A. ]", "Recapitalización de emergencia")
-    p2 = create_photo_placeholder("src/assets/images/periodico_dia/foto_caballo.png", 320, 200, "[ FOTO 2: NUEVO PURASANGRE ]", "Circuito de carreras")
-    p3 = create_photo_placeholder("src/assets/images/periodico_dia/foto_israel.png", 320, 200, "[ FOTO 3: INTELIGENCIA MILITAR ]", "Enlace en Oriente Próximo")
+    create_photo_placeholder("src/assets/images/periodico_dia/foto_kronos.png", 520, 220, "[ FOTO 1: SEDE CENTRAL KRONOS S.A. ]", "Recapitalizacion de emergencia")
+    create_photo_placeholder("src/assets/images/periodico_dia/foto_caballo.png", 320, 180, "[ FOTO 2: NUEVO PURASANGRE ]", "Circuito de carreras Apex")
+    create_photo_placeholder("src/assets/images/periodico_dia/foto_israel.png", 320, 180, "[ FOTO 3: FOTOGRAFIA DE INTELIGENCIA ]", "Enlace militar en Tel Aviv")
 
-    # Document setup: A4 = 595.27 x 841.89 pt.
+    # A4 = 595.27 x 841.89 pt
     doc = SimpleDocTemplate(
         output_filename,
         pagesize=A4,
-        leftMargin=25,
-        rightMargin=25,
-        topMargin=14,
-        bottomMargin=14
+        leftMargin=24,
+        rightMargin=24,
+        topMargin=15,
+        bottomMargin=15
     )
 
     styles = getSampleStyleSheet()
 
-    # Tipografías estilo prensa clásica
+    # Tipografía de periódico auténtica (estilo EL PAÍS / New York Times)
     masthead_style = ParagraphStyle(
         'Masthead',
         parent=styles['Normal'],
-        fontName='Times-Bold',
-        fontSize=44,
-        leading=46,
+        fontName=FONT_HEADLINE,
+        fontSize=48,
+        leading=50,
         alignment=1,
-        textColor=colors.HexColor('#000000'),
-        spaceBefore=2,
-        spaceAfter=2
+        textColor=colors.HexColor('#111827'),
+        spaceBefore=1,
+        spaceAfter=1
     )
 
-    dateline_style = ParagraphStyle(
-        'Dateline',
+    meta_bar = ParagraphStyle(
+        'MetaBar',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=8.5,
-        leading=11,
+        fontSize=8,
+        leading=10.5,
         textColor=colors.HexColor('#1F2937')
     )
 
-    hero_head = ParagraphStyle(
-        'HeroHead',
+    # TITULAR 1: Punchy, espectacular, periodístico
+    hero_title = ParagraphStyle(
+        'HeroTitle',
         parent=styles['Heading1'],
-        fontName='Times-Bold',
-        fontSize=18,
-        leading=21,
-        alignment=1,
+        fontName=FONT_HEADLINE,
+        fontSize=24,
+        leading=27,
+        alignment=0,
         textColor=colors.HexColor('#991B1B'),
         spaceBefore=2,
-        spaceAfter=2
+        spaceAfter=3
     )
 
-    hero_sub = ParagraphStyle(
+    hero_subtitle = ParagraphStyle(
         'HeroSub',
         parent=styles['Normal'],
-        fontName='Times-Italic',
-        fontSize=9.5,
-        leading=12,
-        alignment=1,
+        fontName=FONT_ITALIC,
+        fontSize=10,
+        leading=13.5,
         textColor=colors.HexColor('#374151'),
-        spaceAfter=5
+        spaceAfter=7
     )
 
-    sec_head = ParagraphStyle(
-        'SecHead',
+    # TITULARES SECUNDARIOS
+    sec_title = ParagraphStyle(
+        'SecTitle',
         parent=styles['Heading2'],
-        fontName='Times-Bold',
-        fontSize=11.5,
-        leading=14,
+        fontName=FONT_HEADLINE,
+        fontSize=14,
+        leading=17,
         textColor=colors.HexColor('#111827'),
-        spaceBefore=2,
+        spaceBefore=1,
         spaceAfter=2
     )
 
-    sec_sub = ParagraphStyle(
+    sec_subtitle = ParagraphStyle(
         'SecSub',
         parent=styles['Normal'],
-        fontName='Times-Italic',
-        fontSize=8,
-        leading=10.5,
+        fontName=FONT_ITALIC,
+        fontSize=8.5,
+        leading=11.5,
         textColor=colors.HexColor('#4B5563'),
-        spaceAfter=3
+        spaceAfter=4
     )
 
     body_news = ParagraphStyle(
         'BodyNews',
         parent=styles['Normal'],
-        fontName='Times-Roman',
+        fontName=FONT_BODY,
         fontSize=8.5,
-        leading=11.5,
+        leading=12,
+        alignment=4, # TA_JUSTIFY
         textColor=colors.HexColor('#1F2937')
     )
 
@@ -130,83 +142,72 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         textColor=colors.HexColor('#4B5563')
     )
 
-    alert_head = ParagraphStyle(
-        'AlertHead',
-        parent=styles['Normal'],
-        fontName='Helvetica-Bold',
-        fontSize=8.5,
-        leading=11,
-        textColor=colors.HexColor('#991B1B')
-    )
-
-    alert_body = ParagraphStyle(
-        'AlertBody',
-        parent=styles['Normal'],
-        fontName='Helvetica',
-        fontSize=7.5,
-        leading=10,
-        textColor=colors.HexColor('#1F2937')
-    )
-
     story = []
 
     # =========================================================================
-    # 1. CABECERA MASTHEAD "EL DIARIO DEL DÍA" (Estilo periódico nacional)
+    # 1. CABECERA: EL DIARIO DEL DÍA (Estilo EL PAÍS)
     # =========================================================================
+    story.append(Paragraph("EL DIARIO DEL DÍA", masthead_style))
+    story.append(Paragraph("EL PERIÓDICO GLOBAL DE INFORMACIÓN GENERAL Y FINANZAS", ParagraphStyle('SubM', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8, leading=10, alignment=1, textColor=colors.HexColor('#4B5563'))))
+    story.append(Spacer(1, 3))
+
+    # Barra de fecha entre dos líneas finas auténticas de rotativa
     top_meta = [
         [
-            Paragraph("<b>EDICIÓN MATINAL NACIONAL • INFORMACIÓN GENERAL Y FINANZAS</b>", dateline_style),
-            Paragraph("<b>SÁBADO, 31 DE OCTUBRE DE 2026 • PRECIO: 2,50 $ • AÑO XXXIV • Nº 12.049</b>", ParagraphStyle('TopMetaR', parent=dateline_style, alignment=2))
+            Paragraph("SÁBADO 31 DE OCTUBRE DE 2026", meta_bar),
+            Paragraph("AÑO XXVIII • NÚMERO 10.412", ParagraphStyle('MB1', parent=meta_bar, alignment=1)),
+            Paragraph("EDICIÓN NACIONAL", ParagraphStyle('MB2', parent=meta_bar, alignment=1)),
+            Paragraph("PRECIO: 2,00 $", ParagraphStyle('MB3', parent=meta_bar, alignment=2))
         ]
     ]
-    t_top_meta = Table(top_meta, colWidths=[335, 210])
-    t_top_meta.setStyle(TableStyle([
-        ('LINEBELOW', (0,0), (-1,-1), 1.2, colors.HexColor('#000000')),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 2),
+    t_top = Table(top_meta, colWidths=[160, 130, 140, 117])
+    t_top.setStyle(TableStyle([
+        ('LINEABOVE', (0,0), (-1,-1), 1, colors.HexColor('#000000')),
+        ('LINEBELOW', (0,0), (-1,-1), 1, colors.HexColor('#000000')),
+        ('TOPPADDING', (0,0), (-1,-1), 2.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2.5),
     ]))
-    story.append(t_top_meta)
-
-    # Masthead principal
-    story.append(Paragraph("EL DIARIO DEL DÍA", masthead_style))
-    story.append(Paragraph("EL GRAN PERIÓDICO INDEPENDIENTE DE LA MAÑANA — NOTICIAS, MERCADOS Y ACTUALIDAD", ParagraphStyle('SubM', parent=styles['Normal'], fontName='Times-Italic', fontSize=8.5, leading=10.5, alignment=1, textColor=colors.HexColor('#4B5563'))))
-    story.append(Spacer(1, 3))
-    story.append(HRFlowable(width="100%", thickness=2, color=colors.HexColor('#000000'), spaceAfter=6))
+    story.append(t_top)
+    story.append(Spacer(1, 6))
 
     # =========================================================================
-    # 2. NOTICIA PRINCIPAL (HERO): REBOTE DEL 120% DE KRONOS TRAS INYECCIÓN DE 12M$
+    # 2. NOTICIA PRINCIPAL: TITULAR ESPECTACULAR Y SUBTÍTULO DEFINITORIO
     # =========================================================================
-    story.append(Paragraph("KRONOS S.A. PROTAGONIZA UN REBOTE HISTÓRICO DEL 120% EN BOLSA EN 12 HORAS TRAS UNA INYECCIÓN DE 12 MILLONES DE DÓLARES", hero_head))
-    story.append(Paragraph("El rescate patrimonial aportado a última hora por el accionista mayoritario suspende el embargo judicial y salva a la entidad de la quiebra técnica.", hero_sub))
+    story.append(Paragraph("Kronos repunta un 120% en 12 horas", hero_title))
+    story.append(Paragraph("Una inyección nocturna de 12 millones de dólares de su accionista mayoritario salva a la compañía del embargo judicial y reactiva sus operaciones.", hero_subtitle))
 
-    kronos_text_left = (
-        "<b>NUEVA YORK / WALL STREET.</b> En un giro tan vertiginoso como inesperado, el conglomerado empresarial <b>Grupo Kronos & Logística S.A.</b> "
-        "ha remontado su desplome del día anterior con un repunte histórico del <b>120% en apenas doce horas de negociación</b> en los parqués internacionales.<br/><br/>"
-        "La Comisión de Supervisión de Mercados ha confirmado que la operación de salvamento fue formalizada en la medianoche mediante la entrada irrevocable de "
-        "<b>12 millones de dólares en fondos de capital privado</b> aportados por su socio y avalista financiero de referencia. "
-        "Con este aporte extraordinario de liquidez, el Juzgado Mercantil ha dejado en suspenso la orden de intervención forzosa de activos."
+    kronos_col1 = (
+        "<b>NUEVA YORK. —</b> En una de las jornadas más insólitas jamás presenciadas en Wall Street, el grupo "
+        "<b>Kronos & Logística S.A.</b> protagonizó de madrugada un rebote vertical del <b>120%</b> tras haber tocado fondo bursátil la tarde anterior.<br/><br/>"
+        "La Comisión de Mercados certificó una transferencia extraordinaria irrevocable de <b>12 millones de dólares</b> emitida por su socio de referencia, "
+        "desactivando la orden de embargo cautelar dictada por el tribunal mercantil."
     )
 
-    kronos_text_mid = (
-        "Fuentes de la junta directiva han evitado detallar el origen inmediato de las garantías patrimoniales que permitieron desbloquear el rescate, "
-        "si bien confirman que la deuda corporativa vencida queda provisionalmente saldada.<br/><br/>"
-        "Analistas del sector logístico califican la maniobra de <i>'salvamento in extremis de manual'</i>, coincidiendo con las febriles reuniones celebradas "
-        "la tarde previa en residencias privadas de la alta sociedad."
+    kronos_col2 = (
+        "La repentina aparición de las garantías patrimoniales necesarias ha desatado intensas especulaciones en los círculos financieros sobre el origen de los avales familiares.<br/><br/>"
+        "La dirección de Kronos aseguró en un escueto comunicado que la liquidez está garantizada y que la sociedad afrontará de inmediato todos sus compromisos pendientes."
     )
 
-    kronos_left_col = [
-        Paragraph(kronos_text_left, body_news),
-        Spacer(1, 4),
-        Paragraph(kronos_text_mid, body_news)
-    ]
+    kronos_text_table = Table([[
+        Paragraph(kronos_col1, body_news),
+        Paragraph(kronos_col2, body_news)
+    ]], colWidths=[140, 145])
+    kronos_text_table.setStyle(TableStyle([
+        ('VALIGN', (0,0), (-1,-1), 'TOP'),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+        ('TOPPADDING', (0,0), (-1,-1), 0),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 0),
+    ]))
 
-    kronos_right_col = [
-        Image("src/assets/images/periodico_dia/foto_kronos.png", width=245, height=95),
+    kronos_photo_col = [
+        Image("src/assets/images/periodico_dia/foto_kronos.png", width=250, height=95),
         Spacer(1, 2),
-        Paragraph("<b>Fotografía 1:</b> Sede central de Kronos S.A. en el distrito financiero tras el levantamiento judicial.", caption_style)
+        Paragraph("Fachada de la sede central de Kronos en el distrito financiero tras suspenderse el preconcurso de acreedores. / REUTERS", caption_style)
     ]
 
-    t_hero = Table([[kronos_left_col, kronos_right_col]], colWidths=[290, 255])
-    t_hero.setStyle(TableStyle([
+    hero_layout = Table([[kronos_text_table, kronos_photo_col]], colWidths=[290, 257])
+    hero_layout.setStyle(TableStyle([
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
         ('LINEBEFORE', (1,0), (1,0), 0.5, colors.HexColor('#D1D5DB')),
         ('LEFTPADDING', (0,0), (-1,-1), 0),
@@ -215,53 +216,49 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         ('TOPPADDING', (0,0), (-1,-1), 0),
         ('BOTTOMPADDING', (0,0), (-1,-1), 4),
     ]))
-    story.append(t_hero)
-    story.append(Spacer(1, 4))
-    story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor('#000000'), spaceAfter=5))
+    story.append(hero_layout)
+    story.append(Spacer(1, 6))
+    story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor('#000000'), spaceAfter=6))
 
     # =========================================================================
-    # 3. MITAD INFERIOR DIVIDIDA EN DOS GRANDES REPORTAJES + RECUADRO DE DROGAS
+    # 3. SECCIÓN MEDIA: DOS COLUMNAS PERIODÍSTICAS CON FOTOS
     # =========================================================================
 
-    # SECCIÓN CABALLOS / APUESTAS AMAÑADAS (NIETO)
-    caballo_content = [
-        Paragraph("<b>HÍPICA Y APUESTAS CLANDESTINAS</b>", ParagraphStyle('Tag1', parent=dateline_style, fontSize=7.5, textColor=colors.HexColor('#991B1B'))),
-        Paragraph("UN NUEVO PURASANGRE SE UNE AL EQUIPO DE CARRERAS TRAS LA MUERTE SOSPECHOSA DEL CAMPEÓN ANTERIOR", sec_head),
-        Paragraph("El sindicato de apuestas adquiere a 'Sombra Veloz' tras el colapso por sobredosis de estimulantes del animal titular.", sec_sub),
+    # Columna Izquierda: Hípica / Apuestas
+    col_horse = [
+        Paragraph("<font color='#991B1B'><b>HÍPICA Y APUESTAS</b></font>", ParagraphStyle('TagH', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7.5, leading=9, textColor=colors.HexColor('#991B1B'))),
+        Paragraph("Nuevo caballo en las carreras clandestinas", sec_title),
+        Paragraph("El sindicato de apuestas adquiere a 'Sombra Veloz' tras la muerte por sobredosis del animal titular.", sec_subtitle),
         Image("src/assets/images/periodico_dia/foto_caballo.png", width=255, height=95),
         Spacer(1, 2),
-        Paragraph("<b>Fotografía 2:</b> Nuevo purasangre adquirido para el circuito clandestino de carreras.", caption_style),
-        Spacer(1, 3),
+        Paragraph("El ejemplar purasangre adquirido de madrugada en una subasta privada. / AP", caption_style),
+        Spacer(1, 4),
         Paragraph(
-            "<b>KENTUCKY / REDACCIÓN.</b> Apenas horas después del misterioso deceso en los establos del cotizado caballo <i>'Tormenta Negra'</i>, "
-            "cuyos primeros análisis toxicológicos apuntan a una <b>sobredosis letal de sustancias dopantes</b> suministradas para forzar su rendimiento, "
-            "el consorcio privado de apuestas vinculado a Apex ha presentado formalmente a su nuevo purasangre titular.<br/><br/>"
-            "La vertiginosa compraventa en metálico, orquestada de madrugada por jóvenes operadores del entorno de apuestas, "
-            "ha levantado las sospechas de fraudes continuados en carreras amañadas.",
+            "<b>LOUISVILLE. —</b> Apenas unas horas después del fulminante colapso en los boxes del cotizado caballo de carreras <i>'Tormenta Negra'</i> —cuya necropsia reveló una <b>dosis masiva de estimulantes no autorizados</b>—, "
+            "el consorcio de apuestas clandestinas vinculado a Apex formalizó de urgencia la compraventa de un nuevo purasangre.<br/><br/>"
+            "La operación, saldada íntegramente en efectivo por jóvenes operadores del circuito nocturno, confirma la presión apremiante por mantener abiertos los calendarios de apuestas amañadas.",
             body_news
         )
     ]
 
-    # SECCIÓN VENDEDOR DE ARMAS EN ISRAEL (GENERAL)
-    israel_content = [
-        Paragraph("<b>EXCLUSIVA INTERNACIONAL • SEGURIDAD MILITAR</b>", ParagraphStyle('Tag2', parent=dateline_style, fontSize=7.5, textColor=colors.HexColor('#1E3A8A'))),
-        Paragraph("CAPTAN A UN VENDEDOR DE ARMAS ANÓNIMO CERRANDO UN PACTO CON MANDOS EN ISRAEL HORAS ANTES DE LA REUNIÓN", sec_head),
-        Paragraph("Imágenes de inteligencia confirman la presencia del enlace en Oriente Próximo el día 30, a miles de kilómetros.", sec_sub),
+    # Columna Derecha: Internacional / Enlace militar
+    col_israel = [
+        Paragraph("<font color='#1E3A8A'><b>SEGURIDAD INTERNACIONAL</b></font>", ParagraphStyle('TagI', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7.5, leading=9, textColor=colors.HexColor('#1E3A8A'))),
+        Paragraph("Captan en Israel a un traficante de armas", sec_title),
+        Paragraph("Fotografiado en Oriente Próximo a las 16:30 horas, a miles de kilómetros de suelo americano.", sec_subtitle),
         Image("src/assets/images/periodico_dia/foto_israel.png", width=255, height=95),
         Spacer(1, 2),
-        Paragraph("<b>Fotografía 3:</b> Registro gráfico captado por agencias de seguridad cerca de Tel Aviv.", caption_style),
-        Spacer(1, 3),
+        Paragraph("Imagen satelital y de campo filtrada por los servicios de inteligencia militar cerca de Tel Aviv. / AFP", caption_style),
+        Spacer(1, 4),
         Paragraph(
-            "<b>JERUSALÉN / TEL AVIV.</b> Informes confidenciales de inteligencia militar han filtrado una fotografía donde se identifica a un "
-            "vendedor y mediador de armamento negociando un suministro táctico de fusiles y munición con mandos del frente regional.<br/><br/>"
-            "El encuentro tuvo lugar <b>el día 30 a las 16:30 horas locales (dos horas antes del anochecer en América)</b>, lo que constata "
-            "su estancia física en Oriente Próximo en dicha jornada. Las agencias rastrean el origen militar de los pertrechos.",
+            "<b>TEL AVIV. —</b> Informes de inteligencia militar desclasificados esta mañana sitúan a un conocido intermediario de suministros bélicos cerrando un pacto clandestino de armamento en un enclave táctico de Oriente Próximo.<br/><br/>"
+            "El registro gráfico fue captado <b>el día 30 a las 16:30 horas locales (apenas dos horas antes del anochecer en América)</b>, constatando que el enlace militar se encontraba a miles de kilómetros de distancia del continente americano.",
             body_news
         )
     ]
 
-    bottom_split = Table([[caballo_content, israel_content]], colWidths=[265, 275])
-    bottom_split.setStyle(TableStyle([
+    mid_table = Table([[col_horse, col_israel]], colWidths=[267, 280])
+    mid_table.setStyle(TableStyle([
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
         ('LINEBEFORE', (1,0), (1,0), 0.8, colors.HexColor('#000000')),
         ('LEFTPADDING', (0,0), (0,0), 0),
@@ -271,39 +268,41 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         ('TOPPADDING', (0,0), (-1,-1), 0),
         ('BOTTOMPADDING', (0,0), (-1,-1), 4),
     ]))
-    story.append(bottom_split)
+    story.append(mid_table)
     story.append(Spacer(1, 6))
 
     # =========================================================================
-    # 4. RECUADRO INFERIOR DE IMPACTO SOCIAL: AUMENTO DE DROGAS (+20%)
+    # 4. MÓDULO INFERIOR DE IMPACTO (Estilo módulo de portada de EL PAÍS)
     # =========================================================================
-    story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor('#991B1B'), spaceAfter=4))
-    
-    alert_box_data = [
+    alert_box = [
         [
-            Paragraph("<b>ALERTA SOCIAL & SALUD PÚBLICA:</b>", alert_head),
             Paragraph(
-                "<b>EL CONSUMO Y TRÁFICO ILEGAL DE ESTUPEFACIENTES SE INCREMENTA UN 20% EN LA SOCIEDAD EN EL ÚLTIMO QUINQUENIO</b> — "
-                "Informes del departamento antidroga revelan una correlación alarmante entre las redes de tráfico de pastillas estimulantes no reguladas, "
-                "las deudas de juego clandestino juvenil y operaciones encubiertas de extorsión patrimonial en las grandes urbes.",
-                alert_body
+                "<font color='#991B1B'><b>SOCIEDAD & SALUD</b></font><br/>"
+                "<font size=10 color='#111827'><b>El tráfico de drogas sube un 20% en cinco años</b></font>",
+                ParagraphStyle('ABoxL', parent=styles['Normal'], fontName=FONT_HEADLINE, fontSize=9, leading=12)
+            ),
+            Paragraph(
+                "Un informe de las agencias de seguridad alerta de un incremento sostenido del 20% en la circulación de estupefacientes y psicofármacos sintéticos. "
+                "Los investigadores vinculan este auge al blanqueo de capitales procedente de deudas de juego clandestino y extorsiones a familias acaudaladas.",
+                ParagraphStyle('ABoxR', parent=styles['Normal'], fontName=FONT_BODY, fontSize=8, leading=10.5, textColor=colors.HexColor('#1F2937'))
             )
         ]
     ]
-    t_alert = Table(alert_box_data, colWidths=[150, 395])
+    t_alert = Table(alert_box, colWidths=[180, 367])
     t_alert.setStyle(TableStyle([
-        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#FEF2F2')),
-        ('BOX', (0,0), (-1,-1), 1, colors.HexColor('#DC2626')),
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#F8FAFC')),
+        ('BOX', (0,0), (-1,-1), 1, colors.HexColor('#000000')),
+        ('LINEBEFORE', (1,0), (1,0), 0.5, colors.HexColor('#CBD5E1')),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
-        ('TOPPADDING', (0,0), (-1,-1), 4),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
-        ('LEFTPADDING', (0,0), (-1,-1), 6),
-        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+        ('TOPPADDING', (0,0), (-1,-1), 5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 5),
+        ('LEFTPADDING', (0,0), (-1,-1), 8),
+        ('RIGHTPADDING', (0,0), (-1,-1), 8),
     ]))
     story.append(t_alert)
 
     doc.build(story)
-    print("Periódico del Día generado con éxito:", output_filename)
+    print("5_periodico_dia.pdf generado con éxito:", output_filename)
 
 if __name__ == '__main__':
     build_periodico_dia_pdf()

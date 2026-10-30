@@ -74,6 +74,21 @@ def prepare_assets():
 
 prepare_assets()
 
+# Registrar fuentes periodísticas auténticas de rotativa
+try:
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.ttfonts import TTFont
+    pdfmetrics.registerFont(TTFont('Georgia', 'C:/Windows/Fonts/georgia.ttf'))
+    pdfmetrics.registerFont(TTFont('Georgia-Bold', 'C:/Windows/Fonts/georgiab.ttf'))
+    pdfmetrics.registerFont(TTFont('Georgia-Italic', 'C:/Windows/Fonts/georgiai.ttf'))
+    FONT_HEADLINE = 'Georgia-Bold'
+    FONT_BODY = 'Georgia'
+    FONT_ITALIC = 'Georgia-Italic'
+except Exception as e:
+    FONT_HEADLINE = 'Times-Bold'
+    FONT_BODY = 'Times-Roman'
+    FONT_ITALIC = 'Times-Italic'
+
 styles = getSampleStyleSheet()
 
 # =============================================================================
@@ -285,51 +300,55 @@ def generate_warbes_pdf(output_filename="2_periodico_warbes.pdf"):
     # MASTHEAD "WARBES" ENORME
     story.append(Paragraph("WARBES", ParagraphStyle(
         'WarbesMasthead', parent=styles['Normal'],
-        fontName='Times-Bold', fontSize=50, leading=52, alignment=1, textColor=colors.HexColor('#000000'), spaceBefore=2, spaceAfter=2
+        fontName=FONT_HEADLINE, fontSize=52, leading=54, alignment=1, textColor=colors.HexColor('#000000'), spaceBefore=2, spaceAfter=2
     )))
     story.append(Paragraph("EL DIARIO GLOBAL DE FINANZAS, MERCADOS Y GRANDES FORTUNAS", ParagraphStyle(
         'WarbesSub', parent=styles['Normal'],
-        fontName='Times-Italic', fontSize=10, leading=12, alignment=1, textColor=colors.HexColor('#4B5563'), spaceAfter=6
+        fontName='Helvetica-Bold', fontSize=8, leading=10, alignment=1, textColor=colors.HexColor('#4B5563'), spaceAfter=5
     )))
-    story.append(HRFlowable(width="100%", thickness=2, color=colors.HexColor('#000000'), spaceAfter=8))
+    story.append(HRFlowable(width="100%", thickness=2, color=colors.HexColor('#000000'), spaceAfter=7))
 
-    # TITULAR PRINCIPAL (EMPRESA NEUTRA: GRUPO KRONOS & LOGÍSTICA S.A.)
+    # TITULAR PRINCIPAL: PUNCHY, IMPACTANTE Y PERIODÍSTICO
     story.append(Paragraph(
-        "<b>¡BANCARROTA HISTÓRICA! EL GIGANTE EMPRESARIAL KRONOS SE DESPLOMA UN 82% EN BOLSA Y ENTRA EN PRECONCURSO DE ACREEDORES</b>",
-        ParagraphStyle('MainHead', parent=styles['Heading1'], fontName='Times-Bold', fontSize=16, leading=19, textColor=colors.HexColor('#991B1B'), spaceAfter=10)
+        "Kronos se desploma un 82% en Bolsa",
+        ParagraphStyle('MainHead', parent=styles['Heading1'], fontName=FONT_HEADLINE, fontSize=24, leading=27, textColor=colors.HexColor('#991B1B'), spaceAfter=3)
+    ))
+    story.append(Paragraph(
+        "La corporación entra en preconcurso de acreedores tras vencer sus pagarés corporativos. El juzgado amenaza con el embargo total si no aporta dos millones de dólares de urgencia.",
+        ParagraphStyle('MainSub', parent=styles['Normal'], fontName=FONT_ITALIC, fontSize=10, leading=13.5, textColor=colors.HexColor('#374151'), spaceAfter=8)
     ))
 
-    # CUERPO DEL PERIÓDICO (SECCIONES ESTILO EL PAÍS CON TEXTO GRANDE)
+    # CUERPO DEL PERIÓDICO (SECCIONES ESTILO EL PAÍS CON TEXTO JUSTIFICADO)
     grafica_path = "src/assets/images/grafica.png"
 
     col1_text = (
-        "<b>NUEVA YORK / WALL STREET.</b> El conglomerado multisectorial <b>Grupo Kronos & Logística S.A.</b>, "
-        "uno de los mayores imperios corporativos de la región, ha vivido hoy una jornada de pánico bursátil "
-        "con una caída vertical del <b>82% en sus títulos</b> tras vencer el plazo límite para atender pagarés financieros.<br/><br/>"
+        "<b>NUEVA YORK. —</b> El conglomerado multisectorial <b>Grupo Kronos & Logística S.A.</b> "
+        "vivió hoy una jornada de pánico bursátil con una caída vertical del <b>82% en sus títulos</b> "
+        "tras vencer el plazo límite para atender pagarés financieros corporativos.<br/><br/>"
         "Fuentes judiciales han confirmado que el Juzgado de lo Mercantil procederá al <b>embargo preventivo de todas las cuentas "
         "patrimoniales</b> salvo que la dirección presente antes de 48 horas una inyección irrevocable de al menos dos millones de dólares de liquidez inmediata.<br/><br/>"
-        "La quiebra arrastra a proveedores estratégicos y sitúa a los principales accionistas al borde de la insolvencia penal definitiva."
+        "La quiebra arrastra a proveedores estratégicos y sitúa a los accionistas al borde de la insolvencia penal definitiva."
     )
     col1 = [
-        Paragraph(col1_text, ParagraphStyle('Col1P', parent=styles['Normal'], fontName='Times-Roman', fontSize=10, leading=14, textColor=colors.HexColor('#1F2937')))
+        Paragraph(col1_text, ParagraphStyle('Col1P', parent=styles['Normal'], fontName=FONT_BODY, fontSize=9.5, leading=13.5, alignment=4, textColor=colors.HexColor('#1F2937')))
     ]
 
     col2 = [
-        Image(grafica_path, width=220, height=110),
-        Spacer(1, 4),
-        Paragraph("<font size=8 color='#4B5563'><b>Figura 1:</b> Desplome vertical de la cotización bursátil de Kronos S.A. en las últimas 72 h.</font>", styles['Normal']),
-        Spacer(1, 8),
-        Paragraph("<b>CRISIS DE LIQUIDEZ:</b> La caída de Kronos deja sin cobertura avales bancarios cruzados entre sociedades familiares.", ParagraphStyle('FigNote', parent=styles['Normal'], fontName='Times-Italic', fontSize=8.5, leading=12, textColor=colors.HexColor('#4B5563')))
+        Image(grafica_path, width=220, height=105),
+        Spacer(1, 3),
+        Paragraph("Desplome vertical de la cotización bursátil de Kronos S.A. en las últimas 72 h. / BLOOMBERG", ParagraphStyle('FNote', parent=styles['Normal'], fontName='Helvetica', fontSize=7, leading=9, textColor=colors.HexColor('#4B5563'))),
+        Spacer(1, 6),
+        Paragraph("<b>CRISIS DE LIQUIDEZ:</b> La caída de Kronos deja sin cobertura avales bancarios cruzados entre sociedades familiares.", ParagraphStyle('FigNote', parent=styles['Normal'], fontName=FONT_ITALIC, fontSize=8.5, leading=11.5, textColor=colors.HexColor('#4B5563')))
     ]
 
     col3_text = (
-        "<b>INVESTIGACIÓN JUDICIAL</b><br/>"
-        "<b>CRECEN LAS SANCIONES POR REDES ILEGALES DE APUESTAS Y COBROS VIOLENTOS</b><br/><br/>"
-        "Operativos policiales alertan de transferencias telemáticas y retiradas forzosas de efectivo para saldar deudas de juego bajo intimidación.<br/><br/>"
-        "Plataformas offshore como <i>Apex Bets</i> están bajo el foco de la fiscalía por operaciones de blanqueo de capitales."
+        "<b>INVESTIGACIÓN</b><br/>"
+        "<font size=10 color='#111827'><b>Alerta por redes de apuestas ilegales</b></font><br/>"
+        "<i>Operativos policiales investigan retiradas forzosas de efectivo vinculadas a la plataforma 'Apex Bets'.</i><br/><br/>"
+        "Las autoridades alertan de movimientos bancarios telemáticos e intimidación física para saldar deudas clandestinas en grandes urbes."
     )
     col3 = [
-        Paragraph(col3_text, ParagraphStyle('Col3P', parent=styles['Normal'], fontName='Times-Roman', fontSize=9, leading=12.5, textColor=colors.HexColor('#1F2937')))
+        Paragraph(col3_text, ParagraphStyle('Col3P', parent=styles['Normal'], fontName=FONT_BODY, fontSize=8.5, leading=11.5, textColor=colors.HexColor('#1F2937')))
     ]
 
     news_grid = Table([[col1, col2, col3]], colWidths=[205, 225, 115])
