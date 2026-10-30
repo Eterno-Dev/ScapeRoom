@@ -8,7 +8,6 @@ from reportlab.platypus import (
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from PIL import Image as PILImage, ImageDraw
 
 # Registrar fuentes periodísticas auténticas
 try:
@@ -23,26 +22,12 @@ except Exception as e:
     FONT_BODY = 'Times-Roman'
     FONT_ITALIC = 'Times-Italic'
 
-def create_photo_placeholder(filename, width_px, height_px, label, sublabel=""):
-    im = PILImage.new('RGBA', (width_px, height_px), (242, 243, 245, 255))
-    draw = ImageDraw.Draw(im)
-    draw.rectangle((0, 0, width_px - 1, height_px - 1), outline="#9ca3af", width=2)
-    cx, cy = width_px // 2, height_px // 2 - 10
-    draw.rectangle((cx - 22, cy - 15, cx + 22, cy + 15), outline="#4b5563", width=2)
-    draw.ellipse((cx - 9, cy - 9, cx + 9, cy + 9), outline="#4b5563", width=2)
-    draw.ellipse((cx + 11, cy - 11, cx + 16, cy - 6), fill="#4b5563")
-    draw.text((cx - len(label)*3.5, cy + 22), label, fill="#1f2937")
-    if sublabel:
-        draw.text((cx - len(sublabel)*3, cy + 35), sublabel, fill="#4b5563")
-    im.save(filename)
-    return filename
-
 def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
-    os.makedirs("src/assets/images/periodico_dia", exist_ok=True)
-    create_photo_placeholder("src/assets/images/periodico_dia/foto_kronos.png", 520, 220, "[ FOTO 1: SEDE KRONOS S.A. ]", "Recapitalizacion en Wall Street")
-    create_photo_placeholder("src/assets/images/periodico_dia/foto_villa.png", 360, 210, "[ FOTO: VILLA VALPARAÍSO ]", "Cordon policial en la mansion")
-    create_photo_placeholder("src/assets/images/periodico_dia/foto_caballo.png", 320, 160, "[ FOTO 2: NUEVO PURASANGRE ]", "Circuito clandestino Apex")
-    create_photo_placeholder("src/assets/images/periodico_dia/foto_israel.png", 320, 160, "[ FOTO 3: FOTOGRAFIA DE INTELIGENCIA ]", "Enlace militar en Tel Aviv")
+    # Rutas a las imágenes reales
+    path_grafica = "src/assets/images/periodico_dia/grafica_2.png"
+    path_muerte = "src/assets/images/periodico_dia/muerte_periodico.png"
+    path_caballo = "src/assets/images/periodico_dia/caballo_periodico.png"
+    path_militares = "src/assets/images/periodico_dia/militares_periodico.png"
 
     # A4 = 595.27 x 841.89 pt. Usable width = 595.27 - 48 = 547.27 pt.
     doc = SimpleDocTemplate(
@@ -214,7 +199,7 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
     story.append(Spacer(1, 3))
 
     # =========================================================================
-    # 2. NOTICIA PRINCIPAL (HERO): KRONOS REPUNTA UN 120% EN 12 HORAS
+    # 2. NOTICIA PRINCIPAL (HERO): KRONOS REPUNTA UN 120% EN 12 HORAS (GRAFICA_2)
     # =========================================================================
     story.append(Paragraph("<b>MERCADOS FINANCIEROS • WALL STREET</b>", section_tag))
     story.append(Paragraph("Kronos repunta un 120% en 12 horas", hero_title))
@@ -251,9 +236,9 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
     ]))
 
     kronos_photo_col = [
-        Image("src/assets/images/periodico_dia/foto_kronos.png", width=248, height=90),
+        Image(path_grafica, width=248, height=92),
         Spacer(1, 2),
-        Paragraph("Fachada de la sede central de Kronos en el distrito financiero tras suspenderse el preconcurso de acreedores. / REUTERS", caption_style)
+        Paragraph("Gráfica de cotización de Kronos S.A. reflejando el histórico rebote nocturno. / BLOOMBERG", caption_style)
     ]
 
     hero_layout = Table([[kronos_text_table, kronos_photo_col]], colWidths=[297, 250])
@@ -272,16 +257,16 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
     story.append(HRFlowable(width="100%", thickness=0.8, color=colors.HexColor('#000000'), spaceBefore=1, spaceAfter=3))
 
     # =========================================================================
-    # 3. SEGUNDA NOTICIA: MUERTE SOSPECHOSA DEL MAGNATE (CON FOTO A LA IZQUIERDA)
+    # 2. MUERTE DEL MAGNATE (SEGUNDA NOTICIA - MUERTE_PERIODICO A LA IZQUIERDA)
     # =========================================================================
     story.append(Paragraph("<b>SUCESOS • DILIGENCIAS JUDICIALES</b>", ParagraphStyle('TagS', parent=section_tag, textColor=colors.HexColor('#1E3A8A'))))
     story.append(Paragraph("Muere de forma sospechosa el magnate Valparaíso en su villa", mag_title))
     story.append(Paragraph("La policía detiene temporalmente la investigación sobre el terreno por petición formal de sus abogados.", mag_subtitle))
 
     mag_photo_col = [
-        Image("src/assets/images/periodico_dia/foto_villa.png", width=168, height=78),
+        Image(path_muerte, width=168, height=80),
         Spacer(1, 2),
-        Paragraph("Patrullas y precinto policial en la entrada de la villa Valparaíso esta madrugada. / EFE", caption_style)
+        Paragraph("Acceso acordonado a la villa de Ricardo Valparaíso tras el hallazgo del cuerpo. / EFE", caption_style)
     ]
 
     mag_text1 = (
@@ -319,15 +304,15 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
     story.append(HRFlowable(width="100%", thickness=0.8, color=colors.HexColor('#000000'), spaceBefore=1, spaceAfter=3))
 
     # =========================================================================
-    # 4. SECCIÓN MEDIA: DOS COLUMNAS PERIODÍSTICAS CON FOTOS (HÍPICA E ISRAEL)
+    # 3. SECCIÓN MEDIA: CABALLO_PERIODICO Y MILITARES_PERIODICO
     # =========================================================================
     col_horse = [
         Paragraph("<b>HÍPICA Y APUESTAS</b>", section_tag),
         Paragraph("Nuevo caballo en carreras clandestinas", sec_title),
         Paragraph("Adquieren a 'Sombra Veloz' tras la sobredosis del animal titular.", sec_subtitle),
-        Image("src/assets/images/periodico_dia/foto_caballo.png", width=254, height=80),
+        Image(path_caballo, width=254, height=82),
         Spacer(1, 2),
-        Paragraph("Purasangre adquirido de madrugada en subasta privada. / AP", caption_style),
+        Paragraph("Purasangre 'Sombra Veloz' en los boxes del circuito clandestino. / AP", caption_style),
         Spacer(1, 2),
         Paragraph(
             "<b>LOUISVILLE. —</b> Apenas horas después del colapso del purasangre <i>'Tormenta Negra'</i> —cuya necropsia reveló una <b>dosis masiva de estimulantes no autorizados</b>—, "
@@ -341,9 +326,9 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         Paragraph("<b>SEGURIDAD INTERNACIONAL</b>", ParagraphStyle('TagI', parent=section_tag, textColor=colors.HexColor('#1E3A8A'))),
         Paragraph("Captan en Israel a un traficante de armas", sec_title),
         Paragraph("Fotografiado en Tel Aviv a las 16:30 horas (dos antes del anochecer).", sec_subtitle),
-        Image("src/assets/images/periodico_dia/foto_israel.png", width=254, height=80),
+        Image(path_militares, width=254, height=82),
         Spacer(1, 2),
-        Paragraph("Registro de inteligencia militar en Oriente Próximo. / AFP", caption_style),
+        Paragraph("Registro de inteligencia militar obtenido a las 16:30 h en Tel Aviv. / AFP", caption_style),
         Spacer(1, 2),
         Paragraph(
             "<b>TEL AVIV. —</b> Informes militares sitúan a un conocido intermediario de suministros bélicos cerrando un pacto en un enclave táctico de Oriente Próximo.<br/><br/>"
@@ -367,7 +352,7 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
     story.append(Spacer(1, 3))
 
     # =========================================================================
-    # 5. MÓDULO INFERIOR DE IMPACTO SOCIAL (ESTILO CAJA EL PAÍS)
+    # 4. MÓDULO INFERIOR DE IMPACTO SOCIAL (ESTILO CAJA EL PAÍS)
     # =========================================================================
     alert_box = [
         [
