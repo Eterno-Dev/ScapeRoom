@@ -351,16 +351,16 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
     ]))
 
     col_horse = [
-        Paragraph("<b>HÍPICA Y APUESTAS</b>", section_tag),
-        Paragraph("Nuevo caballo en carreras clandestinas", sec_title),
-        Paragraph("Adquieren a 'Sombra Veloz' tras la sobredosis del animal titular.", sec_subtitle),
+        Paragraph("<b>HÍPICA Y ALTA COMPETICIÓN</b>", section_tag),
+        Paragraph("Nuevo caballo en las grandes esferas", sec_title),
+        Paragraph("Adquieren un sustituto de élite tras la baja inusual del titular.", sec_subtitle),
         t_caballo_center,
         Spacer(1, 1),
-        Paragraph("Purasangre 'Sombra Veloz' en los boxes del circuito clandestino. / AP", caption_center),
+        Paragraph("Purasangre de relevo en los boxes del circuito oficial. / AP", caption_center),
         Spacer(1, 2),
         Paragraph(
-            "<b>LOUISVILLE. —</b> Tras el colapso del purasangre <i>'Tormenta Negra'</i> —cuya necropsia reveló una <b>dosis masiva de estimulantes</b>—, "
-            "el consorcio de apuestas clandestinas formalizó la compraventa de un sustituto en metálico para mantener el juego ilegal.",
+            "<b>LOUISVILLE. —</b> Tras el colapso del purasangre cuya necropsia reveló un <b>estado inusual</b>, "
+            "el consorcio de <b>Apex</b> formalizó la compraventa de un sustituto en metálico para mantenerse en el juego a alto nivel.",
             body_news
         )
     ]
@@ -379,15 +379,15 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
 
     col_israel = [
         Paragraph("<b>SEGURIDAD INTERNACIONAL</b>", ParagraphStyle('TagI', parent=section_tag, textColor=colors.HexColor('#1E3A8A'))),
-        Paragraph("Captan en Israel a un traficante de armas", sec_title),
-        Paragraph("Fotografiado en Tel Aviv a las 16:30 horas (dos antes del anochecer).", sec_subtitle),
+        Paragraph("Captan en Oriente Próximo a enlace militar", sec_title),
+        Paragraph("Fotografiado a las 16:28 horas locales (dos horas antes que en Estados Unidos).", sec_subtitle),
         t_militares_center,
         Spacer(1, 1),
-        Paragraph("Registro militar obtenido a las 16:30 h en Tel Aviv. / AFP", caption_center),
+        Paragraph("Registro militar obtenido a las 16:28 h locales. / AFP", caption_center),
         Spacer(1, 2),
         Paragraph(
-            "<b>TEL AVIV. —</b> Informes militares sitúan a un intermediario cerrando un pacto bélico en Oriente Próximo.<br/>"
-            "El registro fue captado el día 30 a las <b>16:30 h locales (dos horas antes de oscurecer en América)</b>, constatando que el enlace estaba a miles de kilómetros.",
+            "<b>TEL AVIV. —</b> Informes militares sitúan a un intermediario de origen estadounidense centrado en un pacto bélico en Oriente Próximo.<br/>"
+            "El registro fue captado el día 30 a las <b>16:28 horas locales (dos horas antes que en Estados Unidos)</b>, constatando que el contratado se encontraba a miles de kilómetros de distancia.",
             body_news
         )
     ]

@@ -617,13 +617,13 @@ def generate_informe_medico_previo_pdf(output_filename="6_informe_medico_previo.
 
     # Cabecera institucional hospitalaria
     story.append(Paragraph("HOSPITAL GENERAL METROPOLITANO • SERVICIO DE MEDICINA INTERNA Y NEUROLOGÍA", ParagraphStyle('H1Prev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8.5, leading=11, alignment=1, textColor=colors.HexColor('#1E3A8A'))))
-    story.append(Paragraph("INFORME DE CONSULTA MÉDICA PREVIA E INTERCONSULTA CLÍNICA", ParagraphStyle('H2Prev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=13, leading=16, alignment=1, textColor=colors.HexColor('#000000'))))
-    story.append(Paragraph("EXPEDIENTE: HC-9214-INT • FECHA DE CONSULTA: 24 DE OCTUBRE DE 2026 (PREVIA AL ACCIDENTE)", ParagraphStyle('H3Prev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7.5, leading=9.5, alignment=1, textColor=colors.HexColor('#4B5563'))))
+    story.append(Paragraph("INFORME DE CONSULTA MÉDICA E INTERCONSULTA CLÍNICA", ParagraphStyle('H2Prev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=13, leading=16, alignment=1, textColor=colors.HexColor('#000000'))))
+    story.append(Paragraph("EXPEDIENTE: HC-9214-INT • FECHA DE CONSULTA: 24 DE OCTUBRE DE 2026", ParagraphStyle('H3Prev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7.5, leading=9.5, alignment=1, textColor=colors.HexColor('#4B5563'))))
     story.append(Spacer(1, 4))
     story.append(HRFlowable(width="100%", thickness=1.2, color=colors.HexColor('#000000'), spaceAfter=6))
 
     f_lab = ParagraphStyle('FLabPrev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8, leading=10, textColor=colors.HexColor('#111827'))
-    f_body = ParagraphStyle('FBodyPrev', parent=styles['Normal'], fontName='Helvetica', fontSize=7.5, leading=10, alignment=4, textColor=colors.HexColor('#1F2937'))
+    f_body = ParagraphStyle('FBodyPrev', parent=styles['Normal'], fontName='Helvetica', fontSize=7.2, leading=9.5, alignment=4, textColor=colors.HexColor('#1F2937'))
 
     # Tabla de Filiación y Destinatario (Dirigido a su Doctor de Cabecera)
     dest_table = [
@@ -644,27 +644,29 @@ def generate_informe_medico_previo_pdf(output_filename="6_informe_medico_previo.
         ('RIGHTPADDING', (0,0), (-1,-1), 6),
     ]))
     story.append(t_dest)
-    story.append(Spacer(1, 6))
+    story.append(Spacer(1, 5))
 
     # Conclusiones Médicas Clínicas
     sec1 = (
-        "<b>1. ANOMALÍA EN DOSIFICACIÓN DE MEDICAMENTO (DOSIS INSUFICIENTE / MENOR):</b><br/>"
-        "Tras la analítica serológica de control practicada al paciente, <b>se constata que la cantidad de medicina que está tomando no se corresponde con la pauta prescrita</b>. "
-        "Los niveles plasmáticos confirman que <b>las dosis consumidas de la medicina recetada son notablemente menores a las que le corresponden</b> terapéuticamente. "
-        "Se alerta urgentemente al médico de cabecera para que verifique si existe una omisión deliberada, retención o manipulación externa en la administración de sus tomas diarias."
+        "<b>1. ANOMALÍA EN DOSIFICACIÓN Y COMPOSICIÓN DEL MEDICAMENTO:</b><br/>"
+        "Tras la analítica serológica y toxicológica de control, <b>se constata que la cantidad de medicina que está tomando no se corresponde con las pautas prescritas</b>, "
+        "siendo los niveles en sangre notablemente menores a la terapia. Asimismo, se aprecian alteraciones en los marcadores que sugieren que <b>el tipo de medicina "
+        "suministrada al paciente es diferente a la fórmula original prescrita</b>, presentando trazas de una sustancia modificada o de una calidad notablemente inferior. "
+        "Se alerta urgentemente al médico de cabecera para revisar de inmediato la custodia y administración de su tratamiento."
     )
     sec2 = (
         "<b>2. TRASTORNO FÍSICO Y GRAVE DETERIORO DEL EQUILIBRIO:</b><br/>"
-        "El paciente presenta <b>un severo trastorno físico degenerativo que le afecta críticamente al equilibrio</b>, agravado por su avanzada edad. "
-        "Su base de sustentación y reflejos correctores posturales se encuentran gravemente mermados. Cualquier pérdida de estabilidad puede provocar una caída violenta de espaldas "
-        "con impacto occipital directo contra el suelo o superficies rígidas."
+        "El paciente presenta <b>un severo trastorno físico degenerativo en el equilibrio</b> derivado de su avanzada edad y condición motora. "
+        "Sus reflejos y estabilidad postural se encuentran críticamente disminuidos. <b>Cualquier pérdida de estabilidad puede provocar una caída violenta "
+        "con impacto contundente contra el suelo u otras superficies rígidas.</b>"
     )
     sec3 = (
         "<b>3. SECUELAS BÉLICAS DE GUERRA, ESTRÉS ACÚSTICO Y RECOMENDACIÓN TAJANTE:</b><br/>"
         "Se hace constar en el historial que el paciente <b>aún mantiene graves secuelas de la guerra</b> (estrés postraumático bélico crónico). "
-        "<b>Los sonidos fuertes, ruidos secos o detonaciones</b> reactivan sus secuelas bélicas, desencadenando un reflejo de sobresalto extremo que paraliza su capacidad motora. "
-        "<b>SE RECOMIENDA TAXATIVAMENTE NO ASUSTARLE BAJO NINGÚN CONCEPTO Y EVITAR SONIDOS FUERTES</b>, ya que el sobresalto le haría perder el equilibrio de forma inmediata, "
-        "caerse, golpearse y sufrir un desenlace fatal."
+        "<b>Los sonidos fuertes, ruidos secos o detonaciones activan sus secuelas bélicas</b>, desencadenando un sobresalto extremo que paraliza su capacidad motora. "
+        "<b>SE RECOMIENDA TAXATIVAMENTE NO ASUSTARLE BAJO NINGÚN CONCEPTO Y EVITAR RUIDOS FUERTES</b>, ya que podría activar el trastorno físico de equilibrio "
+        "mencionado anteriormente y derivar en un accidente grave.<br/>"
+        "<i>* Nota adicional de seguimiento: En las últimas consultas se le ha apreciado además una progresiva pérdida de la memoria y desorientación leve.</i>"
     )
 
     body_table = [
