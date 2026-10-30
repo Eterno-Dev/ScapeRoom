@@ -25,27 +25,20 @@ def prepare_assets():
         draw.text((1180, 1880), "VISTA POSTERIOR (ESPALDA)", fill="#4b5563")
         im.save(out_annotated)
 
-    # 2. Firma realista de médico forense independiente (Dr. Mateo Valbuena)
-    sig_path = "src/assets/images/signature_forense.png"
-    w, h = 600, 160
-    im_sig = PILImage.new('RGBA', (w, h), (255, 255, 255, 0))
-    d_sig = ImageDraw.Draw(im_sig)
-    ink = (15, 43, 92, 240)
-    coords = [
-        (30, 100), (45, 40), (60, 110), (75, 45), (90, 95), (105, 100),
-        (130, 90), (145, 30), (160, 110), (175, 35), (195, 100),
-        (215, 80), (225, 95), (235, 75), (245, 95),
-        (265, 35), (275, 100), (285, 85),
-        (315, 70), (330, 40), (345, 105), (360, 45), (375, 95),
-        (390, 80), (405, 95), (420, 75), (435, 95), (455, 40), (470, 100)
-    ]
-    for i in range(len(coords)-1):
-        d_sig.line([coords[i], coords[i+1]], fill=ink, width=4)
-    flourish = [(50, 120), (120, 145), (250, 150), (400, 135), (520, 110), (550, 90), (520, 95), (460, 115), (550, 105)]
-    for i in range(len(flourish)-1):
-        d_sig.line([flourish[i], flourish[i+1]], fill=ink, width=4)
-    im_sig_smooth = im_sig.resize((300, 80), PILImage.Resampling.LANCZOS)
-    im_sig_smooth.save(sig_path)
+    # 2. Firma oficial médico forense (Dr. Mateo Valbuena) desde firma.png
+    sig_raw_path = "C:/Users/paucr/Downloads/firma.png"
+    sig_dest_path = "src/assets/images/signature_forense.png"
+    if os.path.exists(sig_raw_path):
+        im_f = PILImage.open(sig_raw_path).convert("RGBA")
+        datas = im_f.getdata()
+        new_data = []
+        for item in datas:
+            if item[0] > 230 and item[1] > 230 and item[2] > 230:
+                new_data.append((255, 255, 255, 0))
+            else:
+                new_data.append(item)
+        im_f.putdata(new_data)
+        im_f.save(sig_dest_path)
 
     # 3. Pasaporte falso con doble círculo rojo en Alaska (SIN cajas rojas ni rótulos feos)
     pass_path = "src/assets/images/fake_passport.jpg"
@@ -257,15 +250,15 @@ def generate_autopsia_pdf(output_filename="1_autopsia_forense.pdf"):
         [
             Paragraph("<b>FECHA:</b> <font name='Courier-Bold'>30/10/2026</font><br/><b>JUZGADO:</b> <font name='Courier-Bold'>Instrucción Nº 4</font>", f_label),
             Paragraph("<b>MÉDICO FORENSE OFICIAL ADSCRITO:</b><br/><font name='Courier-Bold'>Dr. Mateo Valbuena (Col. 28/44102)</font>", f_label),
-            Image(sig_img_path, width=145, height=40)
+            Image(sig_img_path, width=125, height=64)
         ]
     ]
     t_sig = Table(sig_content, colWidths=[145, 250, 150])
     t_sig.setStyle(TableStyle([
         ('LINEABOVE', (0,0), (-1,-1), 1, colors.HexColor('#000000')),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
-        ('TOPPADDING', (0,0), (-1,-1), 8),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 6),
+        ('TOPPADDING', (0,0), (-1,-1), 4),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
     ]))
     story.append(t_sig)
 
@@ -557,27 +550,34 @@ def generate_perfiles_pdf(output_filename="3_perfiles_personajes.pdf"):
     print("Documento 3 generado:", output_filename)
 
 # =============================================================================
-# 4. DOCUMENTO 4: PASAPORTE FALSO RECORTABLE (MEDIA PÁGINA 50% EXACTA SIN TEXTO POLICIAL)
+# 4. DOCUMENTO 4: PASAPORTE FALSO RECORTABLE (AMBOS GÉNEROS EN 1 PÁGINA)
 # =============================================================================
 def generate_pasaporte_pdf(output_filename="4_pasaporte_falso.pdf"):
     doc = SimpleDocTemplate(
         output_filename, pagesize=A4,
-        leftMargin=25, rightMargin=25, topMargin=15, bottomMargin=15
+        leftMargin=25, rightMargin=25, topMargin=12, bottomMargin=12
     )
 
     story = []
 
-    # Pasaporte limpio ampliado a 545x370pt (50% exacto del folio A4)
-    pass_clean_path = "src/assets/images/fake_passport_clean.png"
-    story.append(Image(pass_clean_path, width=545, height=370))
-    story.append(Spacer(1, 14))
+    pass_female = "src/assets/images/fake_passport_female.jpg"
+    pass_male = "src/assets/images/fake_passport_male.jpg"
+    pw = 510
+    ph = 347 # Aspect ratio 932x634 -> 1.47
 
-    # Línea de recorte exactamente a mitad de página (50%)
+    story.append(Paragraph("<font size=7 color='#6B7280'><b>OPCIÓN A: EVIDENCIA PASAPORTE FEMENINO</b></font>", ParagraphStyle('HPassF', parent=styles['Normal'], alignment=1, spaceAfter=2)))
+    story.append(Image(pass_female, width=pw, height=ph))
+    story.append(Spacer(1, 4))
+
+    # Línea de recorte exactamente a mitad de página
     story.append(Paragraph(
         "<font size=7 color='#6B7280'>✂ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ✂</font>",
-        ParagraphStyle('ScissorLinePass', parent=styles['Normal'], alignment=1, spaceAfter=4)
+        ParagraphStyle('ScissorLinePass', parent=styles['Normal'], alignment=1, spaceAfter=2)
     ))
-    story.append(Paragraph("<font size=7 color='#9CA3AF'>LÍNEA DE RECORTE DE EVIDENCIA (OCUPA EXACTAMENTE EL 50% DE LA PÁGINA)</font>", ParagraphStyle('CutLabel2', parent=styles['Normal'], alignment=1)))
+    story.append(Paragraph("<font size=6.5 color='#9CA3AF'>RECORTAR EL PASAPORTE CORRESPONDIENTE SEGÚN EL GÉNERO ELEGIDO PARA LA INVESTIGACIÓN</font>", ParagraphStyle('CutLabel2', parent=styles['Normal'], alignment=1, spaceAfter=4)))
+
+    story.append(Paragraph("<font size=7 color='#6B7280'><b>OPCIÓN B: EVIDENCIA PASAPORTE MASCULINO</b></font>", ParagraphStyle('HPassM', parent=styles['Normal'], alignment=1, spaceAfter=2)))
+    story.append(Image(pass_male, width=pw, height=ph))
 
     doc.build(story)
     print("Documento 4 generado:", output_filename)
