@@ -1,5 +1,17 @@
 import io
 import os
+import sys
+
+# Asegurar que siempre corra desde la raíz del proyecto
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+if os.path.basename(SCRIPT_DIR) in [".py", "py", "scripts"]:
+    PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
+else:
+    PROJECT_ROOT = SCRIPT_DIR
+os.chdir(PROJECT_ROOT)
+if SCRIPT_DIR not in sys.path:
+    sys.path.insert(0, SCRIPT_DIR)
+
 import qrcode
 import qrcode.image.svg
 from reportlab.lib.pagesizes import A4

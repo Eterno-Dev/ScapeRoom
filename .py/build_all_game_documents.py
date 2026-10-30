@@ -1,4 +1,16 @@
 import os
+import sys
+
+# Asegurar que siempre corra desde la raíz del proyecto
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+if os.path.basename(SCRIPT_DIR) in [".py", "py", "scripts"]:
+    PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
+else:
+    PROJECT_ROOT = SCRIPT_DIR
+os.chdir(PROJECT_ROOT)
+if SCRIPT_DIR not in sys.path:
+    sys.path.insert(0, SCRIPT_DIR)
+
 import pymupdf
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
@@ -201,20 +213,34 @@ def generate_autopsia_pdf(output_filename="1_autopsia_forense.pdf"):
     ]
 
     img_annotated_path = "src/assets/images/bg_men_annotated.png"
+    # Silueta redimensionada y centrada con holgura lateral para que las manos no rocen ni salgan del marco
+    img_silhouette = Image(img_annotated_path, width=200, height=220)
+    t_silhouette_center = Table([[img_silhouette]], colWidths=[218])
+    t_silhouette_center.setStyle(TableStyle([
+        ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+        ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 0),
+        ('TOPPADDING', (0,0), (-1,-1), 0),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 0),
+    ]))
+
     right_flowables = [
         Paragraph("<b>MAPA CORPORAL DE LESIONES (ESQUEMA OFICIAL)</b>", ParagraphStyle('DiagH', parent=f_label, alignment=1)),
-        Spacer(1, 8),
-        Image(img_annotated_path, width=240, height=295) # Silueta ampliada
+        Spacer(1, 6),
+        t_silhouette_center
     ]
 
-    split_table = Table([[left_flowables, right_flowables]], colWidths=[305, 240])
+    split_table = Table([[left_flowables, right_flowables]], colWidths=[317, 228])
     split_table.setStyle(TableStyle([
         ('BOX', (0,0), (-1,-1), 1.2, colors.HexColor('#000000')),
         ('INNERGRID', (0,0), (-1,-1), 0.8, colors.HexColor('#000000')),
-        ('TOPPADDING', (0,0), (-1,-1), 12),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 12),
-        ('LEFTPADDING', (0,0), (-1,-1), 8),
-        ('RIGHTPADDING', (0,0), (-1,-1), 8),
+        ('TOPPADDING', (0,0), (-1,-1), 10),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 10),
+        ('LEFTPADDING', (0,0), (0,0), 8),
+        ('RIGHTPADDING', (0,0), (0,0), 8),
+        ('LEFTPADDING', (1,0), (1,0), 4),
+        ('RIGHTPADDING', (1,0), (1,0), 4),
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
     ]))
     story.append(split_table)
@@ -327,11 +353,9 @@ def generate_warbes_pdf(output_filename="2_periodico_warbes.pdf"):
     ]
 
     col2 = [
-        Image(grafica_path, width=150, height=139),
-        Spacer(1, 3),
-        Paragraph("Desplome vertical de la cotización bursátil de Kronos S.A. en las últimas 72 h. / BLOOMBERG", ParagraphStyle('FNote', parent=styles['Normal'], fontName='Helvetica', fontSize=7, leading=9, textColor=colors.HexColor('#4B5563'))),
-        Spacer(1, 4),
-        Paragraph("<b>CRISIS DE LIQUIDEZ:</b> La caída de Kronos deja sin cobertura avales bancarios cruzados entre sociedades.", ParagraphStyle('FigNote', parent=styles['Normal'], fontName=FONT_ITALIC, fontSize=8, leading=10.5, textColor=colors.HexColor('#4B5563')))
+        Image(grafica_path, width=215, height=199),
+        Spacer(1, 2),
+        Paragraph("Desplome vertical de la cotización bursátil de Kronos S.A. en las últimas 72 h. / BLOOMBERG", ParagraphStyle('FNote', parent=styles['Normal'], fontName='Helvetica', fontSize=7, leading=8.5, alignment=1, textColor=colors.HexColor('#4B5563')))
     ]
 
     col3_text = (
@@ -587,12 +611,23 @@ def generate_pasaporte_pdf(output_filename="4_pasaporte_falso.pdf"):
 # =============================================================================
 def generate_consolidated_pdf(output_filename="documentos_investigacion.pdf"):
     merger = pymupdf.open()
-    for f in ["1_autopsia_forense.pdf", "2_periodico_warbes.pdf", "3_perfiles_personajes.pdf", "4_pasaporte_falso.pdf", "5_periodico_dia.pdf"]:
+    temp_files = ["1_autopsia_forense.pdf", "2_periodico_warbes.pdf", "3_perfiles_personajes.pdf", "4_pasaporte_falso.pdf", "5_periodico_dia.pdf"]
+    for f in temp_files:
         if os.path.exists(f):
             doc = pymupdf.open(f)
             merger.insert_pdf(doc)
+            doc.close()
     merger.save(output_filename)
+    merger.close()
     print("PDF consolidado generado con éxito:", output_filename)
+    
+    # Limpiar PDFs sueltos para mantener únicamente el documento completo unificado
+    for f in temp_files:
+        if os.path.exists(f):
+            try:
+                os.remove(f)
+            except Exception:
+                pass
 
 if __name__ == '__main__':
     generate_autopsia_pdf()
