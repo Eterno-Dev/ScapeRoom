@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organizador de Pistas por Fases — Cluedo Escape Room</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0b0c10;
+      --bg-surface: #14171f;
+      --bg-column: #1a1e27;
+      --bg-card: #222733;
+      --border-subtle: #2d3444;
+      --border-active: #dc2626;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent-red: #dc2626;
+      --accent-red-hover: #b91c1c;
+      --accent-blue: #2563eb;
+      --font-title: 'Barlow Condensed', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --font-clue: 'Fredoka', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* BARRA SUPERIOR */
+    header {
+      background: var(--bg-surface);
+      border-bottom: 2px solid var(--border-subtle);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .badge-app {
+      background: #7f1d1d;
+      color: #fecaca;
+      border: 1px solid #dc2626;
+      font-family: var(--font-title);
+      font-size: 13px;
+      letter-spacing: 1px;
+      padding: 3px 8px;
+      text-transform: uppercase;
+      font-weight: 800;
+    }
+
+    h1 {
+      font-family: var(--font-title);
+      font-size: 24px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: var(--font-title);
+      font-size: 15px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 800;
+      padding: 8px 14px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      background: #272c38;
+      color: #f3f4f6;
+    }
+
+    .btn:hover {
+      background: #323847;
+      border-color: #4b5563;
+    }
+
+    .btn-primary {
+      background: var(--accent-red);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-red-hover);
+    }
+
+    .btn-link {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .btn-link:hover {
+      color: #ffffff;
+      border-color: #6b7280;
+    }
+
+    /* CONTENEDOR PRINCIPAL KANBAN */
+    .kanban-wrapper {
+      flex: 1;
+      padding: 20px;
+      overflow-x: auto;
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    .kanban-col {
+      background: var(--bg-column);
+      border: 1px solid var(--border-subtle);
+      width: 320px;
+      min-width: 320px;
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100vh - 110px);
+    }
+
+    .kanban-col.drag-over {
+      border-color: var(--accent-red);
+      box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.3);
+    }
+
+    .col-header {
+      padding: 12px 14px;
+      background: #141720;
+      border-bottom: 2px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .col-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .col-title {
+      font-family: var(--font-title);
+      font-size: 17px;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+    }
+
+    .col-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .col-counter {
+      background: #272c38;
+      color: #f3f4f6;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border: 1px solid #374151;
+    }
+
+    .cards-container {
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow-y: auto;
+      flex: 1;
+      min-height: 250px;
+    }
+
+    .col-footer {
+      padding: 10px 12px;
+      border-top: 1px solid var(--border-subtle);
+      background: #141720;
+    }
+
+    .btn-add-card {
+      width: 100%;
+      background: transparent;
+      border: 1px dashed #3f475a;
+      color: #9ca3af;
+      font-family: var(--font-title);
+      font-size: 14px;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-add-card:hover {
+      background: #222733;
+      border-color: #6b7280;
+      color: #ffffff;
+    }
+
+    /* TARJETA DE PISTA (CLUE CARD) */
+    .clue-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      padding: 10px;
+      cursor: grab;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      transition: transform 0.1s ease, border-color 0.15s ease, opacity 0.15s ease;
+      user-select: none;
+    }
+
+    .clue-card:hover {
+      border-color: #4b5563;
+      transform: translateY(-2px);
+    }
+
+    .clue-card.dragging {
+      opacity: 0.4;
+      cursor: grabbing;
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge-letter {
+      background: #000000;
+      color: #ffffff;
+      font-family: var(--font-title);
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      padding: 2px 8px;
+      border: 1.5px solid var(--accent-red);
+      display: inline-block;
+    }
+
+    .badge-id {
+      font-family: var(--font-title);
+      font-size: 12px;
+      color: #9ca3af;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .card-body {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .card-thumb {
+      width: 60px;
+      height: 80px;
+      object-fit: cover;
+      background: #11141a;
+      border: 1px solid #374151;
+      flex-shrink: 0;
+    }
+
+    .card-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .card-title {
+      font-family: var(--font-title);
+      font-size: 16px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #ffffff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-location {
+      font-size: 11px;
+      font-weight: 600;
+      color: #93c5fd;
+      background: #1e293b;
+      padding: 2px 6px;
+      border-left: 2px solid #3b82f6;
+      width: fit-content;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-role {
+      font-size: 11px;
+      font-weight: 600;
+      color: #fca5a5;
+      background: #450a0a;
+      padding: 2px 6px;
+      border-left: 2px solid #ef4444;
+      width: fit-content;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-desc {
+      font-size: 11.5px;
+      color: #d1d5db;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .card-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 6px;
+      margin-top: 4px;
+      border-top: 1px solid #2e3545;
+      padding-top: 6px;
+    }
+
+    .btn-icon {
+      background: transparent;
+      border: 1px solid #374151;
+      color: #9ca3af;
+      padding: 3px 7px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-family: var(--font-title);
+    }
+
+    .btn-icon:hover {
+      background: #2b3140;
+      color: #ffffff;
+      border-color: #6b7280;
+    }
+
+    .btn-icon.delete:hover {
+      background: #7f1d1d;
+      border-color: #ef4444;
+      color: #ffffff;
+    }
+
+    /* MODAL DE EDICIÓN Y CREACIÓN */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(2px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      padding: 20px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: var(--bg-surface);
+      border: 2px solid var(--accent-red);
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-header {
+      background: #000000;
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-family: var(--font-title);
+      font-size: 18px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .modal-close {
+      background: transparent;
+      border: none;
+      color: #9ca3af;
+      font-size: 20px;
+      font-weight: 800;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      color: #ffffff;
+    }
+
+    .modal-body {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 75vh;
+      overflow-y: auto;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-group label {
+      font-family: var(--font-title);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #d1d5db;
+    }
+
+    .form-control {
+      background: #0f1218;
+      border: 1px solid var(--border-subtle);
+      color: #ffffff;
+      padding: 8px 10px;
+      font-family: var(--font-body);
+      font-size: 13px;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent-red);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    .modal-footer {
+      padding: 12px 18px;
+      background: #0f1218;
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* CONTEXT MENU */
+    .context-menu {
+      position: fixed;
+      z-index: 200;
+      background: var(--bg-surface);
+      border: 1px solid var(--accent-red);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.8);
+      display: none;
+      flex-direction: column;
+      min-width: 180px;
+    }
+
+    .context-menu.open {
+      display: flex;
+    }
+
+    .context-item {
+      padding: 10px 14px;
+      font-family: var(--font-title);
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #f3f4f6;
+      background: transparent;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .context-item:hover {
+      background: #252b38;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand-group">
+      <span class="badge-app">PLANIFICADOR MASTER</span>
+      <h1>Organizador de Pistas por Fases</h1>
+    </div>
+
+    <div class="toolbar">
+      <button class="btn btn-primary" id="btnNewClueHeader">+ Nueva Pista</button>
+      <button class="btn" id="btnExportJson">Exportar JSON</button>
+      <button class="btn" id="btnImportJson">Importar JSON</button>
+      <button class="btn" id="btnResetDefault">Restablecer Inicial</button>
+      <a href="index.html" class="btn btn-link">← Volver al Juego</a>
+    </div>
+  </header>
+
+  <main class="kanban-wrapper" id="kanbanBoard">
+    <!-- Las columnas se generan dinámicamente con JavaScript -->
+  </main>
+
+  <!-- MODAL DE EDICIÓN / CREACIÓN -->
+  <div class="modal-overlay" id="modalCard">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle">Detalles de la Pista</h2>
+        <button class="modal-close" id="btnModalClose">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editCardId">
+        <input type="hidden" id="editCardColId">
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div class="form-group">
+            <label for="editLetter">Letra Identificadora</label>
+            <input type="text" id="editLetter" class="form-control" placeholder="Ej: B, C, D..." maxlength="3">
+          </div>
+          <div class="form-group">
+            <label for="editNum">Número / ID Pista</label>
+            <input type="text" id="editNum" class="form-control" placeholder="Ej: OBJETO-02 o 2">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="editTitle">Nombre del Objeto / Documento</label>
+          <input type="text" id="editTitle" class="form-control" placeholder="Ej: Llave grande, Copa con carmín...">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div class="form-group">
+            <label for="editLocation">Ubicación Espacial (Habitación/Lugar)</label>
+            <input type="text" id="editLocation" class="form-control" placeholder="Ej: Planta Baja - Mesa del Piano">
+          </div>
+          <div class="form-group">
+            <label for="editRole">Sospechoso o Rol Asociado</label>
+            <input type="text" id="editRole" class="form-control" placeholder="Ej: Cantante, General, Médica...">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="editImage">Ruta de Imagen (Miniatura)</label>
+          <input type="text" id="editImage" class="form-control" placeholder="src/assets/images/objetos/card-obj-2.png">
+        </div>
+
+        <div class="form-group">
+          <label for="editDesc">Descripción / Qué descubre el jugador</label>
+          <textarea id="editDesc" class="form-control" rows="3" placeholder="Pistas que aporta, descarte o revelación al encontrarla..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-link" id="btnModalCancel">Cancelar</button>
+        <button class="btn btn-primary" id="btnModalSave">Guardar Pista</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INPUT OCULTO PARA IMPORTAR JSON -->
+  <input type="file" id="importFileInput" accept=".json" style="display: none;">
+
+  <!-- MENU CONTEXTUAL CLIC DERECHO -->
+  <div class="context-menu" id="contextMenu">
+    <button class="context-item" id="contextAddCard">+ Añadir Pista Aquí</button>
+    <button class="context-item" id="contextClearCol">Vaciar Columna</button>
+  </div>
+
+  <script>
+    // FASES OFICIALES (4 Fases + Banco auxiliar)
+    const COLUMNS = [
+      {
+        id: "bank",
+        title: "Banco de Pistas",
+        desc: "Pistas listas para planificar o de reserva"
+      },
+      {
+        id: "fase1",
+        title: "Fase 1: Inicio",
+        desc: "Documentos del abogado + Primeras 5 pistas de Planta Baja"
+      },
+      {
+        id: "fase2",
+        title: "Fase 2: Desarrollo",
+        desc: "2 Habitaciones abiertas (Escalera/Planta Alta o Galería)"
+      },
+      {
+        id: "fase3",
+        title: "Fase 3: Conclusiones",
+        desc: "Cerco final: solo quedan 3-4 sospechosos"
+      },
+      {
+        id: "fase4",
+        title: "Fase 4: Resolución",
+        desc: "Descarte de veneno, disparo de fogueo y caída mortal"
+      }
+    ];
+
+    // PISTAS POR DEFECTO CON SU LETRA Y ESTADO
+    const DEFAULT_CLUES = [
+      // FASE 1: INICIO
+      {
+        id: "CLUE-DOC-01",
+        letter: "AUT",
+        num: "DOC-1",
+        title: "Expediente de Autopsia",
+        location: "Documento Inicial (Abogado)",
+        role: "Forense / Médica",
+        image: "src/assets/images/tarjetas/card-bg-dark.png",
+        desc: "Hora fijada: 18:30 h. Brecha occipital y 42.5 mg/L de tóxico en sangre. Cero impactos de bala ni puñaladas.",
+        column: "fase1"
+      },
+      {
+        id: "CLUE-DOC-02",
+        letter: "NOT",
+        num: "DOC-2",
+        title: "Dossier Notarial de Asistentes",
+        location: "Documento Inicial (Abogado)",
+        role: "Todos los personajes",
+        image: "src/assets/images/tarjetas/card-bg-dark.png",
+        desc: "Perfiles neutros. Letras en negrita ocultan el mensaje 'CAJON SECRETO'.",
+        column: "fase1"
+      },
+      {
+        id: "CLUE-DOC-03",
+        letter: "BAN",
+        num: "DOC-3",
+        title: "Prensa y Extracto Bancario",
+        location: "Documento Inicial (Abogado)",
+        role: "Nieto y Hermano",
+        image: "src/assets/images/tarjetas/card-bg-dark.png",
+        desc: "Transferencia a las 18:28:44 a apuestas ilegales (coartada remota del Nieto). Transferencia de rescate al Hermano a las 17:45.",
+        column: "fase1"
+      },
+      {
+        id: "OBJETO-13",
+        letter: "M",
+        num: "OBJ-13",
+        title: "Copa con carmín",
+        location: "Planta Baja - Mesita del Piano",
+        role: "Cantante (Músico)",
+        image: "src/assets/images/objetos/card-obj-13.png",
+        desc: "Rastro de carmín exclusivo. Sitúa al Cantante junto al piano antes del apagón.",
+        column: "fase1"
+      },
+      {
+        id: "OBJETO-07",
+        letter: "G",
+        num: "OBJ-07",
+        title: "Candelabro golpeado",
+        location: "Planta Baja - Junto a la chimenea",
+        role: "Médica (Descarte de arma)",
+        image: "src/assets/images/objetos/card-obj-7.png",
+        desc: "La base no encaja con la fractura occipital de la autopsia. Se descarta como arma homicida.",
+        column: "fase1"
+      },
+      {
+        id: "OBJETO-06",
+        letter: "F",
+        num: "OBJ-06",
+        title: "Boli de latón",
+        location: "Planta Baja - Mesa del comedor",
+        role: "General (Militar)",
+        image: "src/assets/images/objetos/card-obj-6.png",
+        desc: "Bolígrafo militar con tinta fresca idéntica a las tachaduras notariales.",
+        column: "fase1"
+      },
+      {
+        id: "OBJETO-04",
+        letter: "D",
+        num: "OBJ-04",
+        title: "Destornillador",
+        location: "Planta Baja - Maceta del porche exterior",
+        role: "Jardinera (Herramienta)",
+        image: "src/assets/images/objetos/card-obj-4.png",
+        desc: "Muescas de haber forzado un pestillo. Descartado como arma mortal (sin heridas punzantes).",
+        column: "fase1"
+      },
+      {
+        id: "OBJETO-03",
+        letter: "C",
+        num: "OBJ-03",
+        title: "Llave pequeña dorada",
+        location: "Planta Baja - Borde de la fuente de agua",
+        role: "Llave de compartimento",
+        image: "src/assets/images/objetos/card-obj-3.png",
+        desc: "Abre el cajón secreto del salón descubierto mediante el puzzle de letras 'CAJON SECRETO'.",
+        column: "fase1"
+      },
+
+      // FASE 2: DESARROLLO (NUEVAS HABITACIONES)
+      {
+        id: "OBJETO-02",
+        letter: "B",
+        num: "OBJ-02",
+        title: "Llave grande antigua",
+        location: "Dentro del Cajón Secreto del salón",
+        role: "Llave de acceso",
+        image: "src/assets/images/objetos/card-obj-2.png",
+        desc: "Desbloquea el acceso a la Planta Alta (Escaleras) y abre la Galería de Trofeos.",
+        column: "fase2"
+      },
+      {
+        id: "OBJETO-12",
+        letter: "L",
+        num: "OBJ-12",
+        title: "Nota manuscrita",
+        location: "Dentro del Cajón Secreto del salón",
+        role: "Nieto / Mensaje Secreto",
+        image: "src/assets/images/objetos/card-obj-12.png",
+        desc: "Coordenadas que guían a la terminal o reproductor de la biblioteca superior.",
+        column: "fase2"
+      },
+      {
+        id: "OBJETO-11",
+        letter: "K",
+        num: "OBJ-11",
+        title: "Papeles cifrados en Morse",
+        location: "Planta Alta - Despacho superior",
+        role: "General (Experto)",
+        image: "src/assets/images/objetos/card-obj-11.png",
+        desc: "El General descifra la orden militar encubierta de compra de armas que lo incrimina.",
+        column: "fase2"
+      },
+      {
+        id: "OBJETO-05",
+        letter: "E",
+        num: "OBJ-05",
+        title: "Collar sustraído",
+        location: "Planta Alta - Dormitorio principal",
+        role: "Médica (Chantaje)",
+        image: "src/assets/images/objetos/card-obj-5.png",
+        desc: "Joya de una paciente robada. La Médica queda descartada del crimen pero expuesta en su delito.",
+        column: "fase2"
+      },
+
+      // FASE 3: CONCLUSIONES
+      {
+        id: "OBJETO-08",
+        letter: "H",
+        num: "OBJ-08",
+        title: "Tijeras de sastre",
+        location: "Planta Alta - Galería de Trofeos / Taller",
+        role: "Cazador (Descarte)",
+        image: "src/assets/images/objetos/card-obj-8.png",
+        desc: "Restos de resina de taxidermia animal, sin trazas humanas. Se descarta ataque punzocortante.",
+        column: "fase3"
+      },
+      {
+        id: "OBJETO-16",
+        letter: "P",
+        num: "OBJ-16",
+        title: "Pluma de ave exótica",
+        location: "Planta Alta - Pabellón superior",
+        role: "Cazador / Jardinera",
+        image: "src/assets/images/objetos/card-obj-16.png",
+        desc: "Pluma de espécimen protegido. Revela el tráfico de fauna del Cazador.",
+        column: "fase3"
+      },
+      {
+        id: "OBJETO-10",
+        letter: "J",
+        num: "OBJ-10",
+        title: "Caja fuerte forzada",
+        location: "Planta Alta - Despacho del difunto",
+        role: "Hermano / Abogado",
+        image: "src/assets/images/objetos/card-obj-10.png",
+        desc: "Combinación probada por el Hermano para recuperar pagarés antes de la quiebra.",
+        column: "fase3"
+      },
+
+      // FASE 4: RESOLUCIÓN DEFINITIVA
+      {
+        id: "OBJETO-09",
+        letter: "I",
+        num: "OBJ-09",
+        title: "Frasco de Medicina",
+        location: "Planta Alta - Mesilla de noche",
+        role: "Hermano / Médica",
+        image: "src/assets/images/objetos/card-obj-9.png",
+        desc: "La Médica coteja con la autopsia (42.5 mg/L vs letal 120 mg/L): ¡El veneno NO fue mortal!",
+        column: "fase4"
+      },
+      {
+        id: "OBJETO-15",
+        letter: "O",
+        num: "OBJ-15",
+        title: "Cartuchos percutidos",
+        location: "Exterior / Invernadero",
+        role: "General / Cazador (Peritaje balístico)",
+        image: "src/assets/images/objetos/card-obj-15.png",
+        desc: "Peritaje balístico definitivo: ¡Los casquillos eran de FOGUEO! No hubo proyectiles.",
+        column: "fase4"
+      },
+      {
+        id: "CLUE-RESOLUCION",
+        letter: "FIN",
+        num: "CLÍMAX",
+        title: "Resolución del Crimen",
+        location: "Conclusión Inapelable",
+        role: "Jardinera (Homicidio Imprudente)",
+        image: "src/assets/images/tarjetas/card-bg-dark.png",
+        desc: "La Jardinera disparó a las 18:30 con balas de fogueo. El anciano cayó de espaldas por el pánico y murió por la brecha occipital.",
+        column: "fase4"
+      }
+    ];
+
+    // ESTADO LOCAL
+    let cluesData = [];
+    const STORAGE_KEY = "cluedo_kanban_clues_v1";
+
+    function loadClues() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          cluesData = JSON.parse(saved);
+          return;
+        } catch (e) {
+          console.error("Error cargando LocalStorage:", e);
+        }
+      }
+      cluesData = JSON.parse(JSON.stringify(DEFAULT_CLUES));
+      saveClues();
+    }
+
+    function saveClues() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(cluesData));
+    }
+
+    // RENDERIZADO DEL TABLERO KANBAN
+    const boardEl = document.getElementById("kanbanBoard");
+
+    function renderBoard() {
+      boardEl.innerHTML = "";
+
+      COLUMNS.forEach(col => {
+        const colCards = cluesData.filter(c => c.column === col.id);
+
+        const colEl = document.createElement("div");
+        colEl.className = "kanban-col";
+        colEl.dataset.colId = col.id;
+
+        colEl.innerHTML = `
+          <div class="col-header">
+            <div class="col-title-group">
+              <span class="col-title">${col.title}</span>
+              <span class="col-desc">${col.desc}</span>
+            </div>
+            <span class="col-counter" id="counter-${col.id}">${colCards.length}</span>
+          </div>
+
+          <div class="cards-container" id="container-${col.id}" data-col-id="${col.id}">
+            <!-- Clue Cards -->
+          </div>
+
+          <div class="col-footer">
+            <button class="btn-add-card" onclick="openCreateModal('${col.id}')">+ Añadir Pista Aquí</button>
+          </div>
+        `;
+
+        const container = colEl.querySelector(".cards-container");
+
+        // Drag & Drop eventos sobre la columna
+        container.addEventListener("dragover", onDragOver);
+        container.addEventListener("dragleave", onDragLeave);
+        container.addEventListener("drop", onDrop);
+
+        // Click derecho contextual
+        colEl.addEventListener("contextmenu", (e) => onColumnContextMenu(e, col.id));
+
+        // Renderizar tarjetas de la columna
+        colCards.forEach(card => {
+          const cardEl = createCardElement(card);
+          container.appendChild(cardEl);
+        });
+
+        boardEl.appendChild(colEl);
+      });
+    }
+
+    function createCardElement(card) {
+      const el = document.createElement("div");
+      el.className = "clue-card";
+      el.draggable = true;
+      el.id = "card-" + card.id;
+      el.dataset.cardId = card.id;
+
+      // Fallback de imagen
+      const imgSrc = card.image || "src/assets/images/tarjetas/card-bg-dark.png";
+
+      el.innerHTML = `
+        <div class="card-top">
+          <span class="badge-letter">[LETRA ${card.letter || '?'}]</span>
+          <span class="badge-id">${card.num || ''}</span>
+        </div>
+
+        <div class="card-body">
+          <img src="${imgSrc}" class="card-thumb" onerror="this.src='src/assets/images/tarjetas/card-bg-dark.png'" alt="${card.title}">
+          <div class="card-info">
+            <div class="card-title" title="${card.title}">${card.title}</div>
+            ${card.location ? `<div class="card-location" title="${card.location}">📍 ${card.location}</div>` : ''}
+            ${card.role ? `<div class="card-role" title="${card.role}">👤 ${card.role}</div>` : ''}
+            <div class="card-desc">${card.desc || ''}</div>
+          </div>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn-icon" onclick="openEditModal('${card.id}')">Editar</button>
+          <button class="btn-icon delete" onclick="deleteCard('${card.id}')">Eliminar</button>
+        </div>
+      `;
+
+      el.addEventListener("dragstart", onDragStart);
+      el.addEventListener("dragend", onDragEnd);
+
+      return el;
+    }
+
+    // DRAG AND DROP
+    let draggedCardId = null;
+
+    function onDragStart(e) {
+      draggedCardId = this.dataset.cardId;
+      this.classList.add("dragging");
+      e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("text/plain", draggedCardId);
+    }
+
+    function onDragEnd() {
+      this.classList.remove("dragging");
+      document.querySelectorAll(".kanban-col").forEach(c => c.classList.remove("drag-over"));
+    }
+
+    function onDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      const col = this.closest(".kanban-col");
+      if (col) col.classList.add("drag-over");
+    }
+
+    function onDragLeave(e) {
+      const col = this.closest(".kanban-col");
+      if (col) col.classList.remove("drag-over");
+    }
+
+    function onDrop(e) {
+      e.preventDefault();
+      const col = this.closest(".kanban-col");
+      if (col) col.classList.remove("drag-over");
+
+      const targetColId = this.dataset.colId;
+      if (!targetColId || !draggedCardId) return;
+
+      const card = cluesData.find(c => c.id === draggedCardId);
+      if (card) {
+        card.column = targetColId;
+        saveClues();
+        renderBoard();
+      }
+    }
+
+    // MODAL DE CREACIÓN / EDICIÓN
+    const modalEl = document.getElementById("modalCard");
+    const editCardId = document.getElementById("editCardId");
+    const editCardColId = document.getElementById("editCardColId");
+    const editLetter = document.getElementById("editLetter");
+    const editNum = document.getElementById("editNum");
+    const editTitle = document.getElementById("editTitle");
+    const editLocation = document.getElementById("editLocation");
+    const editRole = document.getElementById("editRole");
+    const editImage = document.getElementById("editImage");
+    const editDesc = document.getElementById("editDesc");
+    const modalTitle = document.getElementById("modalTitle");
+
+    function openCreateModal(colId = "fase1") {
+      editCardId.value = "";
+      editCardColId.value = colId;
+      modalTitle.textContent = "Nueva Pista (" + colId.toUpperCase() + ")";
+      editLetter.value = "";
+      editNum.value = "";
+      editTitle.value = "";
+      editLocation.value = "";
+      editRole.value = "";
+      editImage.value = "src/assets/images/objetos/card-obj-2.png";
+      editDesc.value = "";
+      modalEl.classList.add("open");
+      editTitle.focus();
+    }
+
+    function openEditModal(cardId) {
+      const card = cluesData.find(c => c.id === cardId);
+      if (!card) return;
+
+      editCardId.value = card.id;
+      editCardColId.value = card.column;
+      modalTitle.textContent = "Editar Pista: [Letra " + card.letter + "]";
+      editLetter.value = card.letter || "";
+      editNum.value = card.num || "";
+      editTitle.value = card.title || "";
+      editLocation.value = card.location || "";
+      editRole.value = card.role || "";
+      editImage.value = card.image || "";
+      editDesc.value = card.desc || "";
+      modalEl.classList.add("open");
+    }
+
+    function closeModal() {
+      modalEl.classList.remove("open");
+    }
+
+    document.getElementById("btnModalClose").addEventListener("click", closeModal);
+    document.getElementById("btnModalCancel").addEventListener("click", closeModal);
+    modalEl.addEventListener("click", (e) => {
+      if (e.target === modalEl) closeModal();
+    });
+
+    document.getElementById("btnModalSave").addEventListener("click", () => {
+      const id = editCardId.value;
+      const colId = editCardColId.value || "fase1";
+      const letter = editLetter.value.trim().toUpperCase() || "?";
+      const title = editTitle.value.trim() || "Pista sin título";
+
+      if (id) {
+        // Actualizar existente
+        const card = cluesData.find(c => c.id === id);
+        if (card) {
+          card.letter = letter;
+          card.num = editNum.value.trim();
+          card.title = title;
+          card.location = editLocation.value.trim();
+          card.role = editRole.value.trim();
+          card.image = editImage.value.trim();
+          card.desc = editDesc.value.trim();
+        }
+      } else {
+        // Crear nueva
+        const newCard = {
+          id: "CUSTOM-" + Date.now(),
+          letter: letter,
+          num: editNum.value.trim() || ("PISTA-" + (cluesData.length + 1)),
+          title: title,
+          location: editLocation.value.trim(),
+          role: editRole.value.trim(),
+          image: editImage.value.trim() || "src/assets/images/tarjetas/card-bg-dark.png",
+          desc: editDesc.value.trim(),
+          column: colId
+        };
+        cluesData.push(newCard);
+      }
+
+      saveClues();
+      closeModal();
+      renderBoard();
+    });
+
+    function deleteCard(cardId) {
+      const card = cluesData.find(c => c.id === cardId);
+      if (!card) return;
+      if (confirm(`¿Eliminar la pista "${card.title}" [Letra ${card.letter}]?`)) {
+        cluesData = cluesData.filter(c => c.id !== cardId);
+        saveClues();
+        renderBoard();
+      }
+    }
+
+    // CONTEXT MENU
+    const contextMenu = document.getElementById("contextMenu");
+    let activeContextColId = null;
+
+    function onColumnContextMenu(e, colId) {
+      e.preventDefault();
+      activeContextColId = colId;
+      contextMenu.style.top = `${e.clientY}px`;
+      contextMenu.style.left = `${e.clientX}px`;
+      contextMenu.classList.add("open");
+    }
+
+    document.addEventListener("click", () => {
+      contextMenu.classList.remove("open");
+    });
+
+    document.getElementById("contextAddCard").addEventListener("click", () => {
+      if (activeContextColId) openCreateModal(activeContextColId);
+    });
+
+    document.getElementById("contextClearCol").addEventListener("click", () => {
+      if (!activeContextColId) return;
+      const count = cluesData.filter(c => c.column === activeContextColId).length;
+      if (count === 0) return;
+      if (confirm(`¿Mover todas las pistas de esta columna al Banco de Pistas?`)) {
+        cluesData.forEach(c => {
+          if (c.column === activeContextColId) c.column = "bank";
+        });
+        saveClues();
+        renderBoard();
+      }
+    });
+
+    // BOTONES DE CABECERA
+    document.getElementById("btnNewClueHeader").addEventListener("click", () => {
+      openCreateModal("fase1");
+    });
+
+    // EXPORTAR E IMPORTAR JSON
+    document.getElementById("btnExportJson").addEventListener("click", () => {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(cluesData, null, 2));
+      const downloadAnchor = document.createElement("a");
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", "cluedo_orden_pistas.json");
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+    });
+
+    const importFileInput = document.getElementById("importFileInput");
+    document.getElementById("btnImportJson").addEventListener("click", () => {
+      importFileInput.click();
+    });
+
+    importFileInput.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const parsed = JSON.parse(event.target.result);
+          if (Array.isArray(parsed)) {
+            cluesData = parsed;
+            saveClues();
+            renderBoard();
+            alert("¡Pistas importadas correctamente!");
+          } else {
+            alert("El archivo JSON no tiene un formato válido.");
+          }
+        } catch (err) {
+          alert("Error al parsear el JSON: " + err.message);
+        }
+      };
+      reader.readAsText(file);
+    });
+
+    document.getElementById("btnResetDefault").addEventListener("click", () => {
+      if (confirm("¿Restablecer la distribución de pistas al esquema inicial sugerido?")) {
+        cluesData = JSON.parse(JSON.stringify(DEFAULT_CLUES));
+        saveClues();
+        renderBoard();
+      }
+    });
+
+    // INICIALIZACIÓN
+    loadClues();
+    renderBoard();
+  </script>
+</body>
+</html>
