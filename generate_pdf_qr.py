@@ -112,6 +112,13 @@ OBJECTS_DATA = [
         'category': 'Reliquia',
         'token': 'g8s4z2',
         'desc': 'Pluma estilográfica con plumín de oro e inicial grabada.'
+    },
+    {
+        'num': 17,
+        'title': 'Pasaporte',
+        'category': 'Identidad',
+        'token': 'pass7k',
+        'desc': 'Pasaporte estadounidense con sellos consulares de Alaska.'
     }
 ]
 

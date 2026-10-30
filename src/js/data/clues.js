@@ -186,6 +186,20 @@ export const CLUES = {
     backBase: "card-back-base-3.png",
     desc: "Pluma estilográfica con plumín de oro de 14 quilates y cuerpo de resina negra con un monograma grabado.",
     detail: "Faltaba en el estuche del despacho principal y fue encontrada entre las sombras del pasillo exterior."
+  },
+  "OBJETO-17": {
+    id: "OBJETO-17",
+    num: 17,
+    letter: "Q",
+    token: "pass7k",
+    title: "Pasaporte",
+    category: "Identidad",
+    isPassport: true,
+    cardImage: "src/assets/images/objetos/card-obj-17.png",
+    backBase: "card-back-base-1.png",
+    desc: "Documento de viaje e identificación aparentemente oficial expedido bajo los sellos de los Estados Unidos.",
+    detailNormal: "A simple vista parece un pasaporte ordinario y legítimo en regla para viajes internacionales y residencia. No obstante, solo un profesional instruido en control fronterizo o leyes consulares sabría comprobar la validez técnica de sus marcas y sellos.",
+    detailExpert: "¡DOCUMENTO FALSIFICADO! Al ser una persona entendida en el tema, detectas de inmediato que este pasaporte ha sido FALSIFICADO: la tipografía del código MRZ está alterada, el sello de Alaska no corresponde a la demarcación federal y los datos biográficos han sido manipulados para ocultar una orden de captura."
   }
 };
 
@@ -195,6 +209,11 @@ export const CLUES = {
 export function resolveClueId(rawInput) {
   if (!rawInput) return null;
   const input = String(rawInput).trim().toLowerCase();
+
+  // Alias directos para el pasaporte
+  if (input === "pasaporte" || input === "passport" || input === "pass" || input === "pass7k") {
+    return "OBJETO-17";
+  }
 
   // 1. Buscar coincidencia por letra única (ej: "b", "c", "k") o frase (ej: "pista b", "sobre b")
   for (const [id, clue] of Object.entries(CLUES)) {
