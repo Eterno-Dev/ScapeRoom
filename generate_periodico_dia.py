@@ -10,7 +10,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from PIL import Image as PILImage, ImageDraw
 
-# Registrar fuentes periodísticas auténticas de rotativa
+# Registrar fuentes periodísticas auténticas
 try:
     pdfmetrics.registerFont(TTFont('Georgia', 'C:/Windows/Fonts/georgia.ttf'))
     pdfmetrics.registerFont(TTFont('Georgia-Bold', 'C:/Windows/Fonts/georgiab.ttf'))
@@ -24,7 +24,7 @@ except Exception as e:
     FONT_ITALIC = 'Times-Italic'
 
 def create_photo_placeholder(filename, width_px, height_px, label, sublabel=""):
-    im = PILImage.new('RGBA', (width_px, height_px), (245, 246, 248, 255))
+    im = PILImage.new('RGBA', (width_px, height_px), (242, 243, 245, 255))
     draw = ImageDraw.Draw(im)
     draw.rectangle((0, 0, width_px - 1, height_px - 1), outline="#9ca3af", width=2)
     cx, cy = width_px // 2, height_px // 2 - 10
@@ -39,66 +39,67 @@ def create_photo_placeholder(filename, width_px, height_px, label, sublabel=""):
 
 def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
     os.makedirs("src/assets/images/periodico_dia", exist_ok=True)
-    create_photo_placeholder("src/assets/images/periodico_dia/foto_kronos.png", 520, 200, "[ FOTO 1: SEDE KRONOS S.A. ]", "Recapitalizacion de emergencia")
+    create_photo_placeholder("src/assets/images/periodico_dia/foto_kronos.png", 520, 220, "[ FOTO 1: SEDE KRONOS S.A. ]", "Recapitalizacion en Wall Street")
     create_photo_placeholder("src/assets/images/periodico_dia/foto_caballo.png", 320, 160, "[ FOTO 2: NUEVO PURASANGRE ]", "Circuito clandestino Apex")
     create_photo_placeholder("src/assets/images/periodico_dia/foto_israel.png", 320, 160, "[ FOTO 3: FOTOGRAFIA DE INTELIGENCIA ]", "Enlace militar en Tel Aviv")
 
-    # A4 = 595.27 x 841.89 pt
+    # A4 = 595.27 x 841.89 pt. Usable width = 595.27 - 48 = 547.27 pt.
     doc = SimpleDocTemplate(
         output_filename,
         pagesize=A4,
         leftMargin=24,
         rightMargin=24,
-        topMargin=14,
-        bottomMargin=14
+        topMargin=15,
+        bottomMargin=15
     )
 
     styles = getSampleStyleSheet()
 
+    # MASTHEAD PERIODÍSTICO (ESTILO EL PAÍS)
     masthead_style = ParagraphStyle(
         'Masthead',
         parent=styles['Normal'],
         fontName=FONT_HEADLINE,
-        fontSize=44,
-        leading=46,
+        fontSize=48,
+        leading=50,
         alignment=1,
-        textColor=colors.HexColor('#111827'),
-        spaceBefore=1,
-        spaceAfter=1
+        textColor=colors.HexColor('#0f172a'),
+        spaceBefore=0,
+        spaceAfter=0
     )
 
     meta_bar = ParagraphStyle(
         'MetaBar',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=8,
-        leading=10,
+        fontSize=7.2,
+        leading=9.2,
         textColor=colors.HexColor('#1F2937')
     )
 
-    # TITULAR DE APERTURA: MUERTE DEL MAGNATE
-    breaking_tag = ParagraphStyle(
-        'BTag',
+    section_tag = ParagraphStyle(
+        'SecTag',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
         fontSize=7.5,
         leading=9,
-        textColor=colors.HexColor('#DC2626')
+        textColor=colors.HexColor('#991B1B')
     )
 
-    magnate_title = ParagraphStyle(
-        'MagTitle',
+    # 1. KRONOS (NOTICIA PRINCIPAL / HERO)
+    hero_title = ParagraphStyle(
+        'HeroTitle',
         parent=styles['Heading1'],
         fontName=FONT_HEADLINE,
-        fontSize=20,
-        leading=23,
-        textColor=colors.HexColor('#991B1B'),
+        fontSize=21,
+        leading=24,
+        textColor=colors.HexColor('#0f172a'),
         spaceBefore=1,
         spaceAfter=2
     )
 
-    magnate_sub = ParagraphStyle(
-        'MagSub',
+    hero_subtitle = ParagraphStyle(
+        'HeroSub',
         parent=styles['Normal'],
         fontName=FONT_ITALIC,
         fontSize=9.5,
@@ -107,36 +108,36 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         spaceAfter=4
     )
 
-    # TITULAR KRONOS
-    kronos_title = ParagraphStyle(
-        'KronosTitle',
+    # 2. MUERTE DEL MAGNATE (SEGUNDA NOTICIA - SIN FOTO, ESTILO PERIODISMO DE SUCESOS)
+    mag_title = ParagraphStyle(
+        'MagTitle',
         parent=styles['Heading2'],
         fontName=FONT_HEADLINE,
-        fontSize=15,
-        leading=18,
-        textColor=colors.HexColor('#111827'),
+        fontSize=13.5,
+        leading=16.5,
+        textColor=colors.HexColor('#0f172a'),
         spaceBefore=1,
         spaceAfter=2
     )
 
-    kronos_sub = ParagraphStyle(
-        'KronosSub',
+    mag_subtitle = ParagraphStyle(
+        'MagSub',
         parent=styles['Normal'],
         fontName=FONT_ITALIC,
         fontSize=8.5,
-        leading=11.5,
+        leading=11.2,
         textColor=colors.HexColor('#4B5563'),
-        spaceAfter=4
+        spaceAfter=3
     )
 
-    # TITULARES SECUNDARIOS (HÍPICA E ISRAEL)
+    # 3. TITULARES SECUNDARIOS (HÍPICA E ISRAEL)
     sec_title = ParagraphStyle(
         'SecTitle',
         parent=styles['Heading2'],
         fontName=FONT_HEADLINE,
-        fontSize=12.5,
-        leading=15,
-        textColor=colors.HexColor('#111827'),
+        fontSize=12,
+        leading=14.5,
+        textColor=colors.HexColor('#0f172a'),
         spaceBefore=1,
         spaceAfter=2
     )
@@ -156,8 +157,8 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         parent=styles['Normal'],
         fontName=FONT_BODY,
         fontSize=8,
-        leading=11,
-        alignment=4, # TA_JUSTIFY
+        leading=10.8,
+        alignment=4, # Justified
         textColor=colors.HexColor('#1F2937')
     )
 
@@ -173,11 +174,23 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
     story = []
 
     # =========================================================================
-    # 1. CABECERA: EL DIARIO DEL DÍA (Estilo EL PAÍS)
+    # 1. CABECERA: EL DIARIO DEL DÍA (ESTILO EL PAÍS)
     # =========================================================================
+    top_bar = Table([[
+        Paragraph("<font size=7 color='#4B5563'>www.eldiariodeldia.com</font>", ParagraphStyle('TL', parent=styles['Normal'])),
+        Paragraph("<font size=7 color='#4B5563'>EL PERIÓDICO GLOBAL DE INFORMACIÓN GENERAL Y FINANZAS</font>", ParagraphStyle('TR', parent=styles['Normal'], alignment=2))
+    ]], colWidths=[200, 347])
+    top_bar.setStyle(TableStyle([
+        ('VALIGN', (0,0), (-1,-1), 'BOTTOM'),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 0),
+        ('TOPPADDING', (0,0), (-1,-1), 0),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 1),
+    ]))
+    story.append(top_bar)
+
     story.append(Paragraph("EL DIARIO DEL DÍA", masthead_style))
-    story.append(Paragraph("EL PERIÓDICO GLOBAL DE INFORMACIÓN GENERAL Y FINANZAS", ParagraphStyle('SubM', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7.5, leading=9, alignment=1, textColor=colors.HexColor('#4B5563'))))
-    story.append(Spacer(1, 2))
+    story.append(Spacer(1, 1))
 
     top_meta = [
         [
@@ -187,123 +200,156 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
             Paragraph("PRECIO: 2,00 $", ParagraphStyle('MB3', parent=meta_bar, alignment=2))
         ]
     ]
-    t_top = Table(top_meta, colWidths=[160, 130, 140, 117])
+    t_top = Table(top_meta, colWidths=[155, 135, 140, 117])
     t_top.setStyle(TableStyle([
-        ('LINEABOVE', (0,0), (-1,-1), 1, colors.HexColor('#000000')),
-        ('LINEBELOW', (0,0), (-1,-1), 1, colors.HexColor('#000000')),
+        ('LINEABOVE', (0,0), (-1,-1), 0.8, colors.HexColor('#000000')),
+        ('LINEBELOW', (0,0), (-1,-1), 0.8, colors.HexColor('#000000')),
         ('TOPPADDING', (0,0), (-1,-1), 2),
         ('BOTTOMPADDING', (0,0), (-1,-1), 2),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (-1,-1), 0),
     ]))
     story.append(t_top)
     story.append(Spacer(1, 4))
 
     # =========================================================================
-    # 2. NOTICIA DE APERTURA: MUERTE SOSPECHOSA DEL MAGNATE VALPARAÍSO
+    # 2. NOTICIA PRINCIPAL (HERO): KRONOS REPUNTA UN 120% EN 12 HORAS
     # =========================================================================
-    story.append(Paragraph("<b>ÚLTIMA HORA • INVESTIGACIÓN JUDICIAL EN CURSO</b>", breaking_tag))
-    story.append(Paragraph("Muere el magnate Valparaíso de forma sospechosa en su villa de 10 millones", magnate_title))
-    story.append(Paragraph("La policía detiene temporalmente la investigación sobre el terreno tras la intervención formal de su equipo de abogados.", magnate_sub))
+    story.append(Paragraph("<b>MERCADOS FINANCIEROS • WALL STREET</b>", section_tag))
+    story.append(Paragraph("Kronos repunta un 120% en 12 horas", hero_title))
+    story.append(Paragraph("Una inyección nocturna de 12 millones de dólares de su accionista mayoritario salva a la compañía del embargo judicial y reactiva sus operaciones.", hero_subtitle))
 
-    magnate_col1 = (
-        "<b>VALPARAÍSO ESTATE. —</b> El multimillonario y veterano patriarca <b>Ricardo Valparaíso</b> "
-        "fue hallado sin vida anoche en el interior de su exclusiva mansión señorial, valorada en más de <b>10 millones de dólares</b>, "
-        "en circunstancias que los primeros peritos catalogaron de <i>'altamente sospechosas'</i>.<br/><br/>"
-        "Sin embargo, el operativo forense de la policía judicial se ha visto sorprendentemente <b>detenido de forma temporal</b> "
-        "a primera hora de esta madrugada por orden judicial, a petición formal presentada por el despacho de abogados del difunto."
+    kronos_col1 = (
+        "<b>NUEVA YORK. —</b> En una de las jornadas más insólitas jamás presenciadas en Wall Street, el grupo "
+        "<b>Kronos & Logística S.A.</b> protagonizó de madrugada un rebote vertical del <b>120%</b> tras haber tocado fondo bursátil la tarde previa.<br/><br/>"
+        "La Comisión de Mercados certificó una transferencia extraordinaria irrevocable de <b>12 millones de dólares</b> emitida por su socio de referencia, "
+        "desactivando la orden de embargo cautelar dictada por el juzgado mercantil. La repentina aparición de los avales necesarios "
+        "ha desatado intensas especulaciones sobre el origen de los fondos aportados in extremis.<br/>"
+        "<font size=6.5 color='#6B7280'>Pasa a la página 14 / Finanzas</font>"
     )
 
-    magnate_col2 = (
-        "El equipo jurídico de la familia esgrimió estrictas cláusulas de confidencialidad y la inmediata apertura de la pieza "
-        "testamentaria para paralizar temporalmente las pesquisas e interrogatorios en la vivienda.<br/><br/>"
-        "La repentina muerte del magnate, rodeado únicamente por un selecto círculo de allegados convocados a una velada privada, "
-        "ha disparado las especulaciones sobre la disputa de su millonaria herencia y acuerdos mercantiles pendientes."
+    kronos_col2 = (
+        "La quiebra técnica amenazaba con arrastrar a una red de proveedores estratégicos y paralizar divisiones clave del sector logístico.<br/><br/>"
+        "La dirección de Kronos aseguró en un escueto comunicado que la liquidez está garantizada y que la corporación afrontará de inmediato todas sus obligaciones financieras pendientes.<br/><br/>"
+        "Analistas del sector califican el rescate de maniobra de manual de última hora, coordinada en vísperas del cierre trimestral de cuentas bancarias."
     )
 
-    t_magnate = Table([[
-        Paragraph(magnate_col1, body_news),
-        Paragraph(magnate_col2, body_news)
-    ]], colWidths=[270, 275])
-    t_magnate.setStyle(TableStyle([
+    kronos_text_table = Table([[
+        Paragraph(kronos_col1, body_news),
+        Paragraph(kronos_col2, body_news)
+    ]], colWidths=[144, 146])
+    kronos_text_table.setStyle(TableStyle([
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
-        ('LEFTPADDING', (0,0), (0,0), 0),
-        ('RIGHTPADDING', (0,0), (0,0), 8),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (0,0), 6),
         ('LINEBEFORE', (1,0), (1,0), 0.5, colors.HexColor('#D1D5DB')),
-        ('LEFTPADDING', (1,0), (1,0), 8),
+        ('LEFTPADDING', (1,0), (1,0), 6),
         ('RIGHTPADDING', (1,0), (1,0), 0),
         ('TOPPADDING', (0,0), (-1,-1), 0),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 0),
     ]))
-    story.append(t_magnate)
-    story.append(Spacer(1, 4))
-    story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor('#000000'), spaceAfter=5))
-
-    # =========================================================================
-    # 3. NOTICIA ECONÓMICA: KRONOS REPUNTA UN 120% TRAS INYECCIÓN DE 12M$
-    # =========================================================================
-    kronos_left = [
-        Paragraph("<font color='#047857'><b>MERCADOS FINANCIEROS</b></font>", ParagraphStyle('TagK', parent=breaking_tag, textColor=colors.HexColor('#047857'))),
-        Paragraph("Kronos repunta un 120% en 12 horas", kronos_title),
-        Paragraph("Una inyección nocturna de 12 millones de dólares de su accionista mayoritario salva a la corporación del embargo judicial.", kronos_sub),
-        Paragraph(
-            "<b>NUEVA YORK. —</b> En una de las jornadas más insólitas jamás presenciadas en Wall Street, el grupo "
-            "<b>Kronos & Logística S.A.</b> protagonizó de madrugada un rebote vertical del <b>120%</b> tras haber tocado fondo bursátil la tarde anterior.<br/><br/>"
-            "La Comisión de Mercados certificó una transferencia extraordinaria irrevocable de <b>12 millones de dólares</b> emitida por su socio de referencia, "
-            "desactivando la orden de embargo cautelar dictada por el juzgado mercantil. La repentina aparición de los avales necesarios "
-            "ha desatado intensas especulaciones sobre el origen de los fondos familiares.",
-            body_news
-        )
-    ]
 
     kronos_photo_col = [
-        Image("src/assets/images/periodico_dia/foto_kronos.png", width=245, height=88),
+        Image("src/assets/images/periodico_dia/foto_kronos.png", width=248, height=94),
         Spacer(1, 2),
-        Paragraph("Fachada de la sede central de Kronos en el distrito financiero tras suspenderse el preconcurso. / REUTERS", caption_style)
+        Paragraph("Fachada de la sede central de Kronos en el distrito financiero tras suspenderse el preconcurso de acreedores. / REUTERS", caption_style)
     ]
 
-    hero_layout = Table([[kronos_left, kronos_photo_col]], colWidths=[295, 250])
+    hero_layout = Table([[kronos_text_table, kronos_photo_col]], colWidths=[297, 250])
     hero_layout.setStyle(TableStyle([
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
         ('LINEBEFORE', (1,0), (1,0), 0.5, colors.HexColor('#D1D5DB')),
         ('LEFTPADDING', (0,0), (-1,-1), 0),
         ('RIGHTPADDING', (0,0), (0,0), 8),
         ('LEFTPADDING', (1,0), (1,0), 8),
+        ('RIGHTPADDING', (1,0), (1,0), 0),
         ('TOPPADDING', (0,0), (-1,-1), 0),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2),
     ]))
     story.append(hero_layout)
-    story.append(Spacer(1, 4))
-    story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor('#000000'), spaceAfter=5))
+    story.append(Spacer(1, 3))
+    story.append(HRFlowable(width="100%", thickness=0.8, color=colors.HexColor('#000000'), spaceBefore=1, spaceAfter=3))
 
     # =========================================================================
-    # 4. SECCIÓN MEDIA: DOS COLUMNAS (HÍPICA E INTERNACIONAL)
+    # 3. SEGUNDA NOTICIA: MUERTE SOSPECHOSA DEL MAGNATE (SIN FOTO, MAQUETACIÓN 3 COLUMNAS)
+    # =========================================================================
+    story.append(Paragraph("<b>SUCESOS • DILIGENCIAS JUDICIALES</b>", ParagraphStyle('TagS', parent=section_tag, textColor=colors.HexColor('#1E3A8A'))))
+    story.append(Paragraph("Muere de forma sospechosa el magnate Valparaíso en su villa", mag_title))
+    story.append(Paragraph("La policía detiene temporalmente la investigación sobre el terreno por petición formal de sus abogados.", mag_subtitle))
+
+    mag_text1 = (
+        "<b>VALPARAÍSO ESTATE. —</b> El multimillonario <b>Ricardo Valparaíso</b> fue hallado sin vida anoche en su mansión señorial de <b>10 millones de dólares</b>, "
+        "en circunstancias que los primeros peritos forenses catalogaron de altamente sospechosas.<br/><br/>"
+        "La policía judicial detuvo la inspección ocular a primera hora tras un formal requerimiento del equipo jurídico de la familia."
+    )
+
+    mag_text2 = (
+        "El despacho legal alegó la apertura inmediata del protocolo testamentario y cláusulas de confidencialidad para precintar las dependencias privadas.<br/><br/>"
+        "El fallecimiento, ocurrido durante una reunión con allegados, desata disputas sucesorias.<br/>"
+        "<font size=6.5 color='#6B7280'>Pasa a la pág. 8</font>"
+    )
+
+    quote_box = (
+        "<font color='#1E3A8A'><b>BLOQUEO PERICIAL</b></font><br/>"
+        "<i>«La defensa jurídica exige custodiar el archivo privado y suspender declaraciones de testigos hasta conocer el testamento.»</i>"
+    )
+
+    t_magnate = Table([[
+        Paragraph(mag_text1, body_news),
+        Paragraph(mag_text2, body_news),
+        Paragraph(quote_box, ParagraphStyle('QB', parent=styles['Normal'], fontName=FONT_ITALIC, fontSize=7.5, leading=10.2, textColor=colors.HexColor('#1F2937')))
+    ]], colWidths=[185, 185, 177])
+    t_magnate.setStyle(TableStyle([
+        ('VALIGN', (0,0), (-1,-1), 'TOP'),
+        ('LEFTPADDING', (0,0), (-1,-1), 0),
+        ('RIGHTPADDING', (0,0), (0,0), 6),
+        ('LINEBEFORE', (1,0), (1,0), 0.5, colors.HexColor('#D1D5DB')),
+        ('LEFTPADDING', (1,0), (1,0), 6),
+        ('RIGHTPADDING', (1,0), (1,0), 6),
+        ('LINEBEFORE', (2,0), (2,0), 0.5, colors.HexColor('#D1D5DB')),
+        ('LEFTPADDING', (2,0), (2,0), 8),
+        ('RIGHTPADDING', (2,0), (2,0), 4),
+        ('BACKGROUND', (2,0), (2,0), colors.HexColor('#F8FAFC')),
+        ('TOPPADDING', (2,0), (2,0), 5),
+        ('BOTTOMPADDING', (2,0), (2,0), 5),
+        ('BOX', (2,0), (2,0), 0.5, colors.HexColor('#CBD5E1')),
+        ('TOPPADDING', (0,0), (1,0), 0),
+        ('BOTTOMPADDING', (0,0), (1,0), 2),
+    ]))
+    story.append(t_magnate)
+    story.append(Spacer(1, 3))
+    story.append(HRFlowable(width="100%", thickness=0.8, color=colors.HexColor('#000000'), spaceBefore=1, spaceAfter=3))
+
+    # =========================================================================
+    # 4. SECCIÓN MEDIA: DOS COLUMNAS PERIODÍSTICAS CON FOTOS (HÍPICA E ISRAEL)
     # =========================================================================
     col_horse = [
-        Paragraph("<font color='#991B1B'><b>HÍPICA Y APUESTAS</b></font>", ParagraphStyle('TagH', parent=breaking_tag)),
+        Paragraph("<b>HÍPICA Y APUESTAS</b>", section_tag),
         Paragraph("Nuevo caballo en carreras clandestinas", sec_title),
-        Paragraph("Adquieren a 'Sombra Veloz' tras la muerte por sobredosis del animal titular.", sec_subtitle),
-        Image("src/assets/images/periodico_dia/foto_caballo.png", width=255, height=85),
+        Paragraph("Adquieren a 'Sombra Veloz' tras la sobredosis del animal titular.", sec_subtitle),
+        Image("src/assets/images/periodico_dia/foto_caballo.png", width=254, height=88),
         Spacer(1, 2),
-        Paragraph("El ejemplar purasangre adquirido de madrugada en una subasta privada. / AP", caption_style),
-        Spacer(1, 3),
+        Paragraph("Purasangre adquirido de madrugada en subasta privada. / AP", caption_style),
+        Spacer(1, 2),
         Paragraph(
-            "<b>LOUISVILLE. —</b> Apenas unas horas después del fulminante colapso en boxes del caballo de carreras <i>'Tormenta Negra'</i> —cuya necropsia reveló una <b>dosis masiva de estimulantes no autorizados</b>—, "
-            "el consorcio de apuestas clandestinas vinculado a Apex formalizó de urgencia la compraventa de un nuevo purasangre.<br/><br/>"
-            "La operación, saldada íntegramente en metálico por jóvenes operadores nocturnos, confirma la presión apremiante por mantener abiertos los calendarios de apuestas amañadas.",
+            "<b>LOUISVILLE. —</b> Apenas horas después del colapso del purasangre <i>'Tormenta Negra'</i> —cuya necropsia reveló una <b>dosis masiva de estimulantes no autorizados</b>—, "
+            "el consorcio de apuestas clandestinas formalizó de urgencia la compraventa de un sustituto.<br/><br/>"
+            "La operación en metálico confirma la presión por sostener el circuito ilegal de juego.",
             body_news
         )
     ]
 
     col_israel = [
-        Paragraph("<font color='#1E3A8A'><b>SEGURIDAD INTERNACIONAL</b></font>", ParagraphStyle('TagI', parent=breaking_tag, textColor=colors.HexColor('#1E3A8A'))),
+        Paragraph("<b>SEGURIDAD INTERNACIONAL</b>", ParagraphStyle('TagI', parent=section_tag, textColor=colors.HexColor('#1E3A8A'))),
         Paragraph("Captan en Israel a un traficante de armas", sec_title),
-        Paragraph("Fotografiado en Oriente Próximo dos horas antes del anochecer.", sec_subtitle),
-        Image("src/assets/images/periodico_dia/foto_israel.png", width=255, height=85),
+        Paragraph("Fotografiado en Tel Aviv a las 16:30 horas (dos antes del anochecer).", sec_subtitle),
+        Image("src/assets/images/periodico_dia/foto_israel.png", width=254, height=88),
         Spacer(1, 2),
-        Paragraph("Registro gráfico filtrado por inteligencia militar cerca de Tel Aviv. / AFP", caption_style),
-        Spacer(1, 3),
+        Paragraph("Registro de inteligencia militar en Oriente Próximo. / AFP", caption_style),
+        Spacer(1, 2),
         Paragraph(
-            "<b>TEL AVIV. —</b> Informes de inteligencia militar desclasificados esta mañana sitúan a un conocido intermediario de suministros bélicos cerrando un pacto clandestino de fusiles y munición en un enclave táctico de Oriente Próximo.<br/><br/>"
-            "El registro gráfico fue captado <b>el día 30 a las 16:30 horas locales (apenas dos horas antes del anochecer en América)</b>, constatando que el enlace militar se encontraba a miles de kilómetros de suelo americano.",
+            "<b>TEL AVIV. —</b> Informes militares sitúan a un conocido intermediario de suministros bélicos cerrando un pacto en un enclave táctico de Oriente Próximo.<br/><br/>"
+            "El registro fue captado el día 30 a las <b>16:30 h locales (dos horas antes de oscurecer en América)</b>, constatando que el enlace estaba a miles de kilómetros.",
             body_news
         )
     ]
@@ -317,38 +363,38 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         ('LEFTPADDING', (1,0), (1,0), 8),
         ('RIGHTPADDING', (1,0), (1,0), 0),
         ('TOPPADDING', (0,0), (-1,-1), 0),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2),
     ]))
     story.append(mid_table)
-    story.append(Spacer(1, 5))
+    story.append(Spacer(1, 4))
 
     # =========================================================================
-    # 5. MÓDULO INFERIOR: ALERTA SOCIAL DE DROGAS (+20%)
+    # 5. MÓDULO INFERIOR DE IMPACTO SOCIAL (ESTILO CAJA EL PAÍS)
     # =========================================================================
     alert_box = [
         [
             Paragraph(
                 "<font color='#991B1B'><b>SOCIEDAD & SALUD</b></font><br/>"
-                "<font size=9.5 color='#111827'><b>El tráfico de drogas sube un 20% en cinco años</b></font>",
-                ParagraphStyle('ABoxL', parent=styles['Normal'], fontName=FONT_HEADLINE, fontSize=9, leading=11.5)
+                "<font size=9 color='#0f172a'><b>El tráfico de drogas sube un 20% en cinco años</b></font>",
+                ParagraphStyle('ABoxL', parent=styles['Normal'], fontName=FONT_HEADLINE, fontSize=8.5, leading=11)
             ),
             Paragraph(
-                "Un informe de las agencias de seguridad alerta de un incremento sostenido del 20% en la circulación de estupefacientes y psicofármacos sintéticos. "
-                "Los investigadores vinculan este auge al blanqueo de capitales procedente de deudas de juego clandestino y extorsiones a familias acaudaladas.",
-                ParagraphStyle('ABoxR', parent=styles['Normal'], fontName=FONT_BODY, fontSize=7.5, leading=10, textColor=colors.HexColor('#1F2937'))
+                "Un informe de las agencias de seguridad alerta del alza del 20% en la circulación de psicofármacos sintéticos y estimulantes. "
+                "Los investigadores vinculan este incremento al blanqueo de capitales procedente de apuestas clandestinas y extorsiones patrimoniales.",
+                ParagraphStyle('ABoxR', parent=styles['Normal'], fontName=FONT_BODY, fontSize=7.5, leading=9.8, textColor=colors.HexColor('#1F2937'))
             )
         ]
     ]
-    t_alert = Table(alert_box, colWidths=[180, 367])
+    t_alert = Table(alert_box, colWidths=[175, 372])
     t_alert.setStyle(TableStyle([
         ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#F8FAFC')),
-        ('BOX', (0,0), (-1,-1), 1, colors.HexColor('#000000')),
+        ('BOX', (0,0), (-1,-1), 0.8, colors.HexColor('#000000')),
         ('LINEBEFORE', (1,0), (1,0), 0.5, colors.HexColor('#CBD5E1')),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
-        ('TOPPADDING', (0,0), (-1,-1), 4),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
-        ('LEFTPADDING', (0,0), (-1,-1), 8),
-        ('RIGHTPADDING', (0,0), (-1,-1), 8),
+        ('TOPPADDING', (0,0), (-1,-1), 3.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3.5),
+        ('LEFTPADDING', (0,0), (-1,-1), 6),
+        ('RIGHTPADDING', (0,0), (-1,-1), 6),
     ]))
     story.append(t_alert)
 
