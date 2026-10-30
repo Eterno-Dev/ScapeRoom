@@ -40,6 +40,7 @@ def create_photo_placeholder(filename, width_px, height_px, label, sublabel=""):
 def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
     os.makedirs("src/assets/images/periodico_dia", exist_ok=True)
     create_photo_placeholder("src/assets/images/periodico_dia/foto_kronos.png", 520, 220, "[ FOTO 1: SEDE KRONOS S.A. ]", "Recapitalizacion en Wall Street")
+    create_photo_placeholder("src/assets/images/periodico_dia/foto_villa.png", 360, 210, "[ FOTO: VILLA VALPARAÍSO ]", "Cordon policial en la mansion")
     create_photo_placeholder("src/assets/images/periodico_dia/foto_caballo.png", 320, 160, "[ FOTO 2: NUEVO PURASANGRE ]", "Circuito clandestino Apex")
     create_photo_placeholder("src/assets/images/periodico_dia/foto_israel.png", 320, 160, "[ FOTO 3: FOTOGRAFIA DE INTELIGENCIA ]", "Enlace militar en Tel Aviv")
 
@@ -91,8 +92,8 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         'HeroTitle',
         parent=styles['Heading1'],
         fontName=FONT_HEADLINE,
-        fontSize=21,
-        leading=24,
+        fontSize=20.5,
+        leading=23.5,
         textColor=colors.HexColor('#0f172a'),
         spaceBefore=1,
         spaceAfter=2
@@ -105,16 +106,16 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         fontSize=9.5,
         leading=12.5,
         textColor=colors.HexColor('#374151'),
-        spaceAfter=4
+        spaceAfter=3
     )
 
-    # 2. MUERTE DEL MAGNATE (SEGUNDA NOTICIA - SIN FOTO, ESTILO PERIODISMO DE SUCESOS)
+    # 2. MUERTE DEL MAGNATE (SEGUNDA NOTICIA - CON FOTO A LA IZQUIERDA)
     mag_title = ParagraphStyle(
         'MagTitle',
         parent=styles['Heading2'],
         fontName=FONT_HEADLINE,
-        fontSize=13.5,
-        leading=16.5,
+        fontSize=13,
+        leading=16,
         textColor=colors.HexColor('#0f172a'),
         spaceBefore=1,
         spaceAfter=2
@@ -125,7 +126,7 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         parent=styles['Normal'],
         fontName=FONT_ITALIC,
         fontSize=8.5,
-        leading=11.2,
+        leading=11,
         textColor=colors.HexColor('#4B5563'),
         spaceAfter=3
     )
@@ -135,8 +136,8 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         'SecTitle',
         parent=styles['Heading2'],
         fontName=FONT_HEADLINE,
-        fontSize=12,
-        leading=14.5,
+        fontSize=11.5,
+        leading=14,
         textColor=colors.HexColor('#0f172a'),
         spaceBefore=1,
         spaceAfter=2
@@ -149,15 +150,15 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         fontSize=8,
         leading=10.5,
         textColor=colors.HexColor('#4B5563'),
-        spaceAfter=3
+        spaceAfter=2
     )
 
     body_news = ParagraphStyle(
         'BodyNews',
         parent=styles['Normal'],
         fontName=FONT_BODY,
-        fontSize=8,
-        leading=10.8,
+        fontSize=7.8,
+        leading=10.5,
         alignment=4, # Justified
         textColor=colors.HexColor('#1F2937')
     )
@@ -166,8 +167,8 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         'Caption',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=6.5,
-        leading=8.5,
+        fontSize=6.2,
+        leading=8,
         textColor=colors.HexColor('#4B5563')
     )
 
@@ -210,7 +211,7 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         ('RIGHTPADDING', (0,0), (-1,-1), 0),
     ]))
     story.append(t_top)
-    story.append(Spacer(1, 4))
+    story.append(Spacer(1, 3))
 
     # =========================================================================
     # 2. NOTICIA PRINCIPAL (HERO): KRONOS REPUNTA UN 120% EN 12 HORAS
@@ -250,7 +251,7 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
     ]))
 
     kronos_photo_col = [
-        Image("src/assets/images/periodico_dia/foto_kronos.png", width=248, height=94),
+        Image("src/assets/images/periodico_dia/foto_kronos.png", width=248, height=90),
         Spacer(1, 2),
         Paragraph("Fachada de la sede central de Kronos en el distrito financiero tras suspenderse el preconcurso de acreedores. / REUTERS", caption_style)
     ]
@@ -271,11 +272,17 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
     story.append(HRFlowable(width="100%", thickness=0.8, color=colors.HexColor('#000000'), spaceBefore=1, spaceAfter=3))
 
     # =========================================================================
-    # 3. SEGUNDA NOTICIA: MUERTE SOSPECHOSA DEL MAGNATE (SIN FOTO, MAQUETACIÓN 3 COLUMNAS)
+    # 3. SEGUNDA NOTICIA: MUERTE SOSPECHOSA DEL MAGNATE (CON FOTO A LA IZQUIERDA)
     # =========================================================================
     story.append(Paragraph("<b>SUCESOS • DILIGENCIAS JUDICIALES</b>", ParagraphStyle('TagS', parent=section_tag, textColor=colors.HexColor('#1E3A8A'))))
     story.append(Paragraph("Muere de forma sospechosa el magnate Valparaíso en su villa", mag_title))
     story.append(Paragraph("La policía detiene temporalmente la investigación sobre el terreno por petición formal de sus abogados.", mag_subtitle))
+
+    mag_photo_col = [
+        Image("src/assets/images/periodico_dia/foto_villa.png", width=168, height=78),
+        Spacer(1, 2),
+        Paragraph("Patrullas y precinto policial en la entrada de la villa Valparaíso esta madrugada. / EFE", caption_style)
+    ]
 
     mag_text1 = (
         "<b>VALPARAÍSO ESTATE. —</b> El multimillonario <b>Ricardo Valparaíso</b> fue hallado sin vida anoche en su mansión señorial de <b>10 millones de dólares</b>, "
@@ -285,20 +292,15 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
 
     mag_text2 = (
         "El despacho legal alegó la apertura inmediata del protocolo testamentario y cláusulas de confidencialidad para precintar las dependencias privadas.<br/><br/>"
-        "El fallecimiento, ocurrido durante una reunión con allegados, desata disputas sucesorias.<br/>"
-        "<font size=6.5 color='#6B7280'>Pasa a la pág. 8</font>"
-    )
-
-    quote_box = (
-        "<font color='#1E3A8A'><b>BLOQUEO PERICIAL</b></font><br/>"
-        "<i>«La defensa jurídica exige custodiar el archivo privado y suspender declaraciones de testigos hasta conocer el testamento.»</i>"
+        "<i>«La defensa jurídica exige custodiar el archivo privado y suspender declaraciones de testigos hasta conocer el testamento.»</i><br/>"
+        "<font size=6.5 color='#6B7280'>Pasa a la pág. 8 / Sucesos</font>"
     )
 
     t_magnate = Table([[
+        mag_photo_col,
         Paragraph(mag_text1, body_news),
-        Paragraph(mag_text2, body_news),
-        Paragraph(quote_box, ParagraphStyle('QB', parent=styles['Normal'], fontName=FONT_ITALIC, fontSize=7.5, leading=10.2, textColor=colors.HexColor('#1F2937')))
-    ]], colWidths=[185, 185, 177])
+        Paragraph(mag_text2, body_news)
+    ]], colWidths=[175, 185, 187])
     t_magnate.setStyle(TableStyle([
         ('VALIGN', (0,0), (-1,-1), 'TOP'),
         ('LEFTPADDING', (0,0), (-1,-1), 0),
@@ -307,14 +309,10 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         ('LEFTPADDING', (1,0), (1,0), 6),
         ('RIGHTPADDING', (1,0), (1,0), 6),
         ('LINEBEFORE', (2,0), (2,0), 0.5, colors.HexColor('#D1D5DB')),
-        ('LEFTPADDING', (2,0), (2,0), 8),
-        ('RIGHTPADDING', (2,0), (2,0), 4),
-        ('BACKGROUND', (2,0), (2,0), colors.HexColor('#F8FAFC')),
-        ('TOPPADDING', (2,0), (2,0), 5),
-        ('BOTTOMPADDING', (2,0), (2,0), 5),
-        ('BOX', (2,0), (2,0), 0.5, colors.HexColor('#CBD5E1')),
-        ('TOPPADDING', (0,0), (1,0), 0),
-        ('BOTTOMPADDING', (0,0), (1,0), 2),
+        ('LEFTPADDING', (2,0), (2,0), 6),
+        ('RIGHTPADDING', (2,0), (2,0), 0),
+        ('TOPPADDING', (0,0), (-1,-1), 0),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2),
     ]))
     story.append(t_magnate)
     story.append(Spacer(1, 3))
@@ -327,7 +325,7 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         Paragraph("<b>HÍPICA Y APUESTAS</b>", section_tag),
         Paragraph("Nuevo caballo en carreras clandestinas", sec_title),
         Paragraph("Adquieren a 'Sombra Veloz' tras la sobredosis del animal titular.", sec_subtitle),
-        Image("src/assets/images/periodico_dia/foto_caballo.png", width=254, height=88),
+        Image("src/assets/images/periodico_dia/foto_caballo.png", width=254, height=80),
         Spacer(1, 2),
         Paragraph("Purasangre adquirido de madrugada en subasta privada. / AP", caption_style),
         Spacer(1, 2),
@@ -343,7 +341,7 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         Paragraph("<b>SEGURIDAD INTERNACIONAL</b>", ParagraphStyle('TagI', parent=section_tag, textColor=colors.HexColor('#1E3A8A'))),
         Paragraph("Captan en Israel a un traficante de armas", sec_title),
         Paragraph("Fotografiado en Tel Aviv a las 16:30 horas (dos antes del anochecer).", sec_subtitle),
-        Image("src/assets/images/periodico_dia/foto_israel.png", width=254, height=88),
+        Image("src/assets/images/periodico_dia/foto_israel.png", width=254, height=80),
         Spacer(1, 2),
         Paragraph("Registro de inteligencia militar en Oriente Próximo. / AFP", caption_style),
         Spacer(1, 2),
@@ -366,7 +364,7 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         ('BOTTOMPADDING', (0,0), (-1,-1), 2),
     ]))
     story.append(mid_table)
-    story.append(Spacer(1, 4))
+    story.append(Spacer(1, 3))
 
     # =========================================================================
     # 5. MÓDULO INFERIOR DE IMPACTO SOCIAL (ESTILO CAJA EL PAÍS)
@@ -391,8 +389,8 @@ def build_periodico_dia_pdf(output_filename="5_periodico_dia.pdf"):
         ('BOX', (0,0), (-1,-1), 0.8, colors.HexColor('#000000')),
         ('LINEBEFORE', (1,0), (1,0), 0.5, colors.HexColor('#CBD5E1')),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
-        ('TOPPADDING', (0,0), (-1,-1), 3.5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 3.5),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
         ('LEFTPADDING', (0,0), (-1,-1), 6),
         ('RIGHTPADDING', (0,0), (-1,-1), 6),
     ]))
