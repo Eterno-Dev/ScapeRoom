@@ -194,13 +194,11 @@ def generate_autopsia_pdf(output_filename="1_autopsia_forense.pdf"):
 
     # CUERPO PRINCIPAL: HERIDAS + SILUETA AMPLIADA
     left_flowables = [
-        Paragraph("<b>MARCAS Y HERIDAS TRAUMÁTICAS (MARKS AND WOUNDS):</b>", f_label),
-        Spacer(1, 5),
-        Paragraph("• <font name='Courier-Bold'>LESIÓN CRANEAL:</font> Brecha contusa profunda de 5.2 cm en región occipital izquierda. Fractura conminuta en base craneal con hemorragia subaracnoidea inmediata. Consistente con impacto violento contra plano rígido tras caída súbita de espaldas.", f_tw),
+        Paragraph("• <font name='Courier-Bold'>LESIÓN CRANEAL:</font> Brecha contusa profunda de 5.2 cm en región occipital izquierda. Fractura conminuta en base craneal con hemorragia subaracnoidea inmediata. Consistente con un impacto violento contra un objeto o superficie contundente.", f_tw),
         Spacer(1, 8),
-        Paragraph("• <font name='Courier-Bold'>DESCARTE BALÍSTICO:</font> CERO orificios de entrada o salida de proyectil en piel o vísceras. Ausencia total de metralla o pólvora incrustada.", f_tw),
+        Paragraph("• <font name='Courier-Bold'>DESCARTE DE AUTOLESIÓN:</font> No se aprecian indicios de autolisis ni signos autolesivos. La mecánica lesiva evidencia que el sujeto no ha fallecido por acción voluntaria propia.", f_tw),
         Spacer(1, 8),
-        Paragraph("• <font name='Courier-Bold'>DESCARTE DE ARMA BLANCA:</font> No se aprecian incisiones punzantes, heridas por estilete, tijeras ni herramientas.", f_tw),
+        Paragraph("• <font name='Courier-Bold'>DESCARTE DE OTRAS LESIONES:</font> No se aprecian heridas claras de corte o arma blanca, ni orificios o restos de impacto por proyectil balístico.", f_tw),
         Spacer(1, 14),
         HRFlowable(width="100%", thickness=0.8, color=colors.HexColor('#9CA3AF'), spaceAfter=8),
         Paragraph("<b>RESULTADOS TOXICOLÓGICOS (TOXICOLOGY RESULTS):</b>", f_label),
@@ -226,7 +224,7 @@ def generate_autopsia_pdf(output_filename="1_autopsia_forense.pdf"):
     ]))
 
     right_flowables = [
-        Paragraph("<b>MAPA CORPORAL DE LESIONES (ESQUEMA OFICIAL)</b>", ParagraphStyle('DiagH', parent=f_label, alignment=1)),
+        Paragraph("<b>MAPA CORPORAL DE LESIONES<br/>(ESQUEMA OFICIAL)</b>", ParagraphStyle('DiagH', parent=f_label, alignment=1)),
         Spacer(1, 6),
         t_silhouette_center
     ]
@@ -249,12 +247,12 @@ def generate_autopsia_pdf(output_filename="1_autopsia_forense.pdf"):
     # CONCLUSIONES INFERIORES: CAUSA PROBABLE Y ACCIONES
     bottom_boxes = [
         [
-            Paragraph("<b>CAUSA PROBABLE DE LA MUERTE (PROBABLE CAUSE OF DEATH):</b>", f_label),
-            Paragraph("<b>ACCIONES COMPLEMENTARIAS (FURTHER ACTION):</b>", f_label)
+            Paragraph("<b>CAUSA PROBABLE DE LA MUERTE:</b>", f_label),
+            Paragraph("<b>ACCIONES COMPLEMENTARIAS:</b>", f_label)
         ],
         [
-            Paragraph("<font name='Courier-Bold'>TRAUMATISMO CRANEOENCEFÁLICO SEVERO (18:30 H).<br/>Shock irreversible producido por fractura occipital consecutiva a colapso y caída violenta hacia atrás.<br/>Intoxicación por compuesto químico sin determinar.</font>", f_tw),
-            Paragraph("<font name='Courier-Bold'>1. Peritaje toxicológico urgente por especialista.<br/>2. Cotejo de la medicación incautada en la vivienda.<br/>3. Custodia de casquillos y evidencias perimetrales.</font>", f_tw)
+            Paragraph("<font name='Courier-Bold'>TRAUMATISMO CRANEOENCEFÁLICO SEVERO (18:30 H).<br/>Shock irreversible producido por una fractura consecuencia de un golpe en la parte de atrás de la cabeza.<br/>Intoxicación por compuesto químico sin determinar.</font>", f_tw),
+            Paragraph("<font name='Courier-Bold'>1. Peritaje toxicológico urgente por especialista.<br/>2. Cotejo de medicación y sustancias incautadas.<br/>3. Custodia de pruebas y evidencias perimetrales.</font>", f_tw)
         ]
     ]
     t_bottom = Table(bottom_boxes, colWidths=[315, 230])
@@ -279,7 +277,7 @@ def generate_autopsia_pdf(output_filename="1_autopsia_forense.pdf"):
             Image(sig_img_path, width=125, height=64)
         ]
     ]
-    t_sig = Table(sig_content, colWidths=[145, 250, 150])
+    t_sig = Table(sig_content, colWidths=[155, 240, 150])
     t_sig.setStyle(TableStyle([
         ('LINEABOVE', (0,0), (-1,-1), 1, colors.HexColor('#000000')),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
@@ -362,7 +360,7 @@ def generate_warbes_pdf(output_filename="2_periodico_warbes.pdf"):
         "<b>INVESTIGACIÓN</b><br/>"
         "<font size=10 color='#111827'><b>Alerta por redes de apuestas ilegales</b></font><br/>"
         "<i>Operativos policiales investigan retiradas forzosas de efectivo vinculadas a la plataforma 'Apex Bets'.</i><br/><br/>"
-        "Las autoridades alertan de movimientos bancarios telemáticos e intimidación física para saldar deudas clandestinas en grandes urbes."
+        "Las autoridades alertan de apuestas amañadas y clandestinas en las grandes esferas deportivas y de ocio."
     )
     col3 = [
         Paragraph(col3_text, ParagraphStyle('Col3P', parent=styles['Normal'], fontName=FONT_BODY, fontSize=8.5, leading=11.5, textColor=colors.HexColor('#1F2937')))
@@ -409,8 +407,8 @@ def generate_warbes_pdf(output_filename="2_periodico_warbes.pdf"):
             Paragraph("<font name='Courier-Bold' color='#991B1B'><b>- 1.850.000,00 $</b></font>", f_tw_b)
         ],
         [
-            Paragraph("<font name='Courier-Bold' color='#991B1B'><b>30/10/2026<br/>18:28:44 h</b></font><br/><font size=7.5 color='#991B1B'><b>(Minutos antes)</b></font>", f_tw_b),
-            Paragraph("<b>EXTRACCIÓN PRESENCIAL EN EFECTIVO (VENTANILLA)</b><br/><font size=8 color='#6B7280'>Ref: Retirada de efectivo en metálico con DNI/ID y firma manuscrita</font>", f_tw_b),
+            Paragraph("<font name='Courier-Bold' color='#991B1B'><b>30/10/2026<br/>18:28:44 h</b></font>", f_tw_b),
+            Paragraph("<b>EXTRACCIÓN PRESENCIAL EN EFECTIVO</b><br/><font size=8 color='#6B7280'>Ref: Retirada de efectivo en metálico con DNI/ID y firma manuscrita</font>", f_tw_b),
             Paragraph("<b>Ventanilla 3 — Sucursal Central</b><br/><font size=8 color='#6B7280'>Main Street, 120 (Sede Urbana)</font>", f_tw_b),
             Paragraph("<font name='Courier-Bold' color='#991B1B'><b>- 15.000,00 $</b></font>", f_tw_b)
         ]
@@ -431,10 +429,10 @@ def generate_warbes_pdf(output_filename="2_periodico_warbes.pdf"):
     story.append(Spacer(1, 10))
 
     bank_audit_note = (
-        "<b>CONSTANCIA NOTARIAL DE PRESENCIA FÍSICA:</b> La retirada de <b>-15.000,00 $ en dinero en efectivo fue efectuada "
-        "de manera estrictamente presencial en la ventanilla de la Sucursal Centro a las 18:28:44 horas</b>, "
+        "<b>CONSTANCIA NOTARIAL DE OPERACIÓN:</b> La retirada de <b>-15.000,00 $ en dinero en efectivo fue efectuada "
+        "de manera presencial en la Sucursal Centro a las 18:28:44 horas</b>, "
         "mediante acreditación de documento de identidad y firma manuscrita in situ. <b>Dicho registro certifica documentalmente "
-        "que la persona que retiró el efectivo se encontraba físicamente en la sucursal bancaria urbana en el instante del crimen (18:30 h).</b>"
+        "la comparecencia física del titular en la entidad bancaria para la disposición de fondos.</b>"
     )
     story.append(Paragraph(bank_audit_note, f_tw_b))
 
@@ -468,51 +466,51 @@ def generate_perfiles_pdf(output_filename="3_perfiles_personajes.pdf"):
     suspects = [
         {
             "role": "1. CAZADOR DE LA FINCA",
-            "subtitle": "GUARDERÍA CINEGÉTICA & MEDIO RURAL",
-            "bio": "Guarda forestal y especialista cinegético. Administraba los cotos y senderos naturales de la finca desde hacía ocho años por encargo directo del anfitrión.",
+            "subtitle": "MEDIO RURAL",
+            "bio": "Guarda forestal y especialista cinegético. Trabajó anteriormente en un parque zoológico, del que fue despedido de manera improcedente por causas no especificadas. Custodia los cotos de la finca.",
             "birthplace": "Helena, Montana (EE.UU.)",
             "birthdate": "22 de marzo de 1982"
         },
         {
             "role": "2. MÚSICO",
-            "subtitle": "VOCALISTA PROFESIONAL — GRUPO S.V.X.",
+            "subtitle": "VOCALISTA PROFESIONAL",
             "bio": "Vocalista y director artístico del afamado conjunto musical S.V.X. (Sinfonía Vocal X). Amenizaba las recepciones exclusivas y veladas de gala en el salón principal.",
             "birthplace": "Nueva Orleans, Luisiana (EE.UU.)",
             "birthdate": "17 de agosto de 1989"
         },
         {
             "role": "3. RESPONSABLE SANITARIO",
-            "subtitle": "MEDICINA INTERNA & CONSULTA PRIVADA",
+            "subtitle": "MEDICINA INTERNA",
             "bio": "Facultativo de cabecera privado con amplia reputación. Responsable del seguimiento médico diario, revisión de analíticas y custodia de la medicación del difunto.",
             "birthplace": "Filadelfia, Pensilvania (EE.UU.)",
             "birthdate": "05 de noviembre de 1976"
         },
         {
             "role": "4. GENERAL MILITAR",
-            "subtitle": "OFICIAL SUPERIOR (EN RESERVA)",
-            "bio": "Oficial de alta graduación en la reserva del Ejército. Amigo de juventud del anfitrión y consultor histórico en asuntos de patrimonio y archivo militar.",
+            "subtitle": "OFICIAL SUPERIOR",
+            "bio": "Oficial de alta graduación con un ascenso militar meteórico en los últimos años, escalando posiciones y rangos a una velocidad inusual. Amigo cercano del anfitrión.",
             "birthplace": "San Antonio, Texas (EE.UU.)",
             "birthdate": "11 de enero de 1965"
         },
         {
-            "role": "5. DESCENDIENTE LEJANO",
-            "subtitle": "RAMA DESCENDIENTE DIRECTA (NIETO/A)",
-            "bio": "Graduado en comercio exterior y gestor de actividades de ocio. Nieto del finado y aspirante natural en la línea de sucesión de los bienes familiares.",
-            "birthplace": "Boston, Massachusetts (EE.UU.)", # MISMO LUGAR QUE EL HERMANO
+            "role": "5. NIETO DE LA VÍCTIMA",
+            "subtitle": "DESCENDIENTE DIRECTO",
+            "bio": "Nieto del finado y heredero en la línea sucesoria familiar. Ha comparecido en repetidas ocasiones ante los tribunales en relación con diversos juicios por delitos menores.",
+            "birthplace": "Boston, Massachusetts (EE.UU.)",
             "birthdate": "29 de septiembre de 2001"
         },
         {
             "role": "6. JARDINERO DE LA FINCA",
-            "subtitle": "BOTÁNICA ORNAMENTAL & EXTERIORES",
-            "bio": "Especialista en botánica ornamental y cancelas exteriores. Incorporación reciente en la finca para la conservación del mirador vegetal y accesos perimetrales.",
-            "birthplace": "Queens, Nueva York (EE.UU.)", # <--- DISCREPANCIA CLAVE CON PASAPORTE FALSO
-            "birthdate": "14 de mayo de 1994"           # <--- DISCREPANCIA CLAVE (1994 vs 1991)
+            "subtitle": "BOTÁNICA ORNAMENTAL",
+            "bio": "Especialista en botánica ornamental y cancelas exteriores. Quienes tratan con él destacan su marcado acento extranjero al hablar. Encargado del mirador vegetal.",
+            "birthplace": "Queens, Nueva York (EE.UU.)",
+            "birthdate": "14 de mayo de 1994"
         },
         {
             "role": "7. HERMANO DE LA VÍCTIMA",
-            "subtitle": "ADMINISTRACIÓN MERCANTIL",
-            "bio": "Director mercantil y gestor de sociedades de inversión familiar. Hermano menor del fallecido y copropietario de activos patrimoniales comunes.",
-            "birthplace": "Boston, Massachusetts (EE.UU.)", # MISMO LUGAR QUE EL NIETO
+            "subtitle": "DESCENDIENTE DIRECTO",
+            "bio": "Hermano menor de la víctima. Desde hace años vive obsesionado con la inversión de capital financiero y el desarrollo de compañías y proyectos emergentes.",
+            "birthplace": "Boston, Massachusetts (EE.UU.)",
             "birthdate": "19 de julio de 1960"
         }
     ]
@@ -529,12 +527,12 @@ def generate_perfiles_pdf(output_filename="3_perfiles_personajes.pdf"):
 
     card_body_style = ParagraphStyle(
         'CardBody', parent=styles['Normal'],
-        fontName='Helvetica', fontSize=9, leading=12.5, textColor=colors.HexColor('#1E293B')
+        fontName='Helvetica', fontSize=8.5, leading=11.5, textColor=colors.HexColor('#1E293B')
     )
 
     card_meta_style = ParagraphStyle(
         'CardMeta', parent=styles['Normal'],
-        fontName='Helvetica', fontSize=8.5, leading=11, textColor=colors.HexColor('#0F172A')
+        fontName='Helvetica', fontSize=8, leading=10, textColor=colors.HexColor('#0F172A')
     )
 
     # Cada tabla con relleno generoso y altura perfectamente repartida
@@ -549,8 +547,8 @@ def generate_perfiles_pdf(output_filename="3_perfiles_personajes.pdf"):
                 ""
             ],
             [
-                Paragraph(f"<b>LUGAR DE NACIMIENTO:</b> {s['birthplace']}", card_meta_style),
-                Paragraph(f"<b>FECHA DE NACIMIENTO:</b> {s['birthdate']}", card_meta_style)
+                Paragraph(f"<b>LUGAR:</b> {s['birthplace']}", card_meta_style),
+                Paragraph(f"<b>NACIMIENTO:</b> {s['birthdate']}", card_meta_style)
             ]
         ]
         t_card = Table(card_content, colWidths=[375, 170])
@@ -562,13 +560,13 @@ def generate_perfiles_pdf(output_filename="3_perfiles_personajes.pdf"):
             ('BOX', (0,0), (-1,-1), 1.2, colors.HexColor('#0284C7')),
             ('LINEBELOW', (0,0), (-1,0), 0.8, colors.HexColor('#38BDF8')),
             ('LINEBELOW', (0,1), (-1,1), 0.6, colors.HexColor('#CBD5E1')),
-            ('TOPPADDING', (0,0), (-1,-1), 5),
-            ('BOTTOMPADDING', (0,0), (-1,-1), 5.5),
+            ('TOPPADDING', (0,0), (-1,-1), 4),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 4),
             ('LEFTPADDING', (0,0), (-1,-1), 8),
             ('RIGHTPADDING', (0,0), (-1,-1), 8),
         ]))
         story.append(t_card)
-        story.append(Spacer(1, 5))
+        story.append(Spacer(1, 4))
 
     doc.build(story)
     print("Documento 3 generado:", output_filename)
