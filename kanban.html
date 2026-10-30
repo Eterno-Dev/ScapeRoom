@@ -659,7 +659,7 @@
         title: "Expediente de Autopsia",
         location: "Documento Inicial (Abogado)",
         role: "Forense / Médica",
-        image: "src/assets/images/tarjetas/card-bg-dark.png",
+        image: "",
         desc: "Hora fijada: 18:30 h. Brecha occipital y 42.5 mg/L de tóxico en sangre. Cero impactos de bala ni puñaladas.",
         column: "fase1"
       },
@@ -670,7 +670,7 @@
         title: "Dossier Notarial de Asistentes",
         location: "Documento Inicial (Abogado)",
         role: "Todos los personajes",
-        image: "src/assets/images/tarjetas/card-bg-dark.png",
+        image: "",
         desc: "Perfiles neutros. Letras en negrita ocultan el mensaje 'CAJON SECRETO'.",
         column: "fase1"
       },
@@ -681,7 +681,7 @@
         title: "Prensa y Extracto Bancario",
         location: "Documento Inicial (Abogado)",
         role: "Nieto y Hermano",
-        image: "src/assets/images/tarjetas/card-bg-dark.png",
+        image: "",
         desc: "Transferencia a las 18:28:44 a apuestas ilegales (coartada remota del Nieto). Transferencia de rescate al Hermano a las 17:45.",
         column: "fase1"
       },
@@ -860,7 +860,7 @@
 
     // ESTADO LOCAL
     let cluesData = [];
-    const STORAGE_KEY = "cluedo_kanban_clues_v1";
+    const STORAGE_KEY = "cluedo_kanban_clues_v2";
 
     function loadClues() {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -931,6 +931,8 @@
       });
     }
 
+    const FALLBACK_SVG = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='80' fill='%231a1e27'><rect width='100%25' height='100%25' fill='%231e232e'/><text x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' fill='%239ca3af' font-size='10' font-family='sans-serif' font-weight='bold'>PISTA</text></svg>";
+
     function createCardElement(card) {
       const el = document.createElement("div");
       el.className = "clue-card";
@@ -938,8 +940,8 @@
       el.id = "card-" + card.id;
       el.dataset.cardId = card.id;
 
-      // Fallback de imagen
-      const imgSrc = card.image || "src/assets/images/tarjetas/card-bg-dark.png";
+      // Fallback seguro sin bucle
+      const imgSrc = card.image && card.image.trim() !== "" ? card.image : FALLBACK_SVG;
 
       el.innerHTML = `
         <div class="card-top">
@@ -948,7 +950,7 @@
         </div>
 
         <div class="card-body">
-          <img src="${imgSrc}" class="card-thumb" onerror="this.src='src/assets/images/tarjetas/card-bg-dark.png'" alt="${card.title}">
+          <img src="${imgSrc}" class="card-thumb" onerror="this.onerror=null; this.src='${FALLBACK_SVG}';" alt="${card.title}">
           <div class="card-info">
             <div class="card-title" title="${card.title}">${card.title}</div>
             ${card.location ? `<div class="card-location" title="${card.location}">📍 ${card.location}</div>` : ''}
