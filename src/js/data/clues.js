@@ -228,7 +228,11 @@ export const CLUES = {
     category: "Comunicaciones",
     cardImage: "src/assets/images/objetos/card-obj-5.png",
     backBase: "card-back-base-1.png",
-    desc: "Móvil desechable. Estaba escondido en el cajón de los cubiertos.",
+    desc: "Móvil desechable bloqueado. Estaba escondido en el cajón de los cubiertos de la cocina. Requiere contraseña para desbloquearlo.",
+    requiresCode: true,
+    passcode: "3JF6",
+    unlockedTitle: "Móvil desbloqueado",
+    unlockedDesc: "Móvil desechable desbloqueado. Contiene un único número en la agenda y mensajes sobre el corte de luz previo al crimen.",
     isPrivate: false,
     tablePickup: true
   },
@@ -308,9 +312,11 @@ export const CLUES = {
     category: "Sistema de Videovigilancia",
     cardImage: "src/assets/images/objetos/card-scanner-camera.png",
     backBase: "card-back-base-3.png",
-    desc: "Ordenador de videovigilancia de la finca. La mayoría de vídeos de las cámaras se han perdido por un fallo del sistema.",
+    desc: "Ordenador de videovigilancia de la finca. El sistema está bloqueado y requiere contraseña de administrador para consultar las cámaras.",
+    requiresCode: true,
+    passcode: "8008135",
     unlockedTitle: "Ordenador de seguridad",
-    unlockedDesc: "Terminal de seguridad con los registros de videovigilancia. Varias cámaras presentan cortes y fallos.",
+    unlockedDesc: "Terminal de seguridad desbloqueado. Acceso concedido al circuito cerrado de televisión. La mayoría de cámaras presentan cortes y fallos.",
     isPrivate: false,
     tablePickup: true
   }
@@ -404,6 +410,7 @@ export function resolveClueId(rawInput) {
     "movil desechable": "PISTA-O",
     "móvil desechable": "PISTA-O",
     "cubiertos": "PISTA-O",
+    "3jf6": "PISTA-O",
 
     "telefono": "PISTA-P",
     "teléfono": "PISTA-P",
@@ -433,6 +440,7 @@ export function resolveClueId(rawInput) {
     "camaras": "PISTA-T",
     "cámaras": "PISTA-T",
     "seguridad": "PISTA-T",
+    "8008135": "PISTA-T",
 
     "buzon": "PISTA-K",
     "buzón": "PISTA-K"
@@ -442,7 +450,14 @@ export function resolveClueId(rawInput) {
     return nameAliases[input];
   }
 
-  // 0. Coincidencia por código de impresión exacto (ej: "A-7$9K", "B-4#2P")
+  // 0. Coincidencia directa por contraseña / passcode
+  for (const [id, clue] of Object.entries(CLUES)) {
+    if (clue.passcode && clue.passcode.toLowerCase() === input) {
+      return id;
+    }
+  }
+
+  // 0.1 Coincidencia por código de impresión exacto (ej: "A-7$9K", "B-4#2P")
   for (const [id, clue] of Object.entries(CLUES)) {
     if (clue.code && clue.code.toLowerCase() === input) {
       return id;
