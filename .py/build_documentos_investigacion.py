@@ -13,6 +13,11 @@ def build_documentos_investigacion(output_pdf="documentos_investigacion.pdf"):
         "page_1.png",
         "page_2.png",
         "page_3.png",
+        "page_4.png",
+        "page_5.png",
+        "page_6.png",
+        "page_7.png",
+        "page_8.png",
         "page_back.png"
     ]
     

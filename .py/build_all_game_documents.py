@@ -800,7 +800,7 @@ def generate_informe_medico_previo_pdf(output_filename="6_informe_medico_previo.
     print("Documento 6 generado:", output_filename)
 
 # =============================================================================
-# 6. GENERAR DOCUMENTO CONSOLIDADO (11 PÁGINAS)
+# 6. GENERAR DOCUMENTO CONSOLIDADO (16 PÁGINAS)
 # =============================================================================
 def generate_consolidated_pdf(output_filename="documentos_investigacion.pdf"):
     merger = pymupdf.open()
@@ -818,13 +818,22 @@ def generate_consolidated_pdf(output_filename="documentos_investigacion.pdf"):
             merger.insert_pdf(doc)
             doc.close()
 
-    # Páginas del dossier físico (5 imágenes A4 de margen a margen)
+    # Páginas del dossier físico (10 imágenes A4 de margen a margen: Cover + Pages 1 a 8 + Back)
+    dossier_names = [
+        "page_cover.png",
+        "page_1.png",
+        "page_2.png",
+        "page_3.png",
+        "page_4.png",
+        "page_5.png",
+        "page_6.png",
+        "page_7.png",
+        "page_8.png",
+        "page_back.png"
+    ]
     dossier_images = [
-        os.path.join(PROJECT_ROOT, "src", "assets", "images", "dossier", "page_cover.png"),
-        os.path.join(PROJECT_ROOT, "src", "assets", "images", "dossier", "page_1.png"),
-        os.path.join(PROJECT_ROOT, "src", "assets", "images", "dossier", "page_2.png"),
-        os.path.join(PROJECT_ROOT, "src", "assets", "images", "dossier", "page_3.png"),
-        os.path.join(PROJECT_ROOT, "src", "assets", "images", "dossier", "page_back.png")
+        os.path.join(PROJECT_ROOT, "src", "assets", "images", "dossier", name)
+        for name in dossier_names
     ]
     A4_WIDTH = 595.27557
     A4_HEIGHT = 841.88977
@@ -840,7 +849,7 @@ def generate_consolidated_pdf(output_filename="documentos_investigacion.pdf"):
 
     merger.save(output_filename, deflate=True)
     merger.close()
-    print("PDF consolidado de 11 páginas generado con éxito:", output_filename)
+    print("PDF consolidado de 16 páginas generado con éxito:", output_filename)
     
     # Limpiar PDFs sueltos para mantener únicamente el documento completo unificado
     for f in temp_files:
