@@ -605,46 +605,46 @@ def generate_pasaporte_pdf(output_filename="4_pasaporte_falso.pdf"):
     print("Documento 4 generado:", output_filename)
 
 # =============================================================================
-# 5. DOCUMENTO 6: CONSULTA MÉDICA PREVIA AL ACCIDENTE (MEDIA PÁGINA RECORTABLE)
+# 5. DOCUMENTO 6: CONSULTA MÉDICA (50%) + DILIGENCIA MERCANTIL AVAL VILLA (50%)
 # =============================================================================
 def generate_informe_medico_previo_pdf(output_filename="6_informe_medico_previo.pdf"):
     doc = SimpleDocTemplate(
         output_filename, pagesize=A4,
-        leftMargin=25, rightMargin=25, topMargin=16, bottomMargin=16
+        leftMargin=24, rightMargin=24, topMargin=12, bottomMargin=12
     )
     styles = getSampleStyleSheet()
     story = []
 
-    # Cabecera institucional hospitalaria
-    story.append(Paragraph("HOSPITAL GENERAL METROPOLITANO • SERVICIO DE MEDICINA INTERNA Y NEUROLOGÍA", ParagraphStyle('H1Prev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8.5, leading=11, alignment=1, textColor=colors.HexColor('#1E3A8A'))))
-    story.append(Paragraph("INFORME DE CONSULTA MÉDICA E INTERCONSULTA CLÍNICA", ParagraphStyle('H2Prev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=13, leading=16, alignment=1, textColor=colors.HexColor('#000000'))))
-    story.append(Paragraph("EXPEDIENTE: HC-9214-INT • FECHA DE CONSULTA: 24 DE OCTUBRE DE 2026", ParagraphStyle('H3Prev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7.5, leading=9.5, alignment=1, textColor=colors.HexColor('#4B5563'))))
-    story.append(Spacer(1, 4))
-    story.append(HRFlowable(width="100%", thickness=1.2, color=colors.HexColor('#000000'), spaceAfter=6))
+    # Cabecera institucional hospitalaria (Parte Superior)
+    story.append(Paragraph("HOSPITAL GENERAL METROPOLITANO • SERVICIO DE MEDICINA INTERNA Y NEUROLOGÍA", ParagraphStyle('H1Prev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8, leading=10, alignment=1, textColor=colors.HexColor('#1E3A8A'))))
+    story.append(Paragraph("INFORME DE CONSULTA MÉDICA E INTERCONSULTA CLÍNICA", ParagraphStyle('H2Prev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=12, leading=14.5, alignment=1, textColor=colors.HexColor('#000000'))))
+    story.append(Paragraph("EXPEDIENTE: HC-9214-INT • FECHA DE CONSULTA: 24 DE OCTUBRE DE 2026", ParagraphStyle('H3Prev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7, leading=9, alignment=1, textColor=colors.HexColor('#4B5563'))))
+    story.append(Spacer(1, 3))
+    story.append(HRFlowable(width="100%", thickness=1, color=colors.HexColor('#000000'), spaceAfter=4))
 
-    f_lab = ParagraphStyle('FLabPrev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8, leading=10, textColor=colors.HexColor('#111827'))
-    f_body = ParagraphStyle('FBodyPrev', parent=styles['Normal'], fontName='Helvetica', fontSize=7.2, leading=9.5, alignment=4, textColor=colors.HexColor('#1F2937'))
+    f_lab = ParagraphStyle('FLabPrev', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7.2, leading=9.2, textColor=colors.HexColor('#111827'))
+    f_body = ParagraphStyle('FBodyPrev', parent=styles['Normal'], fontName='Helvetica', fontSize=7, leading=9, alignment=4, textColor=colors.HexColor('#1F2937'))
 
     # Tabla de Filiación y Destinatario (Dirigido a su Doctor de Cabecera)
     dest_table = [
         [
-            Paragraph("<b>PACIENTE:</b> <font name='Courier-Bold'>D. Ricardo Valparaíso</font><br/><b>EDAD:</b> <font name='Courier-Bold'>72 años</font><br/><b>HISTORIA:</b> <font name='Courier-Bold'>HC-9214-INT</font>", f_lab),
-            Paragraph("<b>DESTINATARIO OFICIAL:</b><br/><font color='#991B1B'><b>Al Doctor de Cabecera y Médico Personal</b></font><br/><font size=7 color='#4B5563'>(Atención directa al facultativo a cargo del paciente)</font>", f_lab),
-            Paragraph("<b>FECHA CONSULTA:</b><br/><font name='Courier-Bold'>24/10/2026</font><br/><b>REMITENTE:</b><br/>Servicio Neurología", f_lab)
+            Paragraph("<b>PACIENTE:</b> D. Ricardo Valparaíso<br/><b>EDAD:</b> 72 años<br/><b>HISTORIA:</b> HC-9214-INT", f_lab),
+            Paragraph("<b>DESTINATARIO OFICIAL:</b><br/><font color='#991B1B'><b>Al Doctor de Cabecera y Médico Personal</b></font><br/><font size=6.5 color='#4B5563'>(Atención directa al facultativo a cargo del paciente)</font>", f_lab),
+            Paragraph("<b>FECHA CONSULTA:</b><br/>24/10/2026<br/><b>REMITENTE:</b><br/>Servicio Neurología", f_lab)
         ]
     ]
-    t_dest = Table(dest_table, colWidths=[185, 220, 140])
+    t_dest = Table(dest_table, colWidths=[185, 220, 142])
     t_dest.setStyle(TableStyle([
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor('#000000')),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor('#CBD5E1')),
         ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#F8FAFC')),
-        ('TOPPADDING', (0,0), (-1,-1), 4),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 4),
-        ('LEFTPADDING', (0,0), (-1,-1), 6),
-        ('RIGHTPADDING', (0,0), (-1,-1), 6),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('LEFTPADDING', (0,0), (-1,-1), 5),
+        ('RIGHTPADDING', (0,0), (-1,-1), 5),
     ]))
     story.append(t_dest)
-    story.append(Spacer(1, 5))
+    story.append(Spacer(1, 4))
 
     # Conclusiones Médicas Clínicas
     sec1 = (
@@ -674,27 +674,27 @@ def generate_informe_medico_previo_pdf(output_filename="6_informe_medico_previo.
         [Paragraph(sec2, f_body)],
         [Paragraph(sec3, f_body)]
     ]
-    t_body = Table(body_table, colWidths=[545])
+    t_body = Table(body_table, colWidths=[547])
     t_body.setStyle(TableStyle([
         ('BOX', (0,0), (-1,-1), 1, colors.HexColor('#000000')),
         ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor('#CBD5E1')),
-        ('TOPPADDING', (0,0), (-1,-1), 5),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 5),
-        ('LEFTPADDING', (0,0), (-1,-1), 7),
-        ('RIGHTPADDING', (0,0), (-1,-1), 7),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('LEFTPADDING', (0,0), (-1,-1), 6),
+        ('RIGHTPADDING', (0,0), (-1,-1), 6),
     ]))
     story.append(t_body)
-    story.append(Spacer(1, 6))
+    story.append(Spacer(1, 4))
 
-    # Firma con firma.png
+    # Firma clínica con firma.png
     sig_row = [
         [
-            Paragraph("<b>DICTAMEN FACULTATIVO HOSPITALARIO</b><br/><font size=7 color='#4B5563'>Remitido formalmente para custodia e incorporación al expediente del paciente.</font>", f_lab),
-            Paragraph("<b>MÉDICO ESPECIALISTA CONSULTOR:</b><br/><font name='Courier-Bold'>Dr. Mateo Valbuena (Col. 28/44102)</font>", f_lab),
-            Image("src/assets/images/signature_forense.png", width=110, height=56)
+            Paragraph("<b>DICTAMEN FACULTATIVO HOSPITALARIO</b><br/><font size=6.5 color='#4B5563'>Remitido para custodia e incorporación al expediente del paciente.</font>", f_lab),
+            Paragraph("<b>MÉDICO ESPECIALISTA CONSULTOR:</b><br/>Dr. Mateo Valbuena (Col. 28/44102)", f_lab),
+            Image("src/assets/images/signature_forense.png", width=90, height=45) if os.path.exists("src/assets/images/signature_forense.png") else Paragraph("Firma", f_lab)
         ]
     ]
-    t_sig = Table(sig_row, colWidths=[205, 210, 130])
+    t_sig = Table(sig_row, colWidths=[210, 215, 122])
     t_sig.setStyle(TableStyle([
         ('LINEABOVE', (0,0), (-1,-1), 0.8, colors.HexColor('#000000')),
         ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
@@ -704,11 +704,97 @@ def generate_informe_medico_previo_pdf(output_filename="6_informe_medico_previo.
         ('RIGHTPADDING', (0,0), (-1,-1), 4),
     ]))
     story.append(t_sig)
-    story.append(Spacer(1, 10))
+    story.append(Spacer(1, 4))
 
     # Línea de corte a mitad de página
-    story.append(Paragraph("<font size=7 color='#6B7280'>✂ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ✂</font>", ParagraphStyle('CutLPrev', parent=styles['Normal'], alignment=1, spaceAfter=2)))
-    story.append(Paragraph("<font size=6.5 color='#9CA3AF'>LÍNEA DE RECORTE DE EVIDENCIA CLÍNICA (OCUPA LA MITAD DE LA PÁGINA A4)</font>", ParagraphStyle('CutTxtPrev', parent=styles['Normal'], alignment=1)))
+    story.append(Paragraph("<font size=6 color='#6B7280'>✂ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ✂</font>", ParagraphStyle('CutLPrev', parent=styles['Normal'], alignment=1)))
+    story.append(Spacer(1, 4))
+
+    # =========================================================================
+    # PARTE INFERIOR: JUZGADO DE LO MERCANTIL — DILIGENCIA AVAL VILLA (10M €)
+    # =========================================================================
+    j_head = ParagraphStyle('JHead', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=8, leading=10, alignment=1, textColor=colors.HexColor('#991B1B'))
+    j_title = ParagraphStyle('JTitle', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=11, leading=13.5, alignment=1, textColor=colors.HexColor('#000000'))
+    j_sub = ParagraphStyle('JSub', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=6.8, leading=8.5, alignment=1, textColor=colors.HexColor('#4B5563'))
+    j_lab = ParagraphStyle('JLab', parent=styles['Normal'], fontName='Helvetica-Bold', fontSize=7.2, leading=9.2, textColor=colors.HexColor('#1E293B'))
+    j_body = ParagraphStyle('JBody', parent=styles['Normal'], fontName='Helvetica', fontSize=7, leading=9, alignment=4, textColor=colors.HexColor('#1E293B'))
+
+    story.append(Paragraph("ADMINISTRACIÓN DE JUSTICIA • JUZGADO DE LO MERCANTIL Nº 1", j_head))
+    story.append(Paragraph("DILIGENCIA DE COMPARECENCIA PRESENCIAL, DEPÓSITO DE AVAL Y EXPEDICIÓN DE FONDOS", j_title))
+    story.append(Paragraph("OFICINA JUDICIAL DE CONSIGNACIONES MERCANTILES • PROTOCOLO MATRIZ DE GARANTÍAS Nº GM-2026/884", j_sub))
+    story.append(Spacer(1, 3))
+    story.append(HRFlowable(width="100%", thickness=1.2, color=colors.HexColor('#991B1B'), spaceAfter=4))
+
+    j_meta = [
+        [
+            Paragraph("<b>EXPEDIENTE JUDICIAL:</b><br/><font name='Courier-Bold'>JM-2026/884-CONSIG</font>", j_lab),
+            Paragraph("<b>FECHA Y HORA DE COMPARECENCIA:</b><br/><font name='Courier-Bold' color='#991B1B'><b>30/10/2026 — 18:24:00 HORAS</b></font><br/><font size=6 color='#1E3A8A'><b>(COMPARECENCIA ESTRICTAMENTE PRESENCIAL EN SEDE)</b></font>", j_lab),
+            Paragraph("<b>INTERESADO / COMPARECIENTE:</b><br/><font name='Courier-Bold'>Sr. Valparaíso (D. Alfonso Valparaíso)</font>", j_lab),
+            Paragraph("<b>VENTANILLA:</b><br/><font name='Courier-Bold'>Caja Central Nº 2</font>", j_lab)
+        ]
+    ]
+    t_jmeta = Table(j_meta, colWidths=[125, 175, 175, 72])
+    t_jmeta.setStyle(TableStyle([
+        ('BOX', (0,0), (-1,-1), 1, colors.HexColor('#000000')),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor('#CBD5E1')),
+        ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#FEF2F2')),
+        ('TOPPADDING', (0,0), (-1,-1), 2.5),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2.5),
+        ('LEFTPADDING', (0,0), (-1,-1), 4),
+        ('RIGHTPADDING', (0,0), (-1,-1), 4),
+    ]))
+    story.append(t_jmeta)
+    story.append(Spacer(1, 3))
+
+    p_acta = (
+        "<b>ACTA DE COMPARECENCIA PRESENCIAL Y DEPÓSITO NOTARIAL:</b> En la sede de este Juzgado de lo Mercantil, a las <b>18:24:00 horas del 30 de octubre de 2026</b>, "
+        "compareció personalmente en ventanilla el <b>Sr. Valparaíso</b> para formalizar el depósito de garantía en el procedimiento de ejecución y preconcurso mercantil de referencia.<br/>"
+        "El compareciente exhibió y entregó en mano para su pignoración el <b>TÍTULO NOTARIAL ORIGINAL DE LA ESCRITURA DE PROPIEDAD</b> correspondiente a la <i>Finca Señorial y Villa Residencial Valparaíso</i> "
+        "(referencia catastral matriz nº 4.819/2014, protocolizada con firma original de D. Ricardo Valparaíso). El fedatario judicial cotejó in situ la autenticidad del documento físico original, "
+        "<b>quedando incorporada al presente expediente judicial una copia testimoniada y compulsada de dicha escritura</b>."
+    )
+
+    p_fondos = (
+        "<b>CONSTITUCIÓN DE AVAL PATRIMONIAL Y LIBRAMIENTO DE TALÓN:</b> Conforme al aval constituido sobre la referida propiedad inmueble —tasada pericialmente en "
+        "<b>10.000.000,00 € (diez millones de euros)</b>—, esta Oficina Judicial procedió a la aprobación del depósito y a la emisión y entrega en mano al compareciente del "
+        "<b>CHEQUE BANCARIO GARANTIZADO DE FONDOS JUDICIALES Nº CHQ-00892-K por valor íntegro de 10.000.000,00 €</b>, librado a favor del fondo de inversión y cuenta mercantil de Grupo Kronos.<br/>"
+        "<i>«Agradecemos su puntual comparecencia formal y la liquidación en ventanilla de los aranceles preceptivos, Sr. Valparaíso, habiéndose efectuado el trámite en término legal a las 18:24 h.»</i>"
+    )
+
+    j_body_table = [
+        [Paragraph(p_acta, j_body)],
+        [Paragraph(p_fondos, j_body)]
+    ]
+    t_jbody = Table(j_body_table, colWidths=[547])
+    t_jbody.setStyle(TableStyle([
+        ('BOX', (0,0), (-1,-1), 1, colors.HexColor('#000000')),
+        ('INNERGRID', (0,0), (-1,-1), 0.5, colors.HexColor('#CBD5E1')),
+        ('TOPPADDING', (0,0), (-1,-1), 3),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 3),
+        ('LEFTPADDING', (0,0), (-1,-1), 5),
+        ('RIGHTPADDING', (0,0), (-1,-1), 5),
+    ]))
+    story.append(t_jbody)
+    story.append(Spacer(1, 3))
+
+    # Certificación inferior y sello
+    j_cert = [
+        [
+            Paragraph("<b>ADJUNTO AL EXPEDIENTE:</b><br/><font size=6.5 color='#4B5563'>Copia testimoniada de la Escritura Notarial Original aportada en ventanilla.</font>", j_lab),
+            Paragraph("<b>CERTIFICA Y DA FE:</b><br/><font size=6.5>Secretaría de lo Mercantil • Juzgado Nº 1<br/>Diligencia registrada formalmente a las 18:24:00 h.</font>", j_lab),
+            Paragraph("<b>FIRMA Y SELLO JUDICIAL:</b><br/><font name='Courier-Bold' size=7 color='#991B1B'>[REGISTRADO - 18:24 H]</font><br/><font size=6 color='#4B5563'>Oficina de Depósitos y Avales</font>", j_lab)
+        ]
+    ]
+    t_jcert = Table(j_cert, colWidths=[185, 200, 162])
+    t_jcert.setStyle(TableStyle([
+        ('LINEABOVE', (0,0), (-1,-1), 0.8, colors.HexColor('#000000')),
+        ('VALIGN', (0,0), (-1,-1), 'TOP'),
+        ('TOPPADDING', (0,0), (-1,-1), 2),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 2),
+        ('LEFTPADDING', (0,0), (-1,-1), 4),
+        ('RIGHTPADDING', (0,0), (-1,-1), 4),
+    ]))
+    story.append(t_jcert)
 
     doc.build(story)
     print("Documento 6 generado:", output_filename)
