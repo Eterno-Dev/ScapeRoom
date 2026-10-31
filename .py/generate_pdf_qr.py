@@ -280,16 +280,15 @@ def build_pdf(filename="pistas_qr_imprimibles.pdf"):
         pickup_text = "<b>★ RECOGIDA FÍSICA EN MESA ★</b>" if item.get('tablePickup', True) else "&nbsp;"
         
         cell_elements = [
-            Spacer(1, 2),
-            Paragraph(f"<b>CÓDIGO: {item['code']}</b>", clue_code_style),
-            Spacer(1, 1),
-            Paragraph(item['title'].upper(), clue_title_style),
-            Paragraph(f"[{item['category'].upper()}]", clue_cat_style),
-            Spacer(1, 2),
-            rl_img,
             Spacer(1, 3),
+            Paragraph(f"<b>CÓDIGO: {item['code']}</b>", clue_code_style),
+            Spacer(1, 2),
+            Paragraph(item['title'].upper(), clue_title_style),
+            Spacer(1, 3),
+            rl_img,
+            Spacer(1, 4),
             Paragraph(pickup_text, table_pickup_style),
-            Spacer(1, 2)
+            Spacer(1, 3)
         ]
         return cell_elements
 
