@@ -92,9 +92,6 @@ export const CLUES = {
     cardImage: "src/assets/images/objetos/card-obj-17.png",
     backBase: "card-back-base-1.png",
     desc: "Documento de viaje e identificación aparentemente oficial expedido bajo los sellos de los Estados Unidos.",
-    detailNormal: "A simple vista parece un pasaporte ordinario y legítimo en regla para viajes internacionales y residencia. No obstante, solo un profesional instruido en control fronterizo o leyes consulares sabría comprobar la validez técnica de sus marcas y sellos.",
-    detailExpert: "¡DOCUMENTO FALSIFICADO! Al ser una persona entendida en el tema, detectas de inmediato que este pasaporte ha sido FALSIFICADO: la tipografía del código MRZ está alterada, el sello de Alaska no corresponde a la demarcación federal y los datos biográficos han sido manipulados para ocultar una orden de captura.",
-    isPassport: true,
     isPrivate: false,
     tablePickup: true
   },
@@ -134,6 +131,19 @@ export const CLUES = {
     cardImage: "src/assets/images/objetos/card-obj-15.png",
     backBase: "card-back-base-2.png",
     desc: "Extracto de movimientos bancarios y transferencias de cuentas de alta cuantía.",
+    isPrivate: false,
+    tablePickup: true
+  },
+  "PISTA-L": {
+    id: "PISTA-L",
+    letter: "L",
+    num: 11,
+    token: "L",
+    title: "Bote de pintura verde",
+    category: "Jardinería / Exteriores",
+    cardImage: "src/assets/images/objetos/card-obj-16.png",
+    backBase: "card-back-base-1.png",
+    desc: "La pintura se ha derramado. Parece que el que estaba en el jardín estaba pintando y ha tenido un accidente.",
     isPrivate: false,
     tablePickup: true
   }
@@ -211,6 +221,14 @@ export function resolveClueId(rawInput) {
     "cuenta": "PISTA-J",
     "cuenta bancaria": "PISTA-J",
     "transferencia": "PISTA-J",
+
+    "pintura": "PISTA-L",
+    "bote de pintura": "PISTA-L",
+    "bote pintura": "PISTA-L",
+    "pintura verde": "PISTA-L",
+    "bote verde": "PISTA-L",
+    "jardin": "PISTA-L",
+    "jardín": "PISTA-L",
 
     "buzon": "PISTA-K",
     "buzón": "PISTA-K"

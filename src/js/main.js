@@ -536,36 +536,6 @@ class ScapeRoomApp {
                   <h4 class="card-back-name">${clue.title}</h4>
                 </div>
                 <p class="card-back-bio">${clue.desc}</p>
-                ${clue.isPassport ? `
-                  ${(char.id === 4 || char.id === 8) ? `
-                    <div class="clue-back-detail" style="border: 1.5px solid #dc2626; background: rgba(220, 38, 38, 0.08); padding: 8px; border-radius: 4px;">
-                      <div class="clue-detail-tag" style="background: #dc2626; color: #ffffff;">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                        <span>DICTAMEN DE EXPERTO (${charData.role.toUpperCase()})</span>
-                      </div>
-                      <p class="clue-detail-text" style="color: #991b1b; font-weight: 600; font-size: 11.5px; line-height: 1.35;">
-                        ${clue.detailExpert}
-                      </p>
-                    </div>
-                  ` : `
-                    <div class="clue-back-detail">
-                      <div class="clue-detail-tag">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                        <span>ANÁLISIS DOCUMENTAL</span>
-                      </div>
-                      <p class="clue-detail-text" style="font-size: 11.5px; line-height: 1.35;">
-                        ${clue.detailNormal}
-                      </p>
-                      <button class="btn-toggle-expert-view" data-expert-box="expert-note-${clue.id}" type="button" style="margin-top: 6px; font-size: 10px; color: #4b5563; background: #e5e7eb; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer;">
-                        Consultar peritaje técnico de un experto
-                      </button>
-                      <div id="expert-note-${clue.id}" style="display: none; margin-top: 6px; padding: 6px; border: 1px dashed #dc2626; background: rgba(220, 38, 38, 0.05); font-size: 10.5px; color: #991b1b;">
-                        <b>INFORME PERICIAL (MILITAR / ABOGADO):</b><br/>
-                        ${clue.detailExpert}
-                      </div>
-                    </div>
-                  `}
-                ` : ""}
 
                 <div class="clue-table-pickup-notice" style="margin-top: 14px; padding: 10px 12px; background: #991b1b; color: #ffffff; border-radius: 4px; text-align: center; font-weight: bold; font-size: 11px; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 6px;">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
