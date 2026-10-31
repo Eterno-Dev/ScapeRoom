@@ -565,12 +565,12 @@ class ScapeRoomApp {
                       </div>
                     </div>
                   `}
-                ` : clue.tablePickup ? `
-                  <div class="clue-table-pickup-notice" style="margin-top: 14px; padding: 10px 12px; background: #991b1b; color: #ffffff; border-radius: 4px; text-align: center; font-weight: bold; font-size: 11px; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                    <span>${clue.letter === 'K' ? 'RECOGE LAS PISTAS CORRESPONDIENTES A LA PARTE K EN LA MESA' : 'VE A RECOGER LAS PISTAS A LA MESA'}</span>
-                  </div>
                 ` : ""}
+
+                <div class="clue-table-pickup-notice" style="margin-top: 14px; padding: 10px 12px; background: #991b1b; color: #ffffff; border-radius: 4px; text-align: center; font-weight: bold; font-size: 11px; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <span>VE A RECOGER LAS PISTAS A LA MESA</span>
+                </div>
 
                 ${clue.isPrivate ? `
                   <button class="btn-reshield-sensitive" data-shield-id="shield-${clue.id}" type="button">

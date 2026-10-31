@@ -15,7 +15,7 @@ export const CLUES = {
     backBase: "card-back-base-1.png",
     desc: "Documentos de investigación aportados por el abogado.",
     isPrivate: false,
-    tablePickup: false
+    tablePickup: true
   },
   "PISTA-B": {
     id: "PISTA-B",
@@ -28,7 +28,7 @@ export const CLUES = {
     backBase: "card-back-base-2.png",
     desc: "Llave pequeña. Parece para abrir algo que no es una puerta, parece de algo pequeño. Estaba encima del sofá.",
     isPrivate: false,
-    tablePickup: false
+    tablePickup: true
   },
   "PISTA-C": {
     id: "PISTA-C",
@@ -41,7 +41,7 @@ export const CLUES = {
     backBase: "card-back-base-3.png",
     desc: "Es un boli que parece bastante caro. Tiene un escudo militar grabado y las siglas GM (General Militar).",
     isPrivate: false,
-    tablePickup: false
+    tablePickup: true
   },
   "PISTA-D": {
     id: "PISTA-D",
@@ -54,7 +54,7 @@ export const CLUES = {
     backBase: "card-back-base-1.png",
     desc: "Es de punta plana y parece que estaba escondido casi a propósito. El lugar donde se encontraba era muy sospechoso; no es normal que termine ahí.",
     isPrivate: false,
-    tablePickup: false
+    tablePickup: true
   },
   "PISTA-E": {
     id: "PISTA-E",
@@ -67,7 +67,7 @@ export const CLUES = {
     backBase: "card-back-base-2.png",
     desc: "Llave grande. Parece que abre una puerta grande o una cancela principal.",
     isPrivate: false,
-    tablePickup: false
+    tablePickup: true
   },
   "PISTA-F": {
     id: "PISTA-F",
@@ -80,7 +80,7 @@ export const CLUES = {
     backBase: "card-back-base-3.png",
     desc: "Copa de cristal tallado con restos secos en la base y un poso blanquecino sospechoso.",
     isPrivate: false,
-    tablePickup: false
+    tablePickup: true
   },
   "PISTA-G": {
     id: "PISTA-G",
@@ -96,7 +96,7 @@ export const CLUES = {
     detailExpert: "¡DOCUMENTO FALSIFICADO! Al ser una persona entendida en el tema, detectas de inmediato que este pasaporte ha sido FALSIFICADO: la tipografía del código MRZ está alterada, el sello de Alaska no corresponde a la demarcación federal y los datos biográficos han sido manipulados para ocultar una orden de captura.",
     isPassport: true,
     isPrivate: false,
-    tablePickup: false
+    tablePickup: true
   },
   "PISTA-H": {
     id: "PISTA-H",
@@ -124,10 +124,23 @@ export const CLUES = {
     isPrivate: false,
     tablePickup: true
   },
+  "PISTA-J": {
+    id: "PISTA-J",
+    letter: "J",
+    num: 10,
+    token: "ext7j",
+    title: "Extracto bancario",
+    category: "Documento Financiero",
+    cardImage: "src/assets/images/objetos/card-obj-15.png",
+    backBase: "card-back-base-2.png",
+    desc: "Extracto de movimientos bancarios y transferencias de cuentas de alta cuantía.",
+    isPrivate: false,
+    tablePickup: true
+  },
   "PISTA-K": {
     id: "PISTA-K",
     letter: "K",
-    num: 10,
+    num: 11,
     token: "buz6k",
     title: "Buzón",
     category: "Correspondencia",
@@ -188,6 +201,14 @@ export function resolveClueId(rawInput) {
     "ticket roto": "PISTA-I",
     "recibo": "PISTA-I",
     "billete": "PISTA-I",
+
+    "extracto": "PISTA-J",
+    "extracto bancario": "PISTA-J",
+    "extractos": "PISTA-J",
+    "banco": "PISTA-J",
+    "cuenta": "PISTA-J",
+    "cuenta bancaria": "PISTA-J",
+    "transferencia": "PISTA-J",
 
     "buzon": "PISTA-K",
     "buzón": "PISTA-K"
