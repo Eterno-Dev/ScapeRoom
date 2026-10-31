@@ -93,6 +93,20 @@ export const CLUES = {
     backBase: "card-back-base-1.png",
     desc: "Documento de viaje e identificación aparentemente oficial expedido bajo los sellos de los Estados Unidos.",
     isPrivate: false,
+    tablePickup: true,
+    linkedClues: ["PISTA-G2"]
+  },
+  "PISTA-G2": {
+    id: "PISTA-G2",
+    letter: "G",
+    num: 7.2,
+    token: "G",
+    title: "Hoja de diario",
+    category: "Manuscrito Personal",
+    cardImage: "src/assets/images/objetos/card-obj-12.png",
+    backBase: "card-back-base-3.png",
+    desc: "Parece una hoja de diario escrita a mano.",
+    isPrivate: false,
     tablePickup: true
   },
   "PISTA-H": {
@@ -202,6 +216,10 @@ export function resolveClueId(rawInput) {
     "pasaporte": "PISTA-G",
     "passport": "PISTA-G",
     "pass": "PISTA-G",
+    "diario": "PISTA-G",
+    "hoja de diario": "PISTA-G",
+    "hoja diario": "PISTA-G",
+    "diario personal": "PISTA-G",
 
     "periodico": "PISTA-H",
     "periódico": "PISTA-H",

@@ -13,6 +13,12 @@ class ScapeRoomApp {
     this.selectedCharId = parseInt(localStorage.getItem("scaperoom_char_id"), 10) || null;
     this.unlockedClues = JSON.parse(localStorage.getItem("scaperoom_clues") || "[]");
 
+    // Asegurar que si PISTA-G ya estaba desbloqueada, PISTA-G2 también esté en el mazo
+    if (this.unlockedClues.includes("PISTA-G") && !this.unlockedClues.includes("PISTA-G2")) {
+      this.unlockedClues.push("PISTA-G2");
+      localStorage.setItem("scaperoom_clues", JSON.stringify(this.unlockedClues));
+    }
+
     // Asignar base trasera de pergamino fija por sesión si no existe
     this.savedBackBases = JSON.parse(localStorage.getItem("scaperoom_back_bases") || "{}");
 
@@ -931,9 +937,22 @@ class ScapeRoomApp {
       return;
     }
 
-    const alreadyAdded = this.unlockedClues.includes(clueId);
-    if (!alreadyAdded) {
-      this.unlockedClues.push(clueId); // Añadir a la derecha en el mazo deslizable
+    const cluesToUnlock = [clueId];
+    if (CLUES[clueId].linkedClues) {
+      cluesToUnlock.push(...CLUES[clueId].linkedClues);
+    } else if (clueId === "PISTA-G" && CLUES["PISTA-G2"]) {
+      cluesToUnlock.push("PISTA-G2");
+    }
+
+    let newlyAdded = false;
+    cluesToUnlock.forEach((id) => {
+      if (CLUES[id] && !this.unlockedClues.includes(id)) {
+        this.unlockedClues.push(id);
+        newlyAdded = true;
+      }
+    });
+
+    if (newlyAdded) {
       localStorage.setItem("scaperoom_clues", JSON.stringify(this.unlockedClues));
     }
 
