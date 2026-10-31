@@ -84,7 +84,7 @@ export const CLUES = {
     category: "Cristalería",
     cardImage: "src/assets/images/objetos/card-obj-13.png",
     backBase: "card-back-base-3.png",
-    desc: "Copa de cristal tallado con restos secos en la base y un poso blanquecino sospechoso.",
+    desc: "Es una copa que está encima de la mesa. No parece muy importante ni muestra detalles sospechosos a simple vista; parece una pista sin mayor relevancia.",
     isPrivate: false,
     tablePickup: true
   },
@@ -98,7 +98,7 @@ export const CLUES = {
     category: "Identidad",
     cardImage: "src/assets/images/objetos/card-obj-17.png",
     backBase: "card-back-base-1.png",
-    desc: "Documento de viaje e identificación aparentemente oficial expedido bajo los sellos de los Estados Unidos.",
+    desc: "Documento de viaje en un estado extraño. Al examinarlo con atención, hay algo raro y sospechoso en él.",
     isPrivate: false,
     tablePickup: true,
     linkedClues: ["PISTA-G2"]
@@ -127,7 +127,7 @@ export const CLUES = {
     category: "Prensa Financiera",
     cardImage: "src/assets/images/objetos/card-obj-10.png",
     backBase: "card-back-base-2.png",
-    desc: "Revista de negocios y página de periódico sobre finanzas y emprendimiento, llamada Warbes (como Forbes pero con W).",
+    desc: "Es una copia del día de ayer del periódico empresarial famoso WARBES.",
     isPrivate: false,
     tablePickup: true
   },
@@ -141,7 +141,7 @@ export const CLUES = {
     category: "Comprobante",
     cardImage: "src/assets/images/objetos/card-obj-14.png",
     backBase: "card-back-base-3.png",
-    desc: "Un ticket roto. Parece que alguien lo ha tirado porque no sabía qué hacer con él.",
+    desc: "Parece un ticket bastante arreglado, propio de la alta sociedad. Da la impresión de que alguien lo ha tirado deliberadamente para deshacerse de las pruebas o eliminar cualquier rastro.",
     isPrivate: false,
     tablePickup: true
   },
@@ -151,11 +151,11 @@ export const CLUES = {
     code: "J-4$8Z",
     num: 10,
     token: "J",
-    title: "Extracto bancario",
-    category: "Documento Financiero",
+    title: "Documentos archivo",
+    category: "Archivo de Documentos",
     cardImage: "src/assets/images/objetos/card-obj-15.png",
     backBase: "card-back-base-2.png",
-    desc: "Extracto de movimientos bancarios y transferencias de cuentas de alta cuantía.",
+    desc: "Conjunto de documentos como transacciones bancarias, extractos bancarios y consultas médicas.",
     isPrivate: false,
     tablePickup: true
   },
@@ -184,6 +184,8 @@ export const CLUES = {
     cardImage: "src/assets/images/objetos/card-obj-16.png",
     backBase: "card-back-base-1.png",
     desc: "La pintura se ha derramado. Parece que el que estaba en el jardín estaba pintando y ha tenido un accidente.",
+    witnessChars: [1, 3, 5], // 1: Cazador, 3: Médico, 5: Nieto (Heredero)
+    witnessText: "Recuerdas que la persona que estaba pintando fue el/la jardinero/a. Además, lo viste discutir acaloradamente con la víctima en esta misma zona.",
     isPrivate: false,
     tablePickup: true
   },
@@ -197,7 +199,7 @@ export const CLUES = {
     category: "Cerrajería / Acceso",
     cardImage: "src/assets/images/objetos/card-obj-7.png",
     backBase: "card-back-base-2.png",
-    desc: "Una llave maestra que abre todas las puertas de la finca.",
+    desc: "Es un poco sospechoso que esté por aquí tirada. Da acceso al resto de puertas del lugar.",
     isPrivate: false,
     tablePickup: true
   },
@@ -265,7 +267,9 @@ export const CLUES = {
     category: "Compartimento de Seguridad",
     cardImage: "src/assets/images/objetos/card-obj-9.png",
     backBase: "card-back-base-3.png",
-    desc: "Caja fuerte acorazada con los archivos clasificados y documentos confidenciales en su interior.",
+    desc: "Caja fuerte acorazada de alta seguridad. El panel electrónico requiere una clave de acceso de 5 caracteres.",
+    requiresCode: true,
+    passcode: "KZ4C5",
     unlockedTitle: "Archivos clasificados",
     unlockedDesc: "Caja fuerte abierta. Los archivos clasificados y documentos confidenciales han quedado al descubierto.",
     isPrivate: false,
@@ -281,7 +285,7 @@ export const CLUES = {
     category: "Comprobante",
     cardImage: "src/assets/images/objetos/card-obj-14.png",
     backBase: "card-back-base-1.png",
-    desc: "Un ticket de compra reciente de un establecimiento local con detalles sospechosos.",
+    desc: "Es un ticket de una tienda de armas en Dakota.",
     isPrivate: false,
     tablePickup: true
   },
@@ -316,7 +320,7 @@ export const CLUES = {
     requiresCode: true,
     passcode: "8008135",
     unlockedTitle: "Ordenador de seguridad",
-    unlockedDesc: "Terminal de seguridad desbloqueado. Acceso concedido al circuito cerrado de televisión. La mayoría de cámaras presentan cortes y fallos.",
+    unlockedDesc: "Terminal de seguridad desbloqueado. Las grabaciones de las cámaras de seguridad están corruptas, pero se ha podido recuperar un archivo de imagen y varios fotogramas clave de los vídeos en diferentes horas.",
     isPrivate: false,
     tablePickup: true
   }
@@ -376,6 +380,8 @@ export function resolveClueId(rawInput) {
     "recibo": "PISTA-I",
     "billete": "PISTA-I",
 
+    "documentos archivo": "PISTA-J",
+    "documentos y el archivo": "PISTA-J",
     "extracto": "PISTA-J",
     "extracto bancario": "PISTA-J",
     "extractos": "PISTA-J",

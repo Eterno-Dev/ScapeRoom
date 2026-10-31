@@ -509,6 +509,7 @@ class ScapeRoomApp {
       );
 
       const isExpert = Boolean(clue.isBlankAmmo && clue.expertChars && clue.expertChars.includes(this.selectedCharId));
+      const isWitness = Boolean(clue.witnessChars && clue.witnessChars.includes(this.selectedCharId));
       const isCodeUnlocked = !clue.requiresCode || Boolean(this.unlockedCodes[clue.id]);
 
       const clueSlide = document.createElement("div");
@@ -566,21 +567,43 @@ class ScapeRoomApp {
                   </div>
 
                   ${!isCodeUnlocked ? `
-                    <div style="margin: 10px 0; padding: 10px 8px; background: rgba(0,0,0,0.55); border: 1.5px solid #d97706; border-radius: 6px; text-align: center;">
-                      <div style="display: flex; align-items: center; justify-content: center; gap: 6px; color: #f59e0b; font-size: 11px; font-weight: bold; margin-bottom: 6px;">
+                    <div style="margin: 10px 0; padding: 12px 10px; background: rgba(15, 23, 42, 0.75); border: 1.5px solid #d97706; border-radius: 8px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.5);">
+                      <div style="display: flex; align-items: center; justify-content: center; gap: 6px; color: #f59e0b; font-size: 11px; font-weight: 900; letter-spacing: 0.5px; margin-bottom: 6px;">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                        <span>DISPOSITIVO BLOQUEADO</span>
+                        <span>BLOQUEADO CON CONTRASEÑA</span>
                       </div>
-                      <p style="font-size: 10.5px; color: #cbd5e1; margin-bottom: 8px; line-height: 1.3;">
+                      <p style="font-size: 10.5px; color: #cbd5e1; margin-bottom: 10px; line-height: 1.35;">
                         ${clue.desc}
                       </p>
-                      <div style="display: flex; gap: 6px; max-width: 220px; margin: 0 auto;">
-                        <input type="text" class="input-clue-passcode" data-clue-id="${clue.id}" placeholder="Introduce código" style="flex: 1; padding: 5px 8px; font-size: 11px; text-align: center; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; border: 1px solid #71717a; border-radius: 4px; background: #18181b; color: #fff;" autocomplete="off" />
-                        <button type="button" class="btn-submit-clue-passcode" data-clue-id="${clue.id}" style="padding: 5px 10px; font-size: 11px; font-weight: bold; background: #d97706; color: #fff; border: none; border-radius: 4px; cursor: pointer;">OK</button>
+
+                      <!-- Indicador de ranuras y rayitas estilo Kahoot PIN -->
+                      <div class="kahoot-pin-display" data-clue-id="${clue.id}" style="display: flex; justify-content: center; align-items: center; gap: 6px; margin: 10px 0 12px 0;">
+                        ${Array.from({ length: (clue.passcode || "").length || 4 }).map((_, idx) => `
+                          <div class="kahoot-pin-slot" data-index="${idx}" style="display: flex; flex-direction: column; align-items: center; gap: 3px;">
+                            <div class="kahoot-pin-char" style="width: 22px; height: 26px; line-height: 26px; text-align: center; font-size: 15px; font-weight: 900; font-family: monospace; color: #fef08a; background: rgba(0,0,0,0.45); border-radius: 3px;">-</div>
+                            <div class="kahoot-pin-dash" style="width: 22px; height: 3px; background: #d97706; border-radius: 2px; transition: background 0.2s;"></div>
+                          </div>
+                        `).join("")}
+                      </div>
+
+                      <div style="display: flex; gap: 6px; max-width: 230px; margin: 0 auto;">
+                        <input type="text" class="input-clue-passcode" data-clue-id="${clue.id}" maxlength="${(clue.passcode || "").length || 20}" placeholder="${(clue.passcode || "").length} caracteres" style="flex: 1; padding: 6px 8px; font-size: 12px; text-align: center; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; border: 1.5px solid #d97706; border-radius: 4px; background: #09090b; color: #ffffff;" autocomplete="off" />
+                        <button type="button" class="btn-submit-clue-passcode" data-clue-id="${clue.id}" style="padding: 6px 12px; font-size: 11px; font-weight: 900; background: #d97706; color: #fff; border: none; border-radius: 4px; cursor: pointer; text-transform: uppercase;">OK</button>
                       </div>
                     </div>
                   ` : `
                     <p class="card-back-bio">${clue.unlockedDesc || clue.desc}</p>
+                    ${isWitness && clue.witnessText ? `
+                      <div style="margin: 8px 0; padding: 8px 10px; border: 1.5px solid #0284c7; background: rgba(2, 132, 199, 0.15); border-radius: 4px;">
+                        <div style="display: flex; align-items: center; gap: 6px; color: #38bdf8; font-size: 11px; font-weight: bold; margin-bottom: 4px;">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                          <span>INFORMACIÓN ADICIONAL / TESTIMONIO</span>
+                        </div>
+                        <p style="color: #e0f2fe; font-size: 11px; line-height: 1.35; margin: 0;">
+                          ${clue.witnessText}
+                        </p>
+                      </div>
+                    ` : ""}
 
                     ${clue.isBlankAmmo ? `
                       ${isExpert ? `
@@ -659,6 +682,25 @@ class ScapeRoomApp {
       const btnSubmitPasscode = clueSlide.querySelector(".btn-submit-clue-passcode");
       const inputPasscode = clueSlide.querySelector(".input-clue-passcode");
       if (btnSubmitPasscode && inputPasscode) {
+        // Enlazar evento input para feedback estilo Kahoot PIN (rayitas debajo de cada dígito)
+        inputPasscode.addEventListener("input", () => {
+          const val = inputPasscode.value.toUpperCase();
+          const slotElements = clueSlide.querySelectorAll(`.kahoot-pin-display[data-clue-id="${clue.id}"] .kahoot-pin-slot`);
+          slotElements.forEach((slot, idx) => {
+            const charEl = slot.querySelector(".kahoot-pin-char");
+            const dashEl = slot.querySelector(".kahoot-pin-dash");
+            if (charEl && dashEl) {
+              if (idx < val.length) {
+                charEl.textContent = val[idx];
+                dashEl.style.background = "#22c55e"; // Rayita verde activa
+              } else {
+                charEl.textContent = "-";
+                dashEl.style.background = "#d97706"; // Rayita ámbar pendiente
+              }
+            }
+          });
+        });
+
         const verifyCode = () => {
           const entered = inputPasscode.value.trim().toUpperCase();
           if (clue.passcode && entered === clue.passcode.toUpperCase()) {
