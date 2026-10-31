@@ -800,10 +800,9 @@ def generate_informe_medico_previo_pdf(output_filename="6_informe_medico_previo.
     print("Documento 6 generado:", output_filename)
 
 # =============================================================================
-# 6. GENERAR DOCUMENTO CONSOLIDADO (16 PÁGINAS)
+# 6. GENERAR DOCUMENTO CONSOLIDADO (16 PÁGINAS) Y DOCUMENTO ESCRITO (6 PÁGINAS)
 # =============================================================================
-def generate_consolidated_pdf(output_filename="documentos_investigacion.pdf"):
-    merger = pymupdf.open()
+def generate_consolidated_pdf(output_filename="documentos_investigacion.pdf", written_filename="documentos_escritos.pdf"):
     temp_files = [
         "1_autopsia_forense.pdf",
         "2_periodico_warbes.pdf",
@@ -812,6 +811,20 @@ def generate_consolidated_pdf(output_filename="documentos_investigacion.pdf"):
         "5_periodico_dia.pdf",
         "6_informe_medico_previo.pdf"
     ]
+
+    # 1. Generar documento independiente con exactamente las 6 páginas de pruebas escritas
+    doc_written = pymupdf.open()
+    for f in temp_files:
+        if os.path.exists(f):
+            d_part = pymupdf.open(f)
+            doc_written.insert_pdf(d_part)
+            d_part.close()
+    doc_written.save(written_filename, deflate=True)
+    doc_written.close()
+    print(f"PDF exclusivo de pruebas escritas ({len(temp_files)} páginas) generado: {written_filename}")
+
+    # 2. Generar documento consolidado total de 16 páginas (6 pruebas + 10 dossier)
+    merger = pymupdf.open()
     for f in temp_files:
         if os.path.exists(f):
             doc = pymupdf.open(f)
