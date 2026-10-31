@@ -160,6 +160,48 @@ export const CLUES = {
     desc: "La pintura se ha derramado. Parece que el que estaba en el jardín estaba pintando y ha tenido un accidente.",
     isPrivate: false,
     tablePickup: true
+  },
+  "PISTA-M": {
+    id: "PISTA-M",
+    letter: "M",
+    num: 12,
+    token: "M",
+    title: "Tarjeta de personal",
+    category: "Acceso / Seguridad",
+    cardImage: "src/assets/images/objetos/card-obj-7.png",
+    backBase: "card-back-base-2.png",
+    desc: "Tarjeta magnética de acceso del personal de servicio. Permite desbloquear la puerta de la cocina.",
+    isPrivate: false,
+    tablePickup: true
+  },
+  "PISTA-N": {
+    id: "PISTA-N",
+    letter: "N",
+    num: 13,
+    token: "N",
+    title: "Nota manuscrita",
+    category: "Nota / Mensaje",
+    cardImage: "src/assets/images/objetos/card-obj-8.png",
+    backBase: "card-back-base-3.png",
+    desc: "Una pequeña nota tipo post-it encontrada en la cocina con una anotación apresurada.",
+    isPrivate: false,
+    tablePickup: true,
+    specialBackImage: "src/assets/images/tarjetas/card-esp-frame-3.png",
+    specialViewChars: [5, 6, 7],
+    linkedClues: ["PISTA-O"]
+  },
+  "PISTA-O": {
+    id: "PISTA-O",
+    letter: "O",
+    num: 14,
+    token: "O",
+    title: "Móvil desechable",
+    category: "Comunicaciones",
+    cardImage: "src/assets/images/objetos/card-obj-5.png",
+    backBase: "card-back-base-1.png",
+    desc: "Móvil desechable. Estaba escondido en el cajón de los cubiertos.",
+    isPrivate: false,
+    tablePickup: true
   }
   /*
   "PISTA-K": {
@@ -247,6 +289,29 @@ export function resolveClueId(rawInput) {
     "bote verde": "PISTA-L",
     "jardin": "PISTA-L",
     "jardín": "PISTA-L",
+
+    "tarjeta": "PISTA-M",
+    "tarjeta de personal": "PISTA-M",
+    "tarjeta personal": "PISTA-M",
+    "personal": "PISTA-M",
+    "tarjeta acceso": "PISTA-M",
+    "acceso cocina": "PISTA-M",
+    "cocina": "PISTA-M",
+
+    "nota": "PISTA-N",
+    "postit": "PISTA-N",
+    "post-it": "PISTA-N",
+    "nota post-it": "PISTA-N",
+    "nota adhesiva": "PISTA-N",
+    "nota manuscrita": "PISTA-N",
+
+    "movil": "PISTA-O",
+    "móvil": "PISTA-O",
+    "movil desechable": "PISTA-O",
+    "móvil desechable": "PISTA-O",
+    "telefono": "PISTA-O",
+    "teléfono": "PISTA-O",
+    "cubiertos": "PISTA-O",
 
     "buzon": "PISTA-K",
     "buzón": "PISTA-K"

@@ -19,6 +19,12 @@ class ScapeRoomApp {
       localStorage.setItem("scaperoom_clues", JSON.stringify(this.unlockedClues));
     }
 
+    // Asegurar que si PISTA-N ya estaba desbloqueada, PISTA-O también esté en el mazo
+    if (this.unlockedClues.includes("PISTA-N") && !this.unlockedClues.includes("PISTA-O")) {
+      this.unlockedClues.push("PISTA-O");
+      localStorage.setItem("scaperoom_clues", JSON.stringify(this.unlockedClues));
+    }
+
     // Asignar base trasera de pergamino fija por sesión si no existe
     this.savedBackBases = JSON.parse(localStorage.getItem("scaperoom_back_bases") || "{}");
 
@@ -493,6 +499,12 @@ class ScapeRoomApp {
       const clue = CLUES[clueId];
       if (!clue) return;
 
+      const isSpecialViewer = Boolean(
+        clue.specialBackImage &&
+        clue.specialViewChars &&
+        clue.specialViewChars.includes(this.selectedCharId)
+      );
+
       const clueSlide = document.createElement("div");
       clueSlide.className = "game-card-slide";
       clueSlide.id = `slide-clue-${clue.id.toLowerCase()}`;
@@ -505,56 +517,62 @@ class ScapeRoomApp {
             </div>
 
             <!-- Cara Trasera del Objeto (Detalles e Información) -->
-            <div class="flip-card-back clue-back-face" style="background-image: url('src/assets/images/tarjetas/${clue.backBase}');">
+            <div class="flip-card-back clue-back-face" style="background-image: url('${(isSpecialViewer && clue.specialBackImage) ? clue.specialBackImage : `src/assets/images/tarjetas/${clue.backBase}`}');">
               
               <!-- Letra Indicadora en la Esquina Superior (Identificador para sobres de pistas) -->
-              <div class="clue-corner-letter" title="Pista ${clue.letter}">
+              <div class="clue-corner-letter" title="Pista ${clue.letter}" style="z-index: 10;">
                 <span>${clue.letter}</span>
               </div>
 
-              <!-- Escudo de Confidencialidad para Pistas Privadas (Ojito) -->
-              ${clue.isPrivate ? `
-                <div class="private-shield-overlay" id="shield-${clue.id}" style="background-image: url('src/assets/images/tarjetas/${clue.backBase}');">
-                  <div class="shield-eye-icon-box">
-                    <svg class="shield-eye-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                      <line x1="1" y1="1" x2="23" y2="23"></line>
-                    </svg>
+              ${(isSpecialViewer && clue.specialBackImage) ? `
+                <div class="card-special-fullscreen-back" style="position: absolute; inset: 0; border-radius: inherit; overflow: hidden; z-index: 2;">
+                  <img src="${clue.specialBackImage}" alt="${clue.title}" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
+                </div>
+              ` : `
+                <!-- Escudo de Confidencialidad para Pistas Privadas (Ojito) -->
+                ${clue.isPrivate ? `
+                  <div class="private-shield-overlay" id="shield-${clue.id}" style="background-image: url('src/assets/images/tarjetas/${clue.backBase}');">
+                    <div class="shield-eye-icon-box">
+                      <svg class="shield-eye-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                        <line x1="1" y1="1" x2="23" y2="23"></line>
+                      </svg>
+                    </div>
+
+                    <h3 class="shield-title">¿ESTÁS SEGURO?</h3>
+                    <p class="shield-warning">
+                      Esta pista contiene información reservada, no se puede compartir.
+                    </p>
+
+                    <button class="btn-reveal-sensitive" data-target-shield="shield-${clue.id}" type="button">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="13" r="3"></circle>
+                      </svg>
+                      <span>Clica para ver</span>
+                    </button>
+                  </div>
+                ` : ""}
+
+                <div class="card-back-content">
+                  <div class="card-back-header">
+                    <h4 class="card-back-name">${clue.title}</h4>
+                  </div>
+                  <p class="card-back-bio">${clue.desc}</p>
+
+                  <div class="clue-table-pickup-notice" style="margin-top: 14px; padding: 10px 12px; background: #991b1b; color: #ffffff; border-radius: 4px; text-align: center; font-weight: bold; font-size: 11px; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span>VE A RECOGER LAS PISTAS A LA MESA</span>
                   </div>
 
-                  <h3 class="shield-title">¿ESTÁS SEGURO?</h3>
-                  <p class="shield-warning">
-                    Esta pista contiene información reservada, no se puede compartir.
-                  </p>
-
-                  <button class="btn-reveal-sensitive" data-target-shield="shield-${clue.id}" type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                      <circle cx="12" cy="13" r="3"></circle>
-                    </svg>
-                    <span>Clica para ver</span>
-                  </button>
+                  ${clue.isPrivate ? `
+                    <button class="btn-reshield-sensitive" data-shield-id="shield-${clue.id}" type="button">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
+                      Ocultar pista confidencial
+                    </button>
+                  ` : ""}
                 </div>
-              ` : ""}
-
-              <div class="card-back-content">
-                <div class="card-back-header">
-                  <h4 class="card-back-name">${clue.title}</h4>
-                </div>
-                <p class="card-back-bio">${clue.desc}</p>
-
-                <div class="clue-table-pickup-notice" style="margin-top: 14px; padding: 10px 12px; background: #991b1b; color: #ffffff; border-radius: 4px; text-align: center; font-weight: bold; font-size: 11px; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                  <span>VE A RECOGER LAS PISTAS A LA MESA</span>
-                </div>
-
-                ${clue.isPrivate ? `
-                  <button class="btn-reshield-sensitive" data-shield-id="shield-${clue.id}" type="button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>
-                    Ocultar pista confidencial
-                  </button>
-                ` : ""}
-              </div>
+              `}
 
             </div>
           </div>
@@ -1114,7 +1132,7 @@ class ScapeRoomApp {
           this.closeCodeModal();
           this.unlockClue(resolved);
         } else {
-          alert(`Código no reconocido ("${val}"). Introduce un código válido (A - J).`);
+          alert(`Código no reconocido ("${val}"). Introduce un código válido (A - O).`);
         }
       });
     }
