@@ -1,6 +1,6 @@
 /**
  * Registro Oficial de Pistas y Objetos Físicos del Juego
- * CluedoWeb / ScapeRoom — Configuración de 10 Pistas Oficiales (A a K)
+ * CluedoWeb / ScapeRoom — Configuración de 10 Pistas Oficiales (A a J)
  */
 
 export const CLUES = {
@@ -8,7 +8,7 @@ export const CLUES = {
     id: "PISTA-A",
     letter: "A",
     num: 1,
-    token: "pap7a",
+    token: "A",
     title: "Papeles",
     category: "Expediente Jurídico",
     cardImage: "src/assets/images/objetos/card-obj-11.png",
@@ -21,7 +21,7 @@ export const CLUES = {
     id: "PISTA-B",
     letter: "B",
     num: 2,
-    token: "llav2b",
+    token: "B",
     title: "Llave pequeña",
     category: "Cerradura / Objeto Pequeño",
     cardImage: "src/assets/images/objetos/card-obj-3.png",
@@ -34,7 +34,7 @@ export const CLUES = {
     id: "PISTA-C",
     letter: "C",
     num: 3,
-    token: "bol9c",
+    token: "C",
     title: "Boli",
     category: "Objeto Militar",
     cardImage: "src/assets/images/objetos/card-obj-6.png",
@@ -47,7 +47,7 @@ export const CLUES = {
     id: "PISTA-D",
     letter: "D",
     num: 4,
-    token: "des4d",
+    token: "D",
     title: "Destornillador",
     category: "Herramienta",
     cardImage: "src/assets/images/objetos/card-obj-4.png",
@@ -60,7 +60,7 @@ export const CLUES = {
     id: "PISTA-E",
     letter: "E",
     num: 5,
-    token: "llag5e",
+    token: "E",
     title: "Llave grande",
     category: "Acceso Principal",
     cardImage: "src/assets/images/objetos/card-obj-2.png",
@@ -73,7 +73,7 @@ export const CLUES = {
     id: "PISTA-F",
     letter: "F",
     num: 6,
-    token: "cop3f",
+    token: "F",
     title: "Copa",
     category: "Cristalería",
     cardImage: "src/assets/images/objetos/card-obj-13.png",
@@ -86,7 +86,7 @@ export const CLUES = {
     id: "PISTA-G",
     letter: "G",
     num: 7,
-    token: "pass7g",
+    token: "G",
     title: "Pasaporte",
     category: "Identidad",
     cardImage: "src/assets/images/objetos/card-obj-17.png",
@@ -102,7 +102,7 @@ export const CLUES = {
     id: "PISTA-H",
     letter: "H",
     num: 8,
-    token: "war8h",
+    token: "H",
     title: "Periódico Warbes",
     category: "Prensa Financiera",
     cardImage: "src/assets/images/objetos/card-obj-10.png",
@@ -115,7 +115,7 @@ export const CLUES = {
     id: "PISTA-I",
     letter: "I",
     num: 9,
-    token: "tic1i",
+    token: "I",
     title: "Ticket roto",
     category: "Comprobante",
     cardImage: "src/assets/images/objetos/card-obj-14.png",
@@ -128,7 +128,7 @@ export const CLUES = {
     id: "PISTA-J",
     letter: "J",
     num: 10,
-    token: "ext7j",
+    token: "J",
     title: "Extracto bancario",
     category: "Documento Financiero",
     cardImage: "src/assets/images/objetos/card-obj-15.png",
@@ -136,12 +136,13 @@ export const CLUES = {
     desc: "Extracto de movimientos bancarios y transferencias de cuentas de alta cuantía.",
     isPrivate: false,
     tablePickup: true
-  },
+  }
+  /*
   "PISTA-K": {
     id: "PISTA-K",
     letter: "K",
     num: 11,
-    token: "buz6k",
+    token: "K",
     title: "Buzón",
     category: "Correspondencia",
     cardImage: "src/assets/images/objetos/card-obj-12.png",
@@ -150,6 +151,7 @@ export const CLUES = {
     isPrivate: false,
     tablePickup: true
   }
+  */
 };
 
 /**
@@ -216,6 +218,23 @@ export function resolveClueId(rawInput) {
 
   if (nameAliases[input]) {
     return nameAliases[input];
+  }
+
+  // Soporte de compatibilidad para tokens alfanuméricos anteriores
+  const legacyTokens = {
+    "pap7a": "PISTA-A",
+    "llav2b": "PISTA-B",
+    "bol9c": "PISTA-C",
+    "des4d": "PISTA-D",
+    "llag5e": "PISTA-E",
+    "cop3f": "PISTA-F",
+    "pass7g": "PISTA-G",
+    "war8h": "PISTA-H",
+    "tic1i": "PISTA-I",
+    "ext7j": "PISTA-J"
+  };
+  if (legacyTokens[input]) {
+    return legacyTokens[input];
   }
 
   // 2. Coincidencia directa por letra única (ej: "a", "b", "c", ..., "k")

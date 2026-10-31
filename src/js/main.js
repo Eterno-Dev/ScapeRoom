@@ -1125,7 +1125,7 @@ class ScapeRoomApp {
           this.closeCodeModal();
           this.unlockClue(resolved);
         } else {
-          alert(`Código no reconocido ("${val}"). Introduce el código.`);
+          alert(`Código no reconocido ("${val}"). Introduce un código válido (A - J).`);
         }
       });
     }
