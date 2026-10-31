@@ -14,7 +14,6 @@ export const CLUES = {
     cardImage: "src/assets/images/objetos/card-obj-11.png",
     backBase: "card-back-base-1.png",
     desc: "Documentos de investigación aportados por el abogado.",
-    detail: "Incluye el informe forense de la autopsia preliminar y un resumen con la información y perfiles de todos los acusados reunidos.",
     isPrivate: false,
     tablePickup: false
   },
@@ -28,7 +27,6 @@ export const CLUES = {
     cardImage: "src/assets/images/objetos/card-obj-3.png",
     backBase: "card-back-base-2.png",
     desc: "Llave pequeña. Parece para abrir algo que no es una puerta, parece de algo pequeño. Estaba encima del sofá.",
-    detail: "Cerradura de dimensiones reducidas. Sus muescas coinciden con la cerradura del buzón exterior (Pista K).",
     isPrivate: false,
     tablePickup: false
   },
@@ -42,7 +40,6 @@ export const CLUES = {
     cardImage: "src/assets/images/objetos/card-obj-6.png",
     backBase: "card-back-base-3.png",
     desc: "Es un boli que parece bastante caro. Tiene un escudo militar grabado y las siglas GM (General Militar).",
-    detail: "Bolígrafo de alta gama metálico con escudo castrense oficial y las siglas grabadas GM, pertenecientes a Oficial Superior / General Militar.",
     isPrivate: false,
     tablePickup: false
   },
@@ -56,7 +53,6 @@ export const CLUES = {
     cardImage: "src/assets/images/objetos/card-obj-4.png",
     backBase: "card-back-base-1.png",
     desc: "Es de punta plana y parece que estaba escondido casi a propósito. El lugar donde se encontraba era muy sospechoso; no es normal que termine ahí.",
-    detail: "Herramienta de punta plana oculta deliberadamente en una ubicación impropia con señales recientes de forcejeo.",
     isPrivate: false,
     tablePickup: false
   },
@@ -70,7 +66,6 @@ export const CLUES = {
     cardImage: "src/assets/images/objetos/card-obj-2.png",
     backBase: "card-back-base-2.png",
     desc: "Llave grande. Parece que abre una puerta grande o una cancela principal.",
-    detail: "Pesada llave de hierro forjado de grandes dimensiones, apta para una puerta principal o cancela exterior de la finca.",
     isPrivate: false,
     tablePickup: false
   },
@@ -84,7 +79,6 @@ export const CLUES = {
     cardImage: "src/assets/images/objetos/card-obj-13.png",
     backBase: "card-back-base-3.png",
     desc: "Copa de cristal tallado con restos secos en la base y un poso blanquecino sospechoso.",
-    detail: "Abandonada sobre una mesa auxiliar junto a la chimenea. El poso en el fondo desprende un olor químico persistente.",
     isPrivate: false,
     tablePickup: false
   },
@@ -114,7 +108,6 @@ export const CLUES = {
     cardImage: "src/assets/images/objetos/card-obj-10.png",
     backBase: "card-back-base-2.png",
     desc: "Revista de negocios y página de periódico sobre finanzas y emprendimiento, llamada Warbes (como Forbes pero con W).",
-    detail: "Edición vespertina especial que detalla el desplome de Kronos y alertas de apuestas. Recoge el documento físico en la mesa para examinarlo.",
     isPrivate: false,
     tablePickup: true
   },
@@ -128,7 +121,6 @@ export const CLUES = {
     cardImage: "src/assets/images/objetos/card-obj-14.png",
     backBase: "card-back-base-3.png",
     desc: "Un ticket roto. Parece que alguien lo ha tirado porque no sabía qué hacer con él.",
-    detail: "Ticket de acceso VIP roto a la mitad con fecha 30.10 y precio de noventa mil dólares. Recoge el documento físico en la mesa.",
     isPrivate: false,
     tablePickup: true
   },
@@ -142,7 +134,6 @@ export const CLUES = {
     cardImage: "src/assets/images/objetos/card-obj-12.png",
     backBase: "card-back-base-1.png",
     desc: "Buzón exterior cerrado. Parece que requiere una llave pequeña para poder abrirse.",
-    detail: "Buzón de correspondencia exterior. Se abre utilizando la Llave pequeña (Pista B). Recoge las pistas correspondientes a la parte K en la mesa.",
     isPrivate: false,
     tablePickup: true
   }
