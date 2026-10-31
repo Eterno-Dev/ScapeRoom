@@ -59,9 +59,9 @@ class ScapeRoomApp {
     this.renderCharactersGrid();
 
 
-    // Comprobar parámetros en la URL (escaneo directo desde cámara nativa con token único o pista)
+    // Comprobar parámetros en la URL (escaneo directo desde cámara nativa con código, token o pista)
     const params = new URLSearchParams(window.location.search);
-    const rawClueParam = params.get("p") || params.get("token") || params.get("pista");
+    const rawClueParam = params.get("c") || params.get("code") || params.get("p") || params.get("token") || params.get("pista");
     if (rawClueParam) {
       const resolved = resolveClueId(rawClueParam);
       if (resolved) {
@@ -508,7 +508,6 @@ class ScapeRoomApp {
         clue.specialViewChars.includes(this.selectedCharId)
       );
 
-      const isCodeUnlocked = !clue.requiresCode || Boolean(this.unlockedCodes[clue.id]);
       const isExpert = Boolean(clue.isBlankAmmo && clue.expertChars && clue.expertChars.includes(this.selectedCharId));
 
       const clueSlide = document.createElement("div");
@@ -562,68 +561,52 @@ class ScapeRoomApp {
 
                 <div class="card-back-content">
                   <div class="card-back-header">
-                    <h4 class="card-back-name">${(isCodeUnlocked && clue.unlockedTitle) ? clue.unlockedTitle : clue.title}</h4>
+                    <h4 class="card-back-name">${clue.unlockedTitle || clue.title}</h4>
                   </div>
 
-                  ${!isCodeUnlocked ? `
-                    <div style="margin: 10px 0; padding: 10px 8px; background: rgba(0,0,0,0.5); border: 1.5px solid #d97706; border-radius: 6px; text-align: center;">
-                      <div style="display: flex; align-items: center; justify-content: center; gap: 6px; color: #f59e0b; font-size: 11px; font-weight: bold; margin-bottom: 6px;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                        <span>CÓDIGO DE ACCESO REQUERIDO</span>
+                  <p class="card-back-bio">${clue.unlockedDesc || clue.desc}</p>
+
+                  ${clue.isBlankAmmo ? `
+                    ${isExpert ? `
+                      <div style="margin: 8px 0; padding: 8px 10px; border: 1.5px solid #16a34a; background: rgba(22, 163, 74, 0.1); border-radius: 4px;">
+                        <div style="display: flex; align-items: center; gap: 6px; color: #15803d; font-size: 11px; font-weight: bold; margin-bottom: 4px;">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                          <span>DICTAMEN BALÍSTICO DE EXPERTO</span>
+                        </div>
+                        <p style="color: #166534; font-size: 11px; line-height: 1.35; margin: 0;">
+                          ${clue.expertText}
+                        </p>
                       </div>
-                      <p style="font-size: 10.5px; color: #cbd5e1; margin-bottom: 8px; line-height: 1.3;">
-                        ${clue.desc}
-                      </p>
-                      <div style="display: flex; gap: 6px; max-width: 220px; margin: 0 auto;">
-                        <input type="text" class="input-clue-passcode" data-clue-id="${clue.id}" placeholder="Introduce código" style="flex: 1; padding: 5px 8px; font-size: 11px; text-align: center; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; border: 1px solid #71717a; border-radius: 4px; background: #18181b; color: #fff;" autocomplete="off" />
-                        <button type="button" class="btn-submit-clue-passcode" data-clue-id="${clue.id}" style="padding: 5px 10px; font-size: 11px; font-weight: bold; background: #d97706; color: #fff; border: none; border-radius: 4px; cursor: pointer;">OK</button>
+                    ` : ""}
+                  ` : ""}
+
+                  ${clue.hasAudioPlayer ? `
+                    <div class="phone-audio-player-box" style="margin-top: 8px; background: #18181b; border: 1px solid #3f3f46; border-radius: 6px; padding: 8px; color: #fff;">
+                      <div style="display: flex; gap: 6px; margin-bottom: 6px;">
+                        <button type="button" class="btn-phone-call-tab active" data-call-idx="1" style="flex: 1; padding: 4px 6px; font-size: 10.5px; font-weight: bold; background: #2563eb; color: #fff; border: none; border-radius: 4px; cursor: pointer;">Llamada 1</button>
+                        <button type="button" class="btn-phone-call-tab" data-call-idx="2" style="flex: 1; padding: 4px 6px; font-size: 10.5px; font-weight: bold; background: #27272a; color: #a1a1aa; border: none; border-radius: 4px; cursor: pointer;">Llamada 2</button>
                       </div>
+                      <div class="phone-call-info" style="font-size: 10px; color: #94a3b8; margin-bottom: 6px; text-align: center;">
+                        <span class="phone-call-title">Llamada 1 (Interceptada)</span>
+                      </div>
+                      <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <button type="button" class="btn-phone-play-toggle" style="width: 32px; height: 32px; border-radius: 50%; background: #3b82f6; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        </button>
+                        <div style="flex: 1; font-family: monospace; font-size: 11px; color: #e2e8f0; text-align: center;">
+                          <span class="phone-audio-time">0:00</span> / <span class="phone-audio-duration">--:--</span>
+                        </div>
+                      </div>
+                      <audio class="phone-audio-element" src="src/assets/audio/phone-safe-1.mp3" preload="metadata"></audio>
                     </div>
-                  ` : `
-                    <p class="card-back-bio">${clue.unlockedDesc || clue.desc}</p>
+                  ` : ""}
 
-                    ${clue.isBlankAmmo ? `
-                      ${isExpert ? `
-                        <div style="margin: 8px 0; padding: 8px 10px; border: 1.5px solid #16a34a; background: rgba(22, 163, 74, 0.1); border-radius: 4px;">
-                          <div style="display: flex; align-items: center; gap: 6px; color: #15803d; font-size: 11px; font-weight: bold; margin-bottom: 4px;">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                            <span>DICTAMEN BALÍSTICO DE EXPERTO</span>
-                          </div>
-                          <p style="color: #166534; font-size: 11px; line-height: 1.35; margin: 0;">
-                            ${clue.expertText}
-                          </p>
-                        </div>
-                      ` : ""}
-                    ` : ""}
-
-                    ${clue.hasAudioPlayer ? `
-                      <div class="phone-audio-player-box" style="margin-top: 8px; background: #18181b; border: 1px solid #3f3f46; border-radius: 6px; padding: 8px; color: #fff;">
-                        <div style="display: flex; gap: 6px; margin-bottom: 6px;">
-                          <button type="button" class="btn-phone-call-tab active" data-call-idx="1" style="flex: 1; padding: 4px 6px; font-size: 10.5px; font-weight: bold; background: #2563eb; color: #fff; border: none; border-radius: 4px; cursor: pointer;">Llamada 1</button>
-                          <button type="button" class="btn-phone-call-tab" data-call-idx="2" style="flex: 1; padding: 4px 6px; font-size: 10.5px; font-weight: bold; background: #27272a; color: #a1a1aa; border: none; border-radius: 4px; cursor: pointer;">Llamada 2</button>
-                        </div>
-                        <div class="phone-call-info" style="font-size: 10px; color: #94a3b8; margin-bottom: 6px; text-align: center;">
-                          <span class="phone-call-title">Llamada 1 (Interceptada)</span>
-                        </div>
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
-                          <button type="button" class="btn-phone-play-toggle" style="width: 32px; height: 32px; border-radius: 50%; background: #3b82f6; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                          </button>
-                          <div style="flex: 1; font-family: monospace; font-size: 11px; color: #e2e8f0; text-align: center;">
-                            <span class="phone-audio-time">0:00</span> / <span class="phone-audio-duration">--:--</span>
-                          </div>
-                        </div>
-                        <audio class="phone-audio-element" src="src/assets/audio/phone-safe-1.mp3" preload="metadata"></audio>
-                      </div>
-                    ` : ""}
-
-                    ${clue.tablePickup ? `
-                      <div class="clue-table-pickup-notice" style="margin-top: 14px; padding: 10px 12px; background: #991b1b; color: #ffffff; border-radius: 4px; text-align: center; font-weight: bold; font-size: 11px; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                        <span>VE A RECOGER LAS PISTAS A LA MESA</span>
-                      </div>
-                    ` : ""}
-                  `}
+                  ${clue.tablePickup ? `
+                    <div class="clue-table-pickup-notice" style="margin-top: 14px; padding: 10px 12px; background: #991b1b; color: #ffffff; border-radius: 4px; text-align: center; font-weight: bold; font-size: 11px; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                      <span>VE A RECOGER LAS PISTAS A LA MESA</span>
+                    </div>
+                  ` : ""}
 
                   ${clue.isPrivate ? `
                     <button class="btn-reshield-sensitive" data-shield-id="shield-${clue.id}" type="button">
@@ -646,37 +629,12 @@ class ScapeRoomApp {
           e.target.closest(".btn-reshield-sensitive") ||
           e.target.closest(".btn-toggle-expert-view") ||
           e.target.closest("[id^='expert-note-']") ||
-          e.target.closest(".phone-audio-player-box") ||
-          e.target.closest(".input-clue-passcode") ||
-          e.target.closest(".btn-submit-clue-passcode")
+          e.target.closest(".phone-audio-player-box")
         ) {
           return;
         }
         e.currentTarget.classList.toggle("is-flipped");
       });
-
-      // Soporte para introducción de contraseñas en tarjetas protegidas (Buzón, Caja Fuerte, Ordenador)
-      const btnSubmitPasscode = clueSlide.querySelector(".btn-submit-clue-passcode");
-      const inputPasscode = clueSlide.querySelector(".input-clue-passcode");
-      if (btnSubmitPasscode && inputPasscode) {
-        btnSubmitPasscode.addEventListener("click", (e) => {
-          e.stopPropagation();
-          const entered = inputPasscode.value.trim().toUpperCase();
-          if (clue.passcode && entered === clue.passcode.toUpperCase()) {
-            this.unlockedCodes[clue.id] = true;
-            localStorage.setItem("scaperoom_unlocked_codes", JSON.stringify(this.unlockedCodes));
-            this.renderGameDeck();
-          } else {
-            alert("Código incorrecto. Revisa las pistas para encontrar la clave.");
-          }
-        });
-        inputPasscode.addEventListener("keypress", (e) => {
-          if (e.key === "Enter") {
-            e.preventDefault();
-            btnSubmitPasscode.click();
-          }
-        });
-      }
 
       // Soporte para reproductor de audio con 2 llamadas (Pista P - Teléfono)
       if (clue.hasAudioPlayer) {
@@ -1086,7 +1044,7 @@ class ScapeRoomApp {
 
     try {
       const url = new URL(str);
-      const param = url.searchParams.get("p") || url.searchParams.get("token") || url.searchParams.get("pista");
+      const param = url.searchParams.get("c") || url.searchParams.get("code") || url.searchParams.get("p") || url.searchParams.get("token") || url.searchParams.get("pista");
       if (param) {
         const resolved = resolveClueId(param);
         if (resolved) return resolved;

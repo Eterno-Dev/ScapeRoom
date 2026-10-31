@@ -7,6 +7,7 @@ export const CLUES = {
   "PISTA-A": {
     id: "PISTA-A",
     letter: "A",
+    code: "A-7$9K",
     num: 1,
     token: "A",
     title: "Papeles",
@@ -20,6 +21,7 @@ export const CLUES = {
   "PISTA-B": {
     id: "PISTA-B",
     letter: "B",
+    code: "B-4#2P",
     num: 2,
     token: "B",
     title: "Llave pequeña",
@@ -33,6 +35,7 @@ export const CLUES = {
   "PISTA-C": {
     id: "PISTA-C",
     letter: "C",
+    code: "C-8%1M",
     num: 3,
     token: "C",
     title: "Boli",
@@ -46,6 +49,7 @@ export const CLUES = {
   "PISTA-D": {
     id: "PISTA-D",
     letter: "D",
+    code: "D-3&5X",
     num: 4,
     token: "D",
     title: "Destornillador",
@@ -59,6 +63,7 @@ export const CLUES = {
   "PISTA-E": {
     id: "PISTA-E",
     letter: "E",
+    code: "E-9!4R",
     num: 5,
     token: "E",
     title: "Llave grande",
@@ -72,6 +77,7 @@ export const CLUES = {
   "PISTA-F": {
     id: "PISTA-F",
     letter: "F",
+    code: "F-2?8L",
     num: 6,
     token: "F",
     title: "Copa",
@@ -85,6 +91,7 @@ export const CLUES = {
   "PISTA-G": {
     id: "PISTA-G",
     letter: "G",
+    code: "G-5*7T",
     num: 7,
     token: "G",
     title: "Pasaporte",
@@ -99,6 +106,7 @@ export const CLUES = {
   "PISTA-G2": {
     id: "PISTA-G2",
     letter: "G",
+    code: "G-5*7T",
     num: 7.2,
     token: "G",
     title: "Hoja de diario",
@@ -112,6 +120,7 @@ export const CLUES = {
   "PISTA-H": {
     id: "PISTA-H",
     letter: "H",
+    code: "H-6@3W",
     num: 8,
     token: "H",
     title: "Periódico Warbes",
@@ -125,6 +134,7 @@ export const CLUES = {
   "PISTA-I": {
     id: "PISTA-I",
     letter: "I",
+    code: "I-1#9Q",
     num: 9,
     token: "I",
     title: "Ticket roto",
@@ -138,6 +148,7 @@ export const CLUES = {
   "PISTA-J": {
     id: "PISTA-J",
     letter: "J",
+    code: "J-4$8Z",
     num: 10,
     token: "J",
     title: "Extracto bancario",
@@ -151,21 +162,21 @@ export const CLUES = {
   "PISTA-K": {
     id: "PISTA-K",
     letter: "K",
+    code: "K-8%2N",
     num: 11,
     token: "K",
     title: "Buzón",
     category: "Correspondencia",
     cardImage: "src/assets/images/objetos/card-obj-12.png",
     backBase: "card-back-base-1.png",
-    desc: "Buzón exterior cerrado con combinación. Introduce el código de la llave para abrirlo.",
-    requiresCode: true,
-    passcode: "4821",
+    desc: "Buzón exterior cerrado. Contiene correspondencia privada.",
     isPrivate: false,
     tablePickup: true
   },
   "PISTA-L": {
     id: "PISTA-L",
     letter: "L",
+    code: "L-7&4V",
     num: 12,
     token: "L",
     title: "Bote de pintura verde",
@@ -179,6 +190,7 @@ export const CLUES = {
   "PISTA-M": {
     id: "PISTA-M",
     letter: "M",
+    code: "M-3!6D",
     num: 13,
     token: "M",
     title: "Llave maestra",
@@ -192,6 +204,7 @@ export const CLUES = {
   "PISTA-N": {
     id: "PISTA-N",
     letter: "N",
+    code: "N-9*1B",
     num: 14,
     token: "N",
     title: "Nota manuscrita",
@@ -208,6 +221,7 @@ export const CLUES = {
   "PISTA-O": {
     id: "PISTA-O",
     letter: "O",
+    code: "O-2?5H",
     num: 15,
     token: "O",
     title: "Móvil desechable",
@@ -221,6 +235,7 @@ export const CLUES = {
   "PISTA-P": {
     id: "PISTA-P",
     letter: "P",
+    code: "P-5#7J",
     num: 16,
     token: "P",
     title: "Teléfono móvil",
@@ -239,23 +254,23 @@ export const CLUES = {
   "PISTA-Q": {
     id: "PISTA-Q",
     letter: "Q",
+    code: "Q-8$3C",
     num: 17,
     token: "Q",
     title: "Caja fuerte",
     category: "Compartimento de Seguridad",
     cardImage: "src/assets/images/objetos/card-obj-9.png",
     backBase: "card-back-base-3.png",
-    desc: "Caja fuerte acorazada con combinación digital. Requiere clave de 5 caracteres para desbloquearse.",
-    requiresCode: true,
-    passcode: "KZ4C5",
+    desc: "Caja fuerte acorazada con los archivos clasificados y documentos confidenciales en su interior.",
     unlockedTitle: "Archivos clasificados",
-    unlockedDesc: "Caja fuerte abierta con éxito (código KZ4C5). Los archivos clasificados y documentos confidenciales han quedado al descubierto.",
+    unlockedDesc: "Caja fuerte abierta. Los archivos clasificados y documentos confidenciales han quedado al descubierto.",
     isPrivate: false,
     tablePickup: true
   },
   "PISTA-R": {
     id: "PISTA-R",
     letter: "R",
+    code: "R-1%9F",
     num: 18,
     token: "R",
     title: "Ticket de compra",
@@ -269,6 +284,7 @@ export const CLUES = {
   "PISTA-S": {
     id: "PISTA-S",
     letter: "S",
+    code: "S-6&2Y",
     num: 19,
     token: "S",
     title: "Cartuchos",
@@ -285,6 +301,7 @@ export const CLUES = {
   "PISTA-T": {
     id: "PISTA-T",
     letter: "T",
+    code: "T-4!8S",
     num: 20,
     token: "T",
     title: "Ordenador",
@@ -292,10 +309,8 @@ export const CLUES = {
     cardImage: "src/assets/images/objetos/card-scanner-camera.png",
     backBase: "card-back-base-3.png",
     desc: "Ordenador de videovigilancia de la finca. La mayoría de vídeos de las cámaras se han perdido por un fallo del sistema.",
-    requiresCode: true,
-    passcode: "1628",
-    unlockedTitle: "Ordenador (Acceso concedido)",
-    unlockedDesc: "Acceso al sistema concedido. Las cámaras exteriores confirman fallos técnicos y grabaciones fragmentadas.",
+    unlockedTitle: "Ordenador de seguridad",
+    unlockedDesc: "Terminal de seguridad con los registros de videovigilancia. Varias cámaras presentan cortes y fallos.",
     isPrivate: false,
     tablePickup: true
   }
@@ -425,6 +440,24 @@ export function resolveClueId(rawInput) {
 
   if (nameAliases[input]) {
     return nameAliases[input];
+  }
+
+  // 0. Coincidencia por código de impresión exacto (ej: "A-7$9K", "B-4#2P")
+  for (const [id, clue] of Object.entries(CLUES)) {
+    if (clue.code && clue.code.toLowerCase() === input) {
+      return id;
+    }
+  }
+
+  // 0.1 Prefijo con guión de código (ej: "A-...", "B-...")
+  const codePrefixMatch = input.match(/^([a-z])[-_]/i);
+  if (codePrefixMatch) {
+    const targetLetter = codePrefixMatch[1].toUpperCase();
+    for (const [id, clue] of Object.entries(CLUES)) {
+      if (clue.letter === targetLetter) {
+        return id;
+      }
+    }
   }
 
   // Soporte de compatibilidad para tokens alfanuméricos anteriores

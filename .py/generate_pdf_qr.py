@@ -22,92 +22,142 @@ from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 OFFICIAL_CLUES = [
     {
         'letter': 'A',
+        'code': 'A-7$9K',
         'title': 'Papeles',
         'category': 'Expediente Jurídico',
-        'token': 'pap7a',
-        'desc': 'Documentos de investigación aportados por el abogado.',
-        'detail': 'Contiene el informe forense de la autopsia preliminar y el expediente de todos los acusados.',
-        'tablePickup': False
+        'tablePickup': True
     },
     {
         'letter': 'B',
+        'code': 'B-4#2P',
         'title': 'Llave pequeña',
         'category': 'Cerradura Secreta',
-        'token': 'llav2b',
-        'desc': 'Llave pequeña. Parece para abrir algo que no es una puerta. Estaba encima del sofá.',
-        'detail': 'Cerradura de dimensiones reducidas. Abre el buzón exterior (Pista K).',
-        'tablePickup': False
+        'tablePickup': True
     },
     {
         'letter': 'C',
+        'code': 'C-8%1M',
         'title': 'Boli',
         'category': 'Objeto Militar',
-        'token': 'bol9c',
-        'desc': 'Boli caro con escudo militar grabado y las siglas GM (General Militar).',
-        'detail': 'Bolígrafo de alta gama con grabado castrense oficial de Oficial Superior.',
-        'tablePickup': False
+        'tablePickup': True
     },
     {
         'letter': 'D',
+        'code': 'D-3&5X',
         'title': 'Destornillador',
         'category': 'Herramienta',
-        'token': 'des4d',
-        'desc': 'Punta plana. Oculto intencionadamente en un lugar muy sospechoso.',
-        'detail': 'Herramienta escondida a propósito con marcas recientes en el extremo de acero.',
-        'tablePickup': False
+        'tablePickup': True
     },
     {
         'letter': 'E',
+        'code': 'E-9!4R',
         'title': 'Llave grande',
         'category': 'Acceso Principal',
-        'token': 'llag5e',
-        'desc': 'Llave grande de hierro. Parece que abre una puerta grande o cancela.',
-        'detail': 'Pesada llave de hierro forjado diseñada para el portón exterior de la finca.',
-        'tablePickup': False
+        'tablePickup': True
     },
     {
         'letter': 'F',
+        'code': 'F-2?8L',
         'title': 'Copa',
         'category': 'Cristalería',
-        'token': 'cop3f',
-        'desc': 'Copa de cristal tallado con restos secos de líquido y sedimento blanquecino.',
-        'detail': 'Abandonada sobre una mesa auxiliar. El poso desprende un olor químico persistente.',
-        'tablePickup': False
+        'tablePickup': True
     },
     {
         'letter': 'G',
-        'title': 'Pasaporte',
-        'category': 'Identidad Oficial',
-        'token': 'pass7g',
-        'desc': 'Documento de viaje expedido bajo sellos de EE.UU. Sujeto a peritaje.',
-        'detail': 'Inspección técnica de control fronterizo sobre sellos de Alaska y código MRZ.',
-        'tablePickup': False
+        'code': 'G-5*7T',
+        'title': 'Pasaporte y Diario',
+        'category': 'Identidad / Manuscrito',
+        'tablePickup': True
     },
     {
         'letter': 'H',
+        'code': 'H-6@3W',
         'title': 'Periódico Warbes',
         'category': 'Prensa Financiera',
-        'token': 'war8h',
-        'desc': 'Revista de negocios y finanzas Warbes (desplome de Kronos y apuestas).',
-        'detail': 'Edición vespertina especial. Recoge la prueba física en la mesa.',
         'tablePickup': True
     },
     {
         'letter': 'I',
+        'code': 'I-1#9Q',
         'title': 'Ticket roto',
         'category': 'Comprobante',
-        'token': 'tic1i',
-        'desc': 'Ticket roto. Parece que alguien lo tiró porque no sabía qué hacer con él.',
-        'detail': 'Pase VIP rasgado con fecha 30.10 y valor $90.000. Recoge la prueba en la mesa.',
+        'tablePickup': True
+    },
+    {
+        'letter': 'J',
+        'code': 'J-4$8Z',
+        'title': 'Extracto bancario',
+        'category': 'Documento Financiero',
         'tablePickup': True
     },
     {
         'letter': 'K',
+        'code': 'K-8%2N',
         'title': 'Buzón',
         'category': 'Correspondencia',
-        'token': 'buz6k',
-        'desc': 'Buzón exterior cerrado. Requiere la Llave pequeña (Pista B) para abrirse.',
-        'detail': 'Cerradura exterior. Recoge las pistas de la parte K en la mesa.',
+        'tablePickup': True
+    },
+    {
+        'letter': 'L',
+        'code': 'L-7&4V',
+        'title': 'Bote de pintura verde',
+        'category': 'Jardinería / Exteriores',
+        'tablePickup': True
+    },
+    {
+        'letter': 'M',
+        'code': 'M-3!6D',
+        'title': 'Llave maestra',
+        'category': 'Cerrajería / Acceso',
+        'tablePickup': True
+    },
+    {
+        'letter': 'N',
+        'code': 'N-9*1B',
+        'title': 'Nota y Móvil',
+        'category': 'Mensaje / Móvil',
+        'tablePickup': True
+    },
+    {
+        'letter': 'O',
+        'code': 'O-2?5H',
+        'title': 'Móvil desechable',
+        'category': 'Comunicaciones',
+        'tablePickup': True
+    },
+    {
+        'letter': 'P',
+        'code': 'P-5#7J',
+        'title': 'Teléfono móvil',
+        'category': 'Grabaciones Telefónicas',
+        'tablePickup': True
+    },
+    {
+        'letter': 'Q',
+        'code': 'Q-8$3C',
+        'title': 'Caja fuerte',
+        'category': 'Compartimento de Seguridad',
+        'tablePickup': True
+    },
+    {
+        'letter': 'R',
+        'code': 'R-1%9F',
+        'title': 'Ticket de compra',
+        'category': 'Comprobante',
+        'tablePickup': True
+    },
+    {
+        'letter': 'S',
+        'code': 'S-6&2Y',
+        'title': 'Cartuchos',
+        'category': 'Balística',
+        'tablePickup': False
+    },
+    {
+        'letter': 'T',
+        'code': 'T-4!8S',
+        'title': 'Ordenador',
+        'category': 'Videovigilancia',
         'tablePickup': True
     }
 ]
@@ -123,7 +173,7 @@ def generate_qr_assets():
         os.makedirs(d, exist_ok=True)
         
     for item in OFFICIAL_CLUES:
-        url = f"{BASE_URL}{item['letter']}&t={item['token']}"
+        url = f"{BASE_URL}{item['letter']}&c={item['code']}"
         let = item['letter'].lower()
         
         # PNG
@@ -151,48 +201,30 @@ def generate_qr_assets():
         img_svg = qr_svg.make_image()
         
         for d in qr_dirs:
-            # Guardar por letra canónica
             img_png.save(os.path.join(d, f"qr-pista-{let}.png"))
             with open(os.path.join(d, f"qr-pista-{let}.svg"), 'wb') as f:
                 img_svg.save(f)
                 
-    print('All 10 QR PNG and SVG files generated in qr/ directories!')
+    print(f'All {len(OFFICIAL_CLUES)} QR PNG and SVG files generated in qr/ directories!')
 
 def build_pdf(filename="pistas_qr_imprimibles.pdf"):
     doc = SimpleDocTemplate(
         filename,
         pagesize=A4,
-        rightMargin=25,
-        leftMargin=25,
-        topMargin=22,
-        bottomMargin=22
+        rightMargin=20,
+        leftMargin=20,
+        topMargin=20,
+        bottomMargin=20
     )
     
     styles = getSampleStyleSheet()
-    title_style = ParagraphStyle(
-        'DocTitle',
+    
+    clue_code_style = ParagraphStyle(
+        'ClueCode',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=15,
+        fontSize=16,
         leading=19,
-        alignment=1,
-        textColor=colors.HexColor('#121214')
-    )
-    subtitle_style = ParagraphStyle(
-        'DocSubtitle',
-        parent=styles['Normal'],
-        fontName='Helvetica',
-        fontSize=8.5,
-        leading=11.5,
-        alignment=1,
-        textColor=colors.HexColor('#52525b')
-    )
-    clue_num_style = ParagraphStyle(
-        'ClueNum',
-        parent=styles['Normal'],
-        fontName='Helvetica-Bold',
-        fontSize=18,
-        leading=21,
         alignment=1,
         textColor=colors.HexColor('#991B1B')
     )
@@ -208,33 +240,27 @@ def build_pdf(filename="pistas_qr_imprimibles.pdf"):
     clue_cat_style = ParagraphStyle(
         'ClueCat',
         parent=styles['Normal'],
-        fontName='Helvetica-Bold',
+        fontName='Helvetica',
         fontSize=8,
         leading=10,
         alignment=1,
-        textColor=colors.HexColor('#71717a')
-    )
-    clue_desc_style = ParagraphStyle(
-        'ClueDesc',
-        parent=styles['Normal'],
-        fontName='Helvetica',
-        fontSize=7.8,
-        leading=9.8,
-        alignment=1,
-        textColor=colors.HexColor('#374151')
+        textColor=colors.HexColor('#52525b')
     )
     table_pickup_style = ParagraphStyle(
         'TablePickup',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=7.5,
+        fontSize=7.8,
         leading=9.5,
         alignment=1,
         textColor=colors.HexColor('#991B1B')
     )
     
     def make_cell(item):
-        url = f"{BASE_URL}{item['letter']}&t={item['token']}"
+        if not item:
+            return []
+            
+        url = f"{BASE_URL}{item['letter']}&c={item['code']}"
         qr = qrcode.QRCode(
             version=1,
             error_correction=qrcode.constants.ERROR_CORRECT_M,
@@ -249,61 +275,51 @@ def build_pdf(filename="pistas_qr_imprimibles.pdf"):
         img.save(buf, format='PNG')
         buf.seek(0)
         
-        rl_img = RLImage(buf, width=105, height=105)
+        rl_img = RLImage(buf, width=115, height=115)
+        
+        pickup_text = "<b>★ RECOGIDA FÍSICA EN MESA ★</b>" if item.get('tablePickup', True) else "&nbsp;"
         
         cell_elements = [
-            Spacer(1, 2),
-            Paragraph(f"PISTA {item['letter']}", clue_num_style),
-            Spacer(1, 2),
+            Spacer(1, 4),
+            Paragraph(f"<b>CÓDIGO: {item['code']}</b>", clue_code_style),
+            Spacer(1, 3),
             Paragraph(item['title'].upper(), clue_title_style),
             Paragraph(f"[{item['category'].upper()}]", clue_cat_style),
-            Spacer(1, 2),
+            Spacer(1, 4),
             rl_img,
-            Spacer(1, 2),
-            Paragraph(item['desc'], clue_desc_style),
-            Spacer(1, 2),
-            Paragraph("<b>★ RECOGIDA FÍSICA OBLIGATORIA EN MESA ★</b>" if item['tablePickup'] else "<font color='#4B5563'>Escanea con la cámara del juego</font>", table_pickup_style),
-            Spacer(1, 2)
+            Spacer(1, 5),
+            Paragraph(pickup_text, table_pickup_style),
+            Spacer(1, 4)
         ]
         return cell_elements
 
     story = []
     
-    # 10 clues in chunks of 4 (pages 1: 4 clues, page 2: 4 clues, page 3: 2 clues)
-    chunks = [OFFICIAL_CLUES[i:i+4] for i in range(0, len(OFFICIAL_CLUES), 4)]
+    # 6 clues per page: 2 columns x 3 rows
+    chunks = [OFFICIAL_CLUES[i:i+6] for i in range(0, len(OFFICIAL_CLUES), 6)]
     
     for page_idx, chunk in enumerate(chunks, start=1):
-        story.append(Paragraph(f'EL ASESINATO EN LA FINCA — TARJETAS QR DE PISTAS (PÁGINA {page_idx}/{len(chunks)})', title_style))
-        story.append(Spacer(1, 2))
-        story.append(Paragraph('Imprime, recorta por la línea y coloca cada tarjeta en la escena de la sala.<br/>Al escanear con la cámara del juego se añadirá automáticamente la carta del objeto al mazo interactivo.', subtitle_style))
-        story.append(Spacer(1, 8))
-        
-        row1 = [make_cell(chunk[0])]
-        if len(chunk) > 1:
-            row1.append(make_cell(chunk[1]))
-        else:
-            row1.append([])
+        rows = []
+        for r in range(3):
+            c1_idx = r * 2
+            c2_idx = r * 2 + 1
+            if c1_idx >= len(chunk) and c2_idx >= len(chunk):
+                break
+            c1 = chunk[c1_idx] if c1_idx < len(chunk) else None
+            c2 = chunk[c2_idx] if c2_idx < len(chunk) else None
+            rows.append([make_cell(c1), make_cell(c2)])
             
-        rows = [row1]
-        if len(chunk) > 2:
-            row2 = [make_cell(chunk[2])]
-            if len(chunk) > 3:
-                row2.append(make_cell(chunk[3]))
-            else:
-                row2.append([])
-            rows.append(row2)
-            
-        grid = Table(rows, colWidths=[270, 270])
+        grid = Table(rows, colWidths=[275, 275])
         grid.setStyle(TableStyle([
             ('BOX', (0,0), (-1,-1), 1.5, colors.HexColor('#000000')),
             ('INNERGRID', (0,0), (-1,-1), 0.8, colors.HexColor('#000000')),
             ('ALIGN', (0,0), (-1,-1), 'CENTER'),
             ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
-            ('TOPPADDING', (0,0), (-1,-1), 8),
-            ('BOTTOMPADDING', (0,0), (-1,-1), 8),
+            ('TOPPADDING', (0,0), (-1,-1), 6),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 6),
             ('LEFTPADDING', (0,0), (-1,-1), 8),
             ('RIGHTPADDING', (0,0), (-1,-1), 8),
-            ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#FAFAFA')),
+            ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#FFFFFF')),
         ]))
         story.append(grid)
         
@@ -311,7 +327,7 @@ def build_pdf(filename="pistas_qr_imprimibles.pdf"):
             story.append(PageBreak())
             
     doc.build(story)
-    print(f"Generated printable QR PDF: {filename}")
+    print(f"Generated printable QR PDF: {filename} ({len(chunks)} pages, 6 QRs/page)")
 
 if __name__ == '__main__':
     generate_qr_assets()
