@@ -567,11 +567,17 @@ class ScapeRoomApp {
                   `}
                 ` : `
                   <div class="clue-back-detail">
-                    <div class="clue-detail-tag">
+                    <div class="clue-detail-tag" style="background: ${clue.tablePickup ? '#991b1b' : '#1e3a8a'};">
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                      <span>PRUEBA INCRIMINATORIA</span>
+                      <span>${clue.tablePickup ? 'RECOGIDA EN MESA' : 'PRUEBA INCRIMINATORIA'}</span>
                     </div>
                     <p class="clue-detail-text">${clue.detail}</p>
+                    ${clue.tablePickup ? `
+                      <div class="clue-table-pickup-notice" style="margin-top: 8px; padding: 7px 10px; background: #991b1b; color: #ffffff; border-radius: 4px; text-align: center; font-weight: bold; font-size: 11px; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        <span>${clue.letter === 'K' ? 'RECOGE LAS PISTAS CORRESPONDIENTES A LA PARTE K EN LA MESA' : 'VE A RECOGER LAS PISTAS A LA MESA'}</span>
+                      </div>
+                    ` : ""}
                   </div>
                 `}
 
