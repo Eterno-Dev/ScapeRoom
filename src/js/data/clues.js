@@ -215,7 +215,7 @@ export const CLUES = {
     isPrivate: false,
     tablePickup: true,
     specialBackImage: "src/assets/images/tarjetas/card-esp-frame-3.png",
-    specialViewChars: [5, 6, 7],
+    specialViewChars: [1, 4], // 1: Cazador, 4: Militar
     linkedClues: ["PISTA-O"]
   },
   "PISTA-O": {
@@ -245,8 +245,8 @@ export const CLUES = {
     desc: "Teléfono móvil con dos grabaciones de audio guardadas en memoria.",
     hasAudioPlayer: true,
     audioCalls: [
-      { id: 1, title: "Llamada 1 (Interceptada)", file: "src/assets/audio/phone-safe-1.mp3" },
-      { id: 2, title: "Llamada 2 (Buzón de voz)", file: "src/assets/audio/phone-safe-2.mp3" }
+      { id: 1, title: "Llamada 1 (Interceptada)", file: "src/assets/audio/phone_safe_1.mp3" },
+      { id: 2, title: "Llamada 2 (Buzón de voz)", file: "src/assets/audio/phone_safe_2.mp3" }
     ],
     isPrivate: false,
     tablePickup: true

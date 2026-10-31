@@ -114,8 +114,8 @@ OFFICIAL_CLUES = [
     {
         'letter': 'N',
         'code': 'N-9*1B',
-        'title': 'Nota y Móvil',
-        'category': 'Mensaje / Móvil',
+        'title': 'Móvil',
+        'category': 'Comunicaciones',
         'tablePickup': True
     },
     {
@@ -211,10 +211,10 @@ def build_pdf(filename="pistas_qr_imprimibles.pdf"):
     doc = SimpleDocTemplate(
         filename,
         pagesize=A4,
-        rightMargin=20,
-        leftMargin=20,
-        topMargin=20,
-        bottomMargin=20
+        rightMargin=15,
+        leftMargin=15,
+        topMargin=15,
+        bottomMargin=15
     )
     
     styles = getSampleStyleSheet()
@@ -223,8 +223,8 @@ def build_pdf(filename="pistas_qr_imprimibles.pdf"):
         'ClueCode',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=16,
-        leading=19,
+        fontSize=12,
+        leading=14,
         alignment=1,
         textColor=colors.HexColor('#991B1B')
     )
@@ -232,8 +232,8 @@ def build_pdf(filename="pistas_qr_imprimibles.pdf"):
         'ClueTitle',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=11,
-        leading=13.5,
+        fontSize=9,
+        leading=11,
         alignment=1,
         textColor=colors.HexColor('#121214')
     )
@@ -241,8 +241,8 @@ def build_pdf(filename="pistas_qr_imprimibles.pdf"):
         'ClueCat',
         parent=styles['Normal'],
         fontName='Helvetica',
-        fontSize=8,
-        leading=10,
+        fontSize=7,
+        leading=8.5,
         alignment=1,
         textColor=colors.HexColor('#52525b')
     )
@@ -250,8 +250,8 @@ def build_pdf(filename="pistas_qr_imprimibles.pdf"):
         'TablePickup',
         parent=styles['Normal'],
         fontName='Helvetica-Bold',
-        fontSize=7.8,
-        leading=9.5,
+        fontSize=6.8,
+        leading=8.5,
         alignment=1,
         textColor=colors.HexColor('#991B1B')
     )
@@ -275,50 +275,58 @@ def build_pdf(filename="pistas_qr_imprimibles.pdf"):
         img.save(buf, format='PNG')
         buf.seek(0)
         
-        rl_img = RLImage(buf, width=115, height=115)
+        rl_img = RLImage(buf, width=94, height=94)
         
         pickup_text = "<b>★ RECOGIDA FÍSICA EN MESA ★</b>" if item.get('tablePickup', True) else "&nbsp;"
         
         cell_elements = [
-            Spacer(1, 4),
+            Spacer(1, 2),
             Paragraph(f"<b>CÓDIGO: {item['code']}</b>", clue_code_style),
-            Spacer(1, 3),
+            Spacer(1, 1),
             Paragraph(item['title'].upper(), clue_title_style),
             Paragraph(f"[{item['category'].upper()}]", clue_cat_style),
-            Spacer(1, 4),
+            Spacer(1, 2),
             rl_img,
-            Spacer(1, 5),
+            Spacer(1, 3),
             Paragraph(pickup_text, table_pickup_style),
-            Spacer(1, 4)
+            Spacer(1, 2)
         ]
         return cell_elements
 
     story = []
     
-    # 6 clues per page: 2 columns x 3 rows
-    chunks = [OFFICIAL_CLUES[i:i+6] for i in range(0, len(OFFICIAL_CLUES), 6)]
+    # 12 clues per page (3 columns x 4 rows)
+    COLS_PER_PAGE = 3
+    ROWS_PER_PAGE = 4
+    CLUES_PER_PAGE = COLS_PER_PAGE * ROWS_PER_PAGE  # 12
+    
+    chunks = [OFFICIAL_CLUES[i:i+CLUES_PER_PAGE] for i in range(0, len(OFFICIAL_CLUES), CLUES_PER_PAGE)]
     
     for page_idx, chunk in enumerate(chunks, start=1):
         rows = []
-        for r in range(3):
-            c1_idx = r * 2
-            c2_idx = r * 2 + 1
-            if c1_idx >= len(chunk) and c2_idx >= len(chunk):
-                break
-            c1 = chunk[c1_idx] if c1_idx < len(chunk) else None
-            c2 = chunk[c2_idx] if c2_idx < len(chunk) else None
-            rows.append([make_cell(c1), make_cell(c2)])
+        for r in range(ROWS_PER_PAGE):
+            row_items = []
+            has_any_item = False
+            for c in range(COLS_PER_PAGE):
+                idx = r * COLS_PER_PAGE + c
+                if idx < len(chunk):
+                    has_any_item = True
+                    row_items.append(make_cell(chunk[idx]))
+                else:
+                    row_items.append([])
+            if has_any_item:
+                rows.append(row_items)
             
-        grid = Table(rows, colWidths=[275, 275])
+        grid = Table(rows, colWidths=[188, 188, 188])
         grid.setStyle(TableStyle([
-            ('BOX', (0,0), (-1,-1), 1.5, colors.HexColor('#000000')),
-            ('INNERGRID', (0,0), (-1,-1), 0.8, colors.HexColor('#000000')),
+            ('BOX', (0,0), (-1,-1), 1.2, colors.HexColor('#000000')),
+            ('INNERGRID', (0,0), (-1,-1), 0.6, colors.HexColor('#000000')),
             ('ALIGN', (0,0), (-1,-1), 'CENTER'),
             ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
-            ('TOPPADDING', (0,0), (-1,-1), 6),
-            ('BOTTOMPADDING', (0,0), (-1,-1), 6),
-            ('LEFTPADDING', (0,0), (-1,-1), 8),
-            ('RIGHTPADDING', (0,0), (-1,-1), 8),
+            ('TOPPADDING', (0,0), (-1,-1), 4),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 4),
+            ('LEFTPADDING', (0,0), (-1,-1), 4),
+            ('RIGHTPADDING', (0,0), (-1,-1), 4),
             ('BACKGROUND', (0,0), (-1,-1), colors.HexColor('#FFFFFF')),
         ]))
         story.append(grid)
@@ -327,7 +335,7 @@ def build_pdf(filename="pistas_qr_imprimibles.pdf"):
             story.append(PageBreak())
             
     doc.build(story)
-    print(f"Generated printable QR PDF: {filename} ({len(chunks)} pages, 6 QRs/page)")
+    print(f"Generated printable QR PDF: {filename} ({len(chunks)} pages, {CLUES_PER_PAGE} QRs/page)")
 
 if __name__ == '__main__':
     generate_qr_assets()

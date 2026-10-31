@@ -524,16 +524,16 @@ class ScapeRoomApp {
             <!-- Cara Trasera del Objeto (Detalles e Información) -->
             <div class="flip-card-back clue-back-face" style="background-image: url('${(isSpecialViewer && clue.specialBackImage) ? clue.specialBackImage : `src/assets/images/tarjetas/${clue.backBase}`}');">
               
-              <!-- Letra Indicadora en la Esquina Superior (Identificador para sobres de pistas) -->
-              <div class="clue-corner-letter" title="Pista ${clue.letter}" style="z-index: 10;">
-                <span>${clue.letter}</span>
-              </div>
-
               ${(isSpecialViewer && clue.specialBackImage) ? `
-                <div class="card-special-fullscreen-back" style="position: absolute; inset: 0; border-radius: inherit; overflow: hidden; z-index: 2;">
+                <div class="card-special-fullscreen-back" style="position: absolute; inset: 0; width: 100%; height: 100%; border-radius: inherit; overflow: hidden; z-index: 10;">
                   <img src="${clue.specialBackImage}" alt="${clue.title}" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
                 </div>
               ` : `
+                <!-- Letra Indicadora en la Esquina Superior (Identificador para sobres de pistas) -->
+                <div class="clue-corner-letter" title="Pista ${clue.letter}" style="z-index: 10;">
+                  <span>${clue.letter}</span>
+                </div>
+
                 <!-- Escudo de Confidencialidad para Pistas Privadas (Ojito) -->
                 ${clue.isPrivate ? `
                   <div class="private-shield-overlay" id="shield-${clue.id}" style="background-image: url('src/assets/images/tarjetas/${clue.backBase}');">
@@ -597,7 +597,7 @@ class ScapeRoomApp {
                           <span class="phone-audio-time">0:00</span> / <span class="phone-audio-duration">--:--</span>
                         </div>
                       </div>
-                      <audio class="phone-audio-element" src="src/assets/audio/phone-safe-1.mp3" preload="metadata"></audio>
+                      <audio class="phone-audio-element" src="src/assets/audio/phone_safe_1.mp3" preload="metadata"></audio>
                     </div>
                   ` : ""}
 

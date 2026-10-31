@@ -1,0 +1,176 @@
+================================================================================
+GUÍA DE IMÁGENES DE OBJETOS - EL ASESINATO EN LA FINCA
+ESTÁNDAR: Formato PNG | Dimensiones: 340 x 480 px | Estilo realista noir / vintage
+================================================================================
+
+Este documento detalla todas las cartas de objetos del juego, indicando cuáles tienen
+imagen provisional compartida o de baja calidad, y las indicaciones exactas (prompts)
+para generarlas e integrarlas directamente en:
+  src/assets/images/objetos/
+
+--------------------------------------------------------------------------------
+RESUMEN DE PRIORIDAD (IMÁGENES FALTANTES O DUPLICADAS A GENERAR):
+--------------------------------------------------------------------------------
+1. PISTA G: Pasaporte (Actualmente placeholder de 6KB) -> card-obj-17.png
+2. PISTA G2: Hoja de diario (Duplicada con Buzón) -> card-obj-diario.png
+3. PISTA H: Periódico Warbes (Duplicada con Teléfono) -> card-obj-periodico.png
+4. PISTA I: Ticket roto (Duplicada con Ticket compra) -> card-obj-ticket-roto.png
+5. PISTA J: Extracto bancario (Duplicada con Cartuchos) -> card-obj-extracto.png
+6. PISTA K: Buzón (Duplicada con Hoja de diario) -> card-obj-buzon.png
+7. PISTA R: Ticket de compra (Duplicada con Ticket roto) -> card-obj-ticket-compra.png
+8. PISTA S: Cartuchos (Duplicada con Extracto bancario) -> card-obj-cartuchos.png
+9. PISTA T: Ordenador de seguridad (Actualmente icono temporal) -> card-obj-ordenador.png
+
+================================================================================
+DETALLE COMPLETO PISTA POR PISTA (A - T):
+================================================================================
+
+[PISTA A] PAPELES / EXPEDIENTE JURÍDICO
+- Archivo actual: src/assets/images/objetos/card-obj-11.png
+- Estado: ASIGNADA (OK)
+- Descripción: Documentos de investigación forense y jurídica del caso.
+
+[PISTA B] LLAVE PEQUEÑA
+- Archivo actual: src/assets/images/objetos/card-obj-3.png
+- Estado: ASIGNADA (OK)
+- Descripción: Llave pequeña dorada de buzón / compartimento secreto sobre tapizado.
+
+[PISTA C] BOLI
+- Archivo actual: src/assets/images/objetos/card-obj-6.png
+- Estado: ASIGNADA (OK)
+- Descripción: Bolígrafo de lujo con escudo militar grabado y siglas GM.
+
+[PISTA D] DESTORNILLADOR
+- Archivo actual: src/assets/images/objetos/card-obj-4.png
+- Estado: ASIGNADA (OK)
+- Descripción: Destornillador plano vintage con marcas de uso, escondido.
+
+[PISTA E] LLAVE GRANDE
+- Archivo actual: src/assets/images/objetos/card-obj-2.png
+- Estado: ASIGNADA (OK)
+- Descripción: Llave grande pesada de hierro forjado para portón o verja exterior.
+
+[PISTA F] COPA
+- Archivo actual: src/assets/images/objetos/card-obj-13.png
+- Estado: ASIGNADA (OK)
+- Descripción: Copa de cristal tallado con poso blanquecino en el fondo.
+
+--------------------------------------------------------------------------------
+[PISTA G] PASAPORTE [FALTA GENERAR / SUSTITUIR]
+--------------------------------------------------------------------------------
+- Archivo actual: src/assets/images/objetos/card-obj-17.png (Placeholder de 6 KB)
+- Archivo destino recomendado: src/assets/images/objetos/card-obj-17.png
+- Dimensiones: 340 x 480 px (PNG)
+- Prompt sugerido:
+  "Close-up photo of an authentic dark blue European diplomatic passport lying slightly open on a dark polished mahogany desk, showing biometric emblem and golden embossed coat of arms, moody noir cinematic lighting, subtle dust particles, 8k resolution, photorealistic."
+
+--------------------------------------------------------------------------------
+[PISTA G2] HOJA DE DIARIO [FALTA GENERAR / SUSTITUIR]
+--------------------------------------------------------------------------------
+- Archivo actual: src/assets/images/objetos/card-obj-12.png (Compartida)
+- Archivo destino recomendado: src/assets/images/objetos/card-obj-diario.png
+- Dimensiones: 340 x 480 px (PNG)
+- Prompt sugerido:
+  "Torn aged yellowed notebook diary page with dense handwritten cursive ink notes in Spanish, faded ink stains, ink splatters, rough edges, laid on a rustic wooden table under warm desk lamp light, macro shot, ultra-realistic."
+
+--------------------------------------------------------------------------------
+[PISTA H] PERIÓDICO WARBES [FALTA GENERAR / SUSTITUIR]
+--------------------------------------------------------------------------------
+- Archivo actual: src/assets/images/objetos/card-obj-10.png (Compartida)
+- Archivo destino recomendado: src/assets/images/objetos/card-obj-periodico.png
+- Dimensiones: 340 x 480 px (PNG)
+- Prompt sugerido:
+  "Vintage financial business newspaper named 'WARBES' folded on a vintage desk, bold financial headlines and market crash graphics visible, sepia toned paper, subtle coffee mug ring mark, dramatic shadows, realistic journalism photography."
+
+--------------------------------------------------------------------------------
+[PISTA I] TICKET ROTO [FALTA GENERAR / SUSTITUIR]
+--------------------------------------------------------------------------------
+- Archivo actual: src/assets/images/objetos/card-obj-14.png (Compartida)
+- Archivo destino recomendado: src/assets/images/objetos/card-obj-ticket-roto.png
+- Dimensiones: 340 x 480 px (PNG)
+- Prompt sugerido:
+  "A torn paper betting or entrance ticket ripped in half, thermal printed numbers and barcode partially visible, crumpled, lying on a dark stone floor, cinematic low angle, high detail, noir thriller aesthetic."
+
+--------------------------------------------------------------------------------
+[PISTA J] EXTRACTO BANCARIO [FALTA GENERAR / SUSTITUIR]
+--------------------------------------------------------------------------------
+- Archivo actual: src/assets/images/objetos/card-obj-15.png (Compartida)
+- Archivo destino recomendado: src/assets/images/objetos/card-obj-extracto.png
+- Dimensiones: 340 x 480 px (PNG)
+- Prompt sugerido:
+  "A high-value Swiss bank account statement document on clean cream paper with red confidential stamp, financial transaction tables and account numbers, red pen annotations circled, realistic investigative evidence photography."
+
+--------------------------------------------------------------------------------
+[PISTA K] BUZÓN [FALTA GENERAR / SUSTITUIR]
+--------------------------------------------------------------------------------
+- Archivo actual: src/assets/images/objetos/card-obj-12.png (Compartida)
+- Archivo destino recomendado: src/assets/images/objetos/card-obj-buzon.png
+- Dimensiones: 340 x 480 px (PNG)
+- Prompt sugerido:
+  "Vintage dark green weathered metal mailbox mounted on a rustic stone garden wall, small brass keyhole lock, faint rain drops, mysterious atmosphere at dusk, realistic textures."
+
+[PISTA L] BOTE DE PINTURA VERDE
+- Archivo actual: src/assets/images/objetos/card-obj-16.png
+- Estado: ASIGNADA (OK)
+- Descripción: Bote metálico volcado con pintura verde bosque derramándose.
+
+[PISTA M] LLAVE MAESTRA
+- Archivo actual: src/assets/images/objetos/card-obj-7.png
+- Estado: ASIGNADA (OK)
+- Descripción: Llave maestra especial de cerrajería tipo esqueleto antiguo.
+
+[PISTA N] NOTA MANUSCRITA (POST-IT)
+- Archivo actual: src/assets/images/objetos/card-obj-8.png
+- Reverso especial: src/assets/images/tarjetas/card-esp-frame-3.png (exclusivo para Cazador y Militar)
+- Estado: ASIGNADA (OK)
+- Descripción: Pequeña nota de papel adhesivo con apunte cifrado.
+
+[PISTA O] MÓVIL DESECHABLE
+- Archivo actual: src/assets/images/objetos/card-obj-5.png
+- Estado: ASIGNADA (OK)
+- Descripción: Teléfono móvil prepago básico barato (burner phone) con teclado físico.
+
+[PISTA P] TELÉFONO MÓVIL (GRABACIONES DE AUDIO)
+- Archivo actual: src/assets/images/objetos/card-obj-10.png
+- Audios vinculados: src/assets/audio/phone_safe_1.mp3 y phone_safe_2.mp3
+- Estado: ASIGNADA (OK)
+- Descripción: Smartphone con pantalla oscura mostrando interfaz de llamada de voz grabada.
+
+[PISTA Q] CAJA FUERTE
+- Archivo actual: src/assets/images/objetos/card-obj-9.png
+- Estado: ASIGNADA (OK)
+- Descripción: Caja fuerte empotrada en pared con dial de combinación y pernos pesados.
+
+--------------------------------------------------------------------------------
+[PISTA R] TICKET DE COMPRA [FALTA GENERAR / SUSTITUIR]
+--------------------------------------------------------------------------------
+- Archivo actual: src/assets/images/objetos/card-obj-14.png (Compartida)
+- Archivo destino recomendado: src/assets/images/objetos/card-obj-ticket-compra.png
+- Dimensiones: 340 x 480 px (PNG)
+- Prompt sugerido:
+  "Intact receipt from a hardware store with printed date, itemized list of tools and solvents, printed on white thermal paper, lying flat next to a pencil on a workshop table, sharp crisp macro focus."
+
+--------------------------------------------------------------------------------
+[PISTA S] CARTUCHOS [FALTA GENERAR / SUSTITUIR]
+--------------------------------------------------------------------------------
+- Archivo actual: src/assets/images/objetos/card-obj-15.png (Compartida)
+- Archivo destino recomendado: src/assets/images/objetos/card-obj-cartuchos.png
+- Dimensiones: 340 x 480 px (PNG)
+- Prompt sugerido:
+  "Three spent blank bullet shell casings with crimped star tips and no lead projectile, golden brass, lying on dry leaves and gravel soil, macro photography, forensic police evidence marker beside them, realistic 8k."
+
+--------------------------------------------------------------------------------
+[PISTA T] ORDENADOR DE SEGURIDAD [FALTA GENERAR / SUSTITUIR]
+--------------------------------------------------------------------------------
+- Archivo actual: src/assets/images/objetos/card-scanner-camera.png (Icono provisional)
+- Archivo destino recomendado: src/assets/images/objetos/card-obj-ordenador.png
+- Dimensiones: 340 x 480 px (PNG)
+- Prompt sugerido:
+  "A desktop computer monitor in a dim security control room displaying CCTV camera split feeds of a dark mansion and estate grounds, some cameras showing static noise error, glowing screen in the dark, realistic high-tech suspense thriller."
+
+================================================================================
+CÓMO SUSTITUIR LAS IMÁGENES UNA VEZ GENERADAS:
+1. Guarda la imagen en la carpeta 'src/assets/images/objetos/' con el nombre indicado.
+2. Si mantienes el mismo nombre de archivo, se actualizará automáticamente.
+3. Si usas nombres nuevos (ej. card-obj-ordenador.png), actualiza la propiedad 'cardImage' en 'src/js/data/clues.js'.
+================================================================================
