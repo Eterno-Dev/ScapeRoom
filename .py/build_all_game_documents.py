@@ -729,7 +729,7 @@ def generate_informe_medico_previo_pdf(output_filename="6_informe_medico_previo.
         [
             Paragraph("<b>EXPEDIENTE JUDICIAL:</b><br/><font name='Courier-Bold'>JM-2026/884-CONSIG</font>", j_lab),
             Paragraph("<b>FECHA Y HORA DE COMPARECENCIA:</b><br/><font name='Courier-Bold' color='#991B1B'><b>30/10/2026 — 18:24:00 HORAS</b></font><br/><font size=6 color='#1E3A8A'><b>(COMPARECENCIA ESTRICTAMENTE PRESENCIAL EN SEDE)</b></font>", j_lab),
-            Paragraph("<b>INTERESADO / COMPARECIENTE:</b><br/><font name='Courier-Bold'>Sr. Valparaíso (D. Alfonso Valparaíso)</font>", j_lab),
+            Paragraph("<b>INTERESADO / COMPARECIENTE:</b><br/><font name='Courier-Bold'>Sr. Valparaíso</font>", j_lab),
             Paragraph("<b>VENTANILLA:</b><br/><font name='Courier-Bold'>Caja Central Nº 2</font>", j_lab)
         ]
     ]
