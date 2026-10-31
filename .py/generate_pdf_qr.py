@@ -277,18 +277,14 @@ def build_pdf(filename="pistas_qr_imprimibles.pdf"):
         
         rl_img = RLImage(buf, width=94, height=94)
         
-        pickup_text = "<b>★ RECOGIDA FÍSICA EN MESA ★</b>" if item.get('tablePickup', True) else "&nbsp;"
-        
         cell_elements = [
-            Spacer(1, 3),
-            Paragraph(f"<b>CÓDIGO: {item['code']}</b>", clue_code_style),
-            Spacer(1, 2),
-            Paragraph(item['title'].upper(), clue_title_style),
-            Spacer(1, 3),
-            rl_img,
             Spacer(1, 4),
-            Paragraph(pickup_text, table_pickup_style),
-            Spacer(1, 3)
+            Paragraph(f"<b>CÓDIGO: {item['code']}</b>", clue_code_style),
+            Spacer(1, 3),
+            Paragraph(item['title'].upper(), clue_title_style),
+            Spacer(1, 4),
+            rl_img,
+            Spacer(1, 4)
         ]
         return cell_elements
 
