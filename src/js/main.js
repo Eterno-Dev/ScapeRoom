@@ -352,9 +352,9 @@ class ScapeRoomApp {
       scannerSlide.innerHTML = `
         <div class="flip-card game-card-flip is-admin-card" id="scanner-flip-card">
           <div class="flip-card-inner">
-            <!-- Cara Frontal de la Tarjeta (Imagen de Cámara con Borde Azul) -->
+            <!-- Cara Frontal de la Tarjeta (Imagen de Casete) -->
             <div class="flip-card-front">
-              <img src="src/assets/images/objetos/card-scanner-camera.png" alt="Grabación de las Últimas Palabras" class="char-card-img" />
+              <img src="src/assets/images/objetos/card-obj-9.png" alt="Grabación de las Últimas Palabras" class="char-card-img" />
             </div>
 
             <!-- Cara Trasera: Reproductor de Cassette con Audio -->
