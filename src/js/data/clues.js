@@ -209,16 +209,15 @@ export const CLUES = {
     code: "N-9*1B",
     num: 14,
     token: "N",
-    title: "Nota manuscrita",
+    title: "Notas",
     category: "Nota / Mensaje",
-    cardImage: "src/assets/images/objetos/card-obj-8.png",
+    cardImage: "src/assets/images/objetos/card-obj-12.png",
     backBase: "card-back-base-3.png",
     desc: "Una pequeña nota tipo post-it encontrada en la cocina con una anotación apresurada.",
     isPrivate: false,
     tablePickup: true,
-    specialBackImage: "src/assets/images/tarjetas/card-esp-frame-3.png",
-    specialViewChars: [1, 4], // 1: Cazador, 4: Militar
-    linkedClues: ["PISTA-O"]
+    specialBackImage: "src/assets/images/tarjetas/card-morse.png",
+    specialViewChars: [1, 4] // 1: Cazador, 4: Militar
   },
   "PISTA-O": {
     id: "PISTA-O",
@@ -404,6 +403,7 @@ export function resolveClueId(rawInput) {
     "tarjeta de personal": "PISTA-M",
     "tarjeta personal": "PISTA-M",
 
+    "notas": "PISTA-N",
     "nota": "PISTA-N",
     "postit": "PISTA-N",
     "post-it": "PISTA-N",
