@@ -148,10 +148,25 @@ export const CLUES = {
     isPrivate: false,
     tablePickup: true
   },
+  "PISTA-K": {
+    id: "PISTA-K",
+    letter: "K",
+    num: 11,
+    token: "K",
+    title: "Buzón",
+    category: "Correspondencia",
+    cardImage: "src/assets/images/objetos/card-obj-12.png",
+    backBase: "card-back-base-1.png",
+    desc: "Buzón exterior cerrado con combinación. Introduce el código de la llave para abrirlo.",
+    requiresCode: true,
+    passcode: "4821",
+    isPrivate: false,
+    tablePickup: true
+  },
   "PISTA-L": {
     id: "PISTA-L",
     letter: "L",
-    num: 11,
+    num: 12,
     token: "L",
     title: "Bote de pintura verde",
     category: "Jardinería / Exteriores",
@@ -164,20 +179,20 @@ export const CLUES = {
   "PISTA-M": {
     id: "PISTA-M",
     letter: "M",
-    num: 12,
+    num: 13,
     token: "M",
-    title: "Tarjeta de personal",
-    category: "Acceso / Seguridad",
+    title: "Llave maestra",
+    category: "Cerrajería / Acceso",
     cardImage: "src/assets/images/objetos/card-obj-7.png",
     backBase: "card-back-base-2.png",
-    desc: "Tarjeta magnética de acceso del personal de servicio. Permite desbloquear la puerta de la cocina.",
+    desc: "Una llave maestra que abre todas las puertas de la finca.",
     isPrivate: false,
     tablePickup: true
   },
   "PISTA-N": {
     id: "PISTA-N",
     letter: "N",
-    num: 13,
+    num: 14,
     token: "N",
     title: "Nota manuscrita",
     category: "Nota / Mensaje",
@@ -193,7 +208,7 @@ export const CLUES = {
   "PISTA-O": {
     id: "PISTA-O",
     letter: "O",
-    num: 14,
+    num: 15,
     token: "O",
     title: "Móvil desechable",
     category: "Comunicaciones",
@@ -202,22 +217,88 @@ export const CLUES = {
     desc: "Móvil desechable. Estaba escondido en el cajón de los cubiertos.",
     isPrivate: false,
     tablePickup: true
-  }
-  /*
-  "PISTA-K": {
-    id: "PISTA-K",
-    letter: "K",
-    num: 11,
-    token: "K",
-    title: "Buzón",
-    category: "Correspondencia",
-    cardImage: "src/assets/images/objetos/card-obj-12.png",
+  },
+  "PISTA-P": {
+    id: "PISTA-P",
+    letter: "P",
+    num: 16,
+    token: "P",
+    title: "Teléfono móvil",
+    category: "Grabaciones Telefónicas",
+    cardImage: "src/assets/images/objetos/card-obj-10.png",
+    backBase: "card-back-base-2.png",
+    desc: "Teléfono móvil con dos grabaciones de audio guardadas en memoria.",
+    hasAudioPlayer: true,
+    audioCalls: [
+      { id: 1, title: "Llamada 1 (Interceptada)", file: "src/assets/audio/phone-safe-1.mp3" },
+      { id: 2, title: "Llamada 2 (Buzón de voz)", file: "src/assets/audio/phone-safe-2.mp3" }
+    ],
+    isPrivate: false,
+    tablePickup: true
+  },
+  "PISTA-Q": {
+    id: "PISTA-Q",
+    letter: "Q",
+    num: 17,
+    token: "Q",
+    title: "Caja fuerte",
+    category: "Compartimento de Seguridad",
+    cardImage: "src/assets/images/objetos/card-obj-9.png",
+    backBase: "card-back-base-3.png",
+    desc: "Caja fuerte acorazada con combinación digital. Requiere clave de 5 caracteres para desbloquearse.",
+    requiresCode: true,
+    passcode: "KZ4C5",
+    unlockedTitle: "Archivos clasificados",
+    unlockedDesc: "Caja fuerte abierta con éxito (código KZ4C5). Los archivos clasificados y documentos confidenciales han quedado al descubierto.",
+    isPrivate: false,
+    tablePickup: true
+  },
+  "PISTA-R": {
+    id: "PISTA-R",
+    letter: "R",
+    num: 18,
+    token: "R",
+    title: "Ticket de compra",
+    category: "Comprobante",
+    cardImage: "src/assets/images/objetos/card-obj-14.png",
     backBase: "card-back-base-1.png",
-    desc: "Buzón exterior cerrado. Parece que requiere una llave pequeña para poder abrirse.",
+    desc: "Un ticket de compra reciente de un establecimiento local con detalles sospechosos.",
+    isPrivate: false,
+    tablePickup: true
+  },
+  "PISTA-S": {
+    id: "PISTA-S",
+    letter: "S",
+    num: 19,
+    token: "S",
+    title: "Cartuchos",
+    category: "Balística",
+    cardImage: "src/assets/images/objetos/card-obj-15.png",
+    backBase: "card-back-base-2.png",
+    desc: "Varios cartuchos percutidos encontrados en la escena. Sin formación balística, no es posible determinar si contenían munición real.",
+    isBlankAmmo: true,
+    expertChars: [1, 4], // Cazador (1) y Militar (4)
+    expertText: "¡SON CARTUCHOS DE FOGUEO! Tu experiencia en armas te permite verificar que estos casquillos no contenían proyectiles reales. Los disparos fueron simulados; no hubo proyectil letal.",
+    isPrivate: false,
+    tablePickup: false
+  },
+  "PISTA-T": {
+    id: "PISTA-T",
+    letter: "T",
+    num: 20,
+    token: "T",
+    title: "Ordenador",
+    category: "Sistema de Videovigilancia",
+    cardImage: "src/assets/images/objetos/card-scanner-camera.png",
+    backBase: "card-back-base-3.png",
+    desc: "Ordenador de videovigilancia de la finca. La mayoría de vídeos de las cámaras se han perdido por un fallo del sistema.",
+    requiresCode: true,
+    passcode: "1628",
+    unlockedTitle: "Ordenador (Acceso concedido)",
+    unlockedDesc: "Acceso al sistema concedido. Las cámaras exteriores confirman fallos técnicos y grabaciones fragmentadas.",
     isPrivate: false,
     tablePickup: true
   }
-  */
 };
 
 /**
@@ -290,13 +371,11 @@ export function resolveClueId(rawInput) {
     "jardin": "PISTA-L",
     "jardín": "PISTA-L",
 
+    "llave maestra": "PISTA-M",
+    "maestra": "PISTA-M",
     "tarjeta": "PISTA-M",
     "tarjeta de personal": "PISTA-M",
     "tarjeta personal": "PISTA-M",
-    "personal": "PISTA-M",
-    "tarjeta acceso": "PISTA-M",
-    "acceso cocina": "PISTA-M",
-    "cocina": "PISTA-M",
 
     "nota": "PISTA-N",
     "postit": "PISTA-N",
@@ -309,9 +388,36 @@ export function resolveClueId(rawInput) {
     "móvil": "PISTA-O",
     "movil desechable": "PISTA-O",
     "móvil desechable": "PISTA-O",
-    "telefono": "PISTA-O",
-    "teléfono": "PISTA-O",
     "cubiertos": "PISTA-O",
+
+    "telefono": "PISTA-P",
+    "teléfono": "PISTA-P",
+    "llamada": "PISTA-P",
+    "llamadas": "PISTA-P",
+    "audios": "PISTA-P",
+    "audio": "PISTA-P",
+
+    "caja fuerte": "PISTA-Q",
+    "cajafuerte": "PISTA-Q",
+    "caja": "PISTA-Q",
+    "archivos clasificados": "PISTA-Q",
+    "documentos clasificados": "PISTA-Q",
+    "kz4c5": "PISTA-Q",
+
+    "ticket compra": "PISTA-R",
+    "ticket de compra": "PISTA-R",
+    "compra": "PISTA-R",
+
+    "cartuchos": "PISTA-S",
+    "cartucho": "PISTA-S",
+    "fogueo": "PISTA-S",
+    "balas": "PISTA-S",
+
+    "ordenador": "PISTA-T",
+    "pc": "PISTA-T",
+    "camaras": "PISTA-T",
+    "cámaras": "PISTA-T",
+    "seguridad": "PISTA-T",
 
     "buzon": "PISTA-K",
     "buzón": "PISTA-K"
