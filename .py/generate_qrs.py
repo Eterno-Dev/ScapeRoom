@@ -58,7 +58,7 @@ CLUES = [
     }
 ]
 
-BASE_URL = "https://eterno-dev.github.io/ScapeRoom/"
+BASE_URL = "https://eterno-dev.github.io/ScapeRoom/jugar/valparaiso/"
 
 def generate():
     svg_dir = os.path.join("src", "assets", "images", "svg")

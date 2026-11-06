@@ -509,8 +509,11 @@ class ScapeRoomApp {
       );
 
       const isExpert = Boolean(clue.isBlankAmmo && clue.expertChars && clue.expertChars.includes(this.selectedCharId));
+<<<<<<< HEAD
       const isWitness = Boolean(clue.witnessChars && clue.witnessChars.includes(this.selectedCharId));
       const isCodeUnlocked = !clue.requiresCode || Boolean(this.unlockedCodes[clue.id]);
+=======
+>>>>>>> d033a41 (Actualizar generador QR con 6 tarjetas por pagina, codigos A-T y eliminacion de contrasenas en tarjetas)
 
       const clueSlide = document.createElement("div");
       clueSlide.className = "game-card-slide";
@@ -526,6 +529,7 @@ class ScapeRoomApp {
             <!-- Cara Trasera del Objeto (Detalles e Información) -->
             <div class="flip-card-back clue-back-face" style="background-image: url('${(isSpecialViewer && clue.specialBackImage) ? clue.specialBackImage : `src/assets/images/tarjetas/${clue.backBase}`}');">
               
+<<<<<<< HEAD
               ${(isSpecialViewer && clue.specialBackImage) ? `
                 <div class="card-special-fullscreen-back" style="position: absolute; inset: 0; width: 100%; height: 100%; border-radius: inherit; overflow: hidden; z-index: 10;">
                   <img src="${clue.specialBackImage}" alt="${clue.title}" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
@@ -536,6 +540,18 @@ class ScapeRoomApp {
                   <span>${clue.letter}</span>
                 </div>
 
+=======
+              <!-- Letra Indicadora en la Esquina Superior (Identificador para sobres de pistas) -->
+              <div class="clue-corner-letter" title="Pista ${clue.letter}" style="z-index: 10;">
+                <span>${clue.letter}</span>
+              </div>
+
+              ${(isSpecialViewer && clue.specialBackImage) ? `
+                <div class="card-special-fullscreen-back" style="position: absolute; inset: 0; border-radius: inherit; overflow: hidden; z-index: 2;">
+                  <img src="${clue.specialBackImage}" alt="${clue.title}" style="width: 100%; height: 100%; object-fit: cover; display: block;" />
+                </div>
+              ` : `
+>>>>>>> d033a41 (Actualizar generador QR con 6 tarjetas por pagina, codigos A-T y eliminacion de contrasenas en tarjetas)
                 <!-- Escudo de Confidencialidad para Pistas Privadas (Ojito) -->
                 ${clue.isPrivate ? `
                   <div class="private-shield-overlay" id="shield-${clue.id}" style="background-image: url('src/assets/images/tarjetas/${clue.backBase}');">
@@ -563,6 +579,7 @@ class ScapeRoomApp {
 
                 <div class="card-back-content">
                   <div class="card-back-header">
+<<<<<<< HEAD
                     <h4 class="card-back-name">${(isCodeUnlocked && clue.unlockedTitle) ? clue.unlockedTitle : clue.title}</h4>
                   </div>
 
@@ -647,6 +664,54 @@ class ScapeRoomApp {
                       </div>
                     ` : ""}
                   `}
+=======
+                    <h4 class="card-back-name">${clue.unlockedTitle || clue.title}</h4>
+                  </div>
+
+                  <p class="card-back-bio">${clue.unlockedDesc || clue.desc}</p>
+
+                  ${clue.isBlankAmmo ? `
+                    ${isExpert ? `
+                      <div style="margin: 8px 0; padding: 8px 10px; border: 1.5px solid #16a34a; background: rgba(22, 163, 74, 0.1); border-radius: 4px;">
+                        <div style="display: flex; align-items: center; gap: 6px; color: #15803d; font-size: 11px; font-weight: bold; margin-bottom: 4px;">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                          <span>DICTAMEN BALÍSTICO DE EXPERTO</span>
+                        </div>
+                        <p style="color: #166534; font-size: 11px; line-height: 1.35; margin: 0;">
+                          ${clue.expertText}
+                        </p>
+                      </div>
+                    ` : ""}
+                  ` : ""}
+
+                  ${clue.hasAudioPlayer ? `
+                    <div class="phone-audio-player-box" style="margin-top: 8px; background: #18181b; border: 1px solid #3f3f46; border-radius: 6px; padding: 8px; color: #fff;">
+                      <div style="display: flex; gap: 6px; margin-bottom: 6px;">
+                        <button type="button" class="btn-phone-call-tab active" data-call-idx="1" style="flex: 1; padding: 4px 6px; font-size: 10.5px; font-weight: bold; background: #2563eb; color: #fff; border: none; border-radius: 4px; cursor: pointer;">Llamada 1</button>
+                        <button type="button" class="btn-phone-call-tab" data-call-idx="2" style="flex: 1; padding: 4px 6px; font-size: 10.5px; font-weight: bold; background: #27272a; color: #a1a1aa; border: none; border-radius: 4px; cursor: pointer;">Llamada 2</button>
+                      </div>
+                      <div class="phone-call-info" style="font-size: 10px; color: #94a3b8; margin-bottom: 6px; text-align: center;">
+                        <span class="phone-call-title">Llamada 1 (Interceptada)</span>
+                      </div>
+                      <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <button type="button" class="btn-phone-play-toggle" style="width: 32px; height: 32px; border-radius: 50%; background: #3b82f6; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center;">
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        </button>
+                        <div style="flex: 1; font-family: monospace; font-size: 11px; color: #e2e8f0; text-align: center;">
+                          <span class="phone-audio-time">0:00</span> / <span class="phone-audio-duration">--:--</span>
+                        </div>
+                      </div>
+                      <audio class="phone-audio-element" src="src/assets/audio/phone-safe-1.mp3" preload="metadata"></audio>
+                    </div>
+                  ` : ""}
+
+                  ${clue.tablePickup ? `
+                    <div class="clue-table-pickup-notice" style="margin-top: 14px; padding: 10px 12px; background: #991b1b; color: #ffffff; border-radius: 4px; text-align: center; font-weight: bold; font-size: 11px; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                      <span>VE A RECOGER LAS PISTAS A LA MESA</span>
+                    </div>
+                  ` : ""}
+>>>>>>> d033a41 (Actualizar generador QR con 6 tarjetas por pagina, codigos A-T y eliminacion de contrasenas en tarjetas)
 
                   ${clue.isPrivate ? `
                     <button class="btn-reshield-sensitive" data-shield-id="shield-${clue.id}" type="button">
@@ -669,15 +734,20 @@ class ScapeRoomApp {
           e.target.closest(".btn-reshield-sensitive") ||
           e.target.closest(".btn-toggle-expert-view") ||
           e.target.closest("[id^='expert-note-']") ||
+<<<<<<< HEAD
           e.target.closest(".phone-audio-player-box") ||
           e.target.closest(".input-clue-passcode") ||
           e.target.closest(".btn-submit-clue-passcode")
+=======
+          e.target.closest(".phone-audio-player-box")
+>>>>>>> d033a41 (Actualizar generador QR con 6 tarjetas por pagina, codigos A-T y eliminacion de contrasenas en tarjetas)
         ) {
           return;
         }
         e.currentTarget.classList.toggle("is-flipped");
       });
 
+<<<<<<< HEAD
       // Soporte para introducción de contraseña en la tarjeta (Móvil desechable 3JF6, PC 8008135)
       const btnSubmitPasscode = clueSlide.querySelector(".btn-submit-clue-passcode");
       const inputPasscode = clueSlide.querySelector(".input-clue-passcode");
@@ -725,6 +795,8 @@ class ScapeRoomApp {
         });
       }
 
+=======
+>>>>>>> d033a41 (Actualizar generador QR con 6 tarjetas por pagina, codigos A-T y eliminacion de contrasenas en tarjetas)
       // Soporte para reproductor de audio con 2 llamadas (Pista P - Teléfono)
       if (clue.hasAudioPlayer) {
         const audioEl = clueSlide.querySelector(".phone-audio-element");
