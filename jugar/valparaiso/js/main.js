@@ -91,7 +91,7 @@ class ScapeRoomApp {
       this.savedBackBases[charId] = randomBase;
       localStorage.setItem("scaperoom_back_bases", JSON.stringify(this.savedBackBases));
     }
-    return `../../src/assets/images/tarjetas/${this.savedBackBases[charId]}`;
+    return `assets/images/tarjetas/${this.savedBackBases[charId]}`;
   }
 
   /* ==========================================================================
@@ -354,11 +354,11 @@ class ScapeRoomApp {
           <div class="flip-card-inner">
             <!-- Cara Frontal de la Tarjeta (Imagen de Cámara con Borde Azul) -->
             <div class="flip-card-front">
-              <img src="../../src/assets/images/objetos/card-scanner-camera.png" alt="Grabación de las Últimas Palabras" class="char-card-img" />
+              <img src="assets/images/objetos/card-scanner-camera.png" alt="Grabación de las Últimas Palabras" class="char-card-img" />
             </div>
 
             <!-- Cara Trasera: Reproductor de Cassette con Audio -->
-            <div class="flip-card-back tape-card-back" style="background-image: url('../../src/assets/images/tarjetas/card-back-base-2.png');">
+            <div class="flip-card-back tape-card-back" style="background-image: url('assets/images/tarjetas/card-back-base-2.png');">
               <div class="tape-back-content">
                 <div class="tape-header">
                   <span class="tape-badge">GRABACIÓN CONFIDENCIAL</span>
@@ -403,7 +403,7 @@ class ScapeRoomApp {
                     </button>
                   </div>
 
-                  <audio id="audio-ultimas-palabras" src="../../src/assets/audio/ultimas_palabras.mp3" preload="metadata"></audio>
+                  <audio id="audio-ultimas-palabras" src="assets/audio/ultimas_palabras.mp3" preload="metadata"></audio>
                 </div>
 
                 <!-- Transcripción del Audio para lectura -->
@@ -441,11 +441,11 @@ class ScapeRoomApp {
           <div class="flip-card-inner">
             <!-- Cara Frontal del Escáner (Imagen de Cámara) -->
             <div class="flip-card-front">
-              <img src="../../src/assets/images/objetos/card-scanner-camera.png" alt="Cámara de Investigación" class="char-card-img" />
+              <img src="assets/images/objetos/card-scanner-camera.png" alt="Cámara de Investigación" class="char-card-img" />
             </div>
 
             <!-- Cara Trasera del Escáner (Cámara + Botón Activar Escáner + Acciones de Respaldo) -->
-            <div class="flip-card-back scanner-card-back" style="background-image: url('../../src/assets/images/tarjetas/card-back-base-2.png');">
+            <div class="flip-card-back scanner-card-back" style="background-image: url('assets/images/tarjetas/card-back-base-2.png');">
               <div class="scanner-back-content">
                 <div class="scanner-video-wrapper" id="scanner-video-wrapper">
                   <video id="scanner-video" playsinline muted></video>
@@ -523,7 +523,7 @@ class ScapeRoomApp {
             </div>
 
             <!-- Cara Trasera del Objeto (Detalles e Información) -->
-            <div class="flip-card-back clue-back-face" style="background-image: url('${(isSpecialViewer && clue.specialBackImage) ? clue.specialBackImage : `../../src/assets/images/tarjetas/${clue.backBase}`}');">
+            <div class="flip-card-back clue-back-face" style="background-image: url('${(isSpecialViewer && clue.specialBackImage) ? clue.specialBackImage : `assets/images/tarjetas/${clue.backBase}`}');">
               
               ${(isSpecialViewer && clue.specialBackImage) ? `
                 <div class="card-special-fullscreen-back" style="position: absolute; inset: 0; width: 100%; height: 100%; border-radius: inherit; overflow: hidden; z-index: 10;">
@@ -537,7 +537,7 @@ class ScapeRoomApp {
 
                 <!-- Escudo de Confidencialidad para Pistas Privadas (Ojito) -->
                 ${clue.isPrivate ? `
-                  <div class="private-shield-overlay" id="shield-${clue.id}" style="background-image: url('../../src/assets/images/tarjetas/${clue.backBase}');">
+                  <div class="private-shield-overlay" id="shield-${clue.id}" style="background-image: url('assets/images/tarjetas/${clue.backBase}');">
                     <div class="shield-eye-icon-box">
                       <svg class="shield-eye-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
@@ -613,7 +613,7 @@ class ScapeRoomApp {
                             <span class="phone-audio-time">0:00</span> / <span class="phone-audio-duration">--:--</span>
                           </div>
                         </div>
-                        <audio class="phone-audio-element" src="../../src/assets/audio/phone_safe_1.mp3" preload="metadata"></audio>
+                        <audio class="phone-audio-element" src="assets/audio/phone_safe_1.mp3" preload="metadata"></audio>
                       </div>
                     ` : ""}
 

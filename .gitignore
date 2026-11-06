@@ -1,6 +1,16 @@
-# Python cache and temporary files
+# Python y scripts de generación
+*.py
+.py/
 __pycache__/
 *.pyc
-.DS_Store
-Thumbs.db
+
+# Documentos generados y recursos de impresión
+*.pdf
+*.ttf
+*.txt
 *.xcf
+
+# Archivos de gestión temporal y del sistema operativo
+kanban.html
+Thumbs.db
+.DS_Store
